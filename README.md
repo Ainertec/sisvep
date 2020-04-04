@@ -4,9 +4,9 @@
 
 Requisitos:<br/><br/>
 -Diagrama de caso de uso<br/>
-* imagem - diagrama_caso_de_uso_sisvep<br/>
+* imagem - diagrama_caso_de_uso_sisvep.png<br/>
 -Diagrama de classe<br/>
-* imagem - diagrama_de_classe_sisvep<br/><br/>
+* imagem - diagrama_de_classe_sisvep.png<br/><br/>
 
 
 Ferramentas de desenvolvimento:<br/>
