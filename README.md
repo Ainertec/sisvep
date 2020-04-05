@@ -2,6 +2,10 @@
 
 - Sistema voltado para gerenciamento de vendas<br/><br/>
 
+- Estrutura de pastas:<br/>
+Program: ficará todos os arquivos referentes ao back-end.<br/>
+View: ficará todos os arquivos referente ao front-end desktop.<br/><br/>
+
 Requisitos:<br/><br/>
 - Diagrama de caso de uso<br/>
 imagem - diagrama_caso_de_uso_sisvep.png<br/>
