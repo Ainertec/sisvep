@@ -32,7 +32,7 @@ O funcionário é formado pelo: ID, CPF ou CNPJ, nome, (relação de horas traba
 Para o funcionário é necessário: sistema de cadastro, sistema de busca por id, sistema de exibir todos, sistema de busca por nome, sistema de busca por código de acesso, sistema de cadastrar horas trabalhadas, sistema de atualizar, sistema de excluir.
 OBS.: o sistema deverá calcular as horas trabalhadas dentro de um período informado para um funcionário informado, somente funcionário administrador poderá criar funcionários administradores ou comuns.
 
-`<br/><br/>
+<br/><br/>
 Ferramentas de desenvolvimento:<br/>
 - Back end<br/>
 Node JS<br/>
