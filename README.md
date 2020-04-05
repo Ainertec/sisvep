@@ -6,7 +6,7 @@ Requisitos:<br/><br/>
 - Diagrama de caso de uso<br/>
 imagem - diagrama_caso_de_uso_sisvep.png<br/>
 - Diagrama de classe<br/>
-`
+```
 Produto
 O produto é formado pelo: ID, Nome, descrição, valor unitário, código (barcode), data de validade, data de inclusão, referencia do fornecedor, valor de custo, quantidade estoque.
 Para o produto é necessário: sistema de cadastro, sistema de busca por código, sistema de exibir todos, sistema de busca por id, sistema de busca por data de validade, sistema de busca por referencia do fornecedor, sistema de busca por data de inclusão, sistema de busca por quantidade em estoque, sistema de busca por nome, sistema de exclusão, sistema de atualização, sistema de atualização de estoque.
@@ -32,7 +32,7 @@ O funcionário é formado pelo: ID, CPF ou CNPJ, nome, (relação de horas traba
 Para o funcionário é necessário: sistema de cadastro, sistema de busca por id, sistema de exibir todos, sistema de busca por nome, sistema de busca por código de acesso, sistema de cadastrar horas trabalhadas, sistema de atualizar, sistema de excluir.
 OBS.: o sistema deverá calcular as horas trabalhadas dentro de um período informado para um funcionário informado, somente funcionário administrador poderá criar funcionários administradores ou comuns.
 
-`<br/><br/>
+```<br/><br/>
 Ferramentas de desenvolvimento:<br/>
 - Back end<br/>
 Node JS<br/>
