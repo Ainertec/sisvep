@@ -56,10 +56,15 @@ ID, Nome, descrição, valor unitário, código (barcode), data de validade, dat
   descricao: ,
   telefone:[],
   email: [],
-  Cnpj/cpf:
+  Cnpj/cpf: ,
+  produtos:[
+    {
+      produto_id: 
+    }
+  ]
 }
-#### (Análisar relação) Utra forma seria:
-##### Produto
+<!-- #### (Análisar relação) Utra forma seria:
+##### Fornecedor
 {
   _id: ,
   decricao: ,
@@ -77,7 +82,7 @@ ID, Nome, descrição, valor unitário, código (barcode), data de validade, dat
   }
   custo:
   estoque: 
-}
+} -->
 
 <!-- ID, data e hora da venda, nome de cada item da venda, valor unitário de cada item da venda, quantidade vendida de cada item da venda, valor total dos itens, forma de pagamento, referencia do funcionário responsável. -->
 

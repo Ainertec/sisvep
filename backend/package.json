@@ -5,9 +5,11 @@
   "license": "MIT",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongoose": "^5.9.7"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^1.1.5",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-config-prettier": "^6.10.1",
@@ -16,7 +18,11 @@
     "factory-girl": "^5.0.4",
     "faker": "^4.1.0",
     "jest": "^25.2.7",
+    "nodemon": "^2.0.2",
     "prettier": "^2.0.2",
     "supertest": "^4.0.2"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }
