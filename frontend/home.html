@@ -28,15 +28,15 @@
             <h5 class="text-center" style="margin-top: 15px;">Menu</h5>
             <ul class="list-group list-group-flush">
                 <a onclick="telaVenda();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-shopping-cart iconsTam"></span> Venda</a>
-                <a class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-box-open iconsTam"></span> Produto</a>
-                <a class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-people-carry iconsTam"></span> Fornecedor</a>
-                <a class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-hand-holding-usd iconsTam"></span> Fiado</a>
-                <a class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-user iconsTam"></span> Funcionário</a>
+                <a onclick="subMenuProduto();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-box-open iconsTam"></span> Produto</a>
+                <a onclick="subMenuFornecedor();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-people-carry iconsTam"></span> Fornecedor</a>
+                <a onclick="subMenuFiado();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-hand-holding-usd iconsTam"></span> Fiado</a>
+                <a onclick="subMenuFuncionario();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-user iconsTam"></span> Funcionário</a>
                 <a class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-boxes iconsTam"></span> Estoque</a>
                 <a class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-chart-line iconsTam"></span> Relatórios</a>
                 <a class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-print iconsTam"></span> Impressão</a>
-                <a class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-user-tie iconsTam"></span> Administrador</a>
-                <a class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-store-alt iconsTam"></span> Loja</a>
+                <a onclick="subMenuAdministrador();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-user-tie iconsTam"></span> Administrador</a>
+                <a onclick="subMenuLoja();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-store-alt iconsTam"></span> Loja</a>
             </ul>
         </section>
       
@@ -69,10 +69,13 @@
     <!--<script src="./bootstrap/js/highchartsgrafico.js"></script>-->
 
 
-    <script src="./classes/Venda.js"></script>
+    <script src="./classes/Requisicao.js"></script>
     <script src="./classes/Funcionalidade.js"></script>
     <script src="./classes/Login.js"></script>
-    <script src="./classes/Requisicao.js"></script>
+    <script src="./classes/Venda.js"></script>
+    <script src="./classes/SubMenu.js"></script>
+    
+    
 
   </body>
 </html>

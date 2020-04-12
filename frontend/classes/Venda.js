@@ -2,6 +2,7 @@
 
 ///---------------------------------------------------------Tela principal de venda-------------------------------------------------------
 
+// funcao responsavel por criar a tela de vendas
 function telaVenda(){
     var codigoHTML='';
 
@@ -25,7 +26,7 @@ function telaVenda(){
                 codigoHTML+='<div class="card border-danger" style="margin:5px;">'
                     codigoHTML+='<div class="card-body">'
                         codigoHTML+='<div class="form-group row">'
-                            codigoHTML+='<label for="qtdItemDaVenda">Quantidade <strong>X</strong></label>' 
+                            codigoHTML+='<label for="qtdItemDaVenda">Produto <strong>X</strong></label>' 
                         codigoHTML+='<input type="Number" class="form-control form-control-sm col-3" id="qtdItemDaVenda" style="margin-left:10px" value=2>'
                         codigoHTML+='</div>'
                         codigoHTML+='<div class="form-group row">'
@@ -80,14 +81,10 @@ function telaVenda(){
 
 }
 
-
-
-///-------------------------------------------------funcao para montar a tabela com os itens-------------------------------------------------
-
-
+//funcao reponsavel por carregar a lista e exibir os dados do item da venda
 function carregarDadosItensVenda(){
 
-    var codigoHTML='', codigoHTML2=''; cont=0;
+    var codigoHTML='', codigoHTML2='', cont=0;
         
     while(cont<20){
 
