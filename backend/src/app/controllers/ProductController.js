@@ -1,8 +1,34 @@
 const Product = require('../models/Product');
 
 module.exports = {
+  async showByBarcode(req, res) {
+    const { barcode } = req.query;
+
+    const product = await Product.findOne({ barcode });
+    return res.json(product);
+  },
+
   async show(req, res) {
-    return res.status(200).send();
+    const { date } = req.query;
+    const dateArray = date.split('-');
+    const dateLength = String(dateArray[0]);
+    console.log('date length', dateLength, dateLength.length);
+
+    if (!dateArray[1])
+      return res.status(400).json('month does not informated!');
+
+    if (dateArray[1] <= 0 || dateArray[1] >= 13)
+      return res.status(400).json('month does not exist!');
+
+    if (dateArray[2]) return res.status(400).json('day must not be informed!');
+
+    if (dateLength.length !== 4)
+      return res.status(400).json('Date formate incorret');
+
+    const products = await Product.find({
+      validity: { $gte: date + ' 1', $lte: date + ' 31' },
+    });
+    return res.json(products);
   },
 
   async index(req, res) {
@@ -39,7 +65,7 @@ module.exports = {
       validity,
       stock,
     });
-    if (product) return res.status(200).json(product);
+    return res.status(200).json(product);
     // return res.status(400).send();
   },
 };

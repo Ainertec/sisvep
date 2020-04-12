@@ -20,7 +20,7 @@ routes.post(
 
 /**
  * @param name:String
- * @description sem parâmetro lista todos
+ * @description without parmameter return all products
  */
 routes.get(
   '/products',
@@ -31,7 +31,31 @@ routes.get(
   }),
   ProductController.index
 );
-
-routes.get('/products_validity', ProductController.show);
+/**
+ * @param date: String
+ * @description return all products with a validity infomated
+ */
+routes.get(
+  '/products_validity',
+  celebrate({
+    [Segments.QUERY]: {
+      date: Joi.string().required(),
+    },
+  }),
+  ProductController.show
+);
+/**
+ * @param barcode: Number
+ * @description return the product with the barcode infomated
+ */
+routes.get(
+  '/products_barcode',
+  celebrate({
+    [Segments.QUERY]: {
+      barcode: Joi.number().required(),
+    },
+  }),
+  ProductController.showByBarcode
+);
 
 module.exports = routes;
