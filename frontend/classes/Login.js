@@ -11,7 +11,7 @@ function telaAutenticacao(){
         codigoHTML+='<div class="form-row col-4 rounded mx-auto d-block">'
             codigoHTML+='<input id="login" type="text" class="form-control mb-2" placeholder="Login">'
             codigoHTML+='<input id="senha" type="password" class="form-control mb-2" placeholder="Senha">'
-            codigoHTML+='<button onclick="autenticacaoLogin();" type="button" class="btn btn-light border border-dark col-md-3">'
+            codigoHTML+='<button onclick="autenticacaoLogin();" type="button" class="btn btn-light border border-danger col-md-3">'
                 codigoHTML+='<span class="fas fa-key"></span> Acessar'
             codigoHTML+='</button>'
         codigoHTML+='</div>'

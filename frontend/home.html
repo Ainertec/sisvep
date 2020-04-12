@@ -6,6 +6,7 @@
     <link href="fontawesome-free/css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./bootstrap/css/escopo-css-pagina.css">
+    <title>SISVEP</title>
   </head>
 
   <body>
@@ -27,16 +28,16 @@
         <section class="col-2 bg.bg-transparent" style="height: 630px;">
             <h5 class="text-center" style="margin-top: 15px;">Menu</h5>
             <ul class="list-group list-group-flush">
-                <a onclick="telaVenda();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-shopping-cart iconsTam"></span> Venda</a>
+                <a onclick="autenticacaoVenda();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-shopping-cart iconsTam"></span> Venda</a>
                 <a onclick="subMenuProduto();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-box-open iconsTam"></span> Produto</a>
-                <a onclick="subMenuFornecedor();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-people-carry iconsTam"></span> Fornecedor</a>
+                <a onclick="autenticacaoFornecedor();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-people-carry iconsTam"></span> Fornecedor</a>
                 <a onclick="subMenuFiado();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-hand-holding-usd iconsTam"></span> Fiado</a>
-                <a onclick="subMenuFuncionario();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-user iconsTam"></span> Funcionário</a>
+                <a onclick="autenticacaoFuncionarioFacede(0);" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-user iconsTam"></span> Funcionário</a>
                 <a class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-boxes iconsTam"></span> Estoque</a>
                 <a class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-chart-line iconsTam"></span> Relatórios</a>
                 <a class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-print iconsTam"></span> Impressão</a>
                 <a onclick="subMenuAdministrador();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-user-tie iconsTam"></span> Administrador</a>
-                <a onclick="subMenuLoja();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-store-alt iconsTam"></span> Loja</a>
+                <a onclick="autenticacaoLoja();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-store-alt iconsTam"></span> Loja</a>
             </ul>
         </section>
       
@@ -73,6 +74,11 @@
     <script src="./classes/Funcionalidade.js"></script>
     <script src="./classes/Login.js"></script>
     <script src="./classes/Venda.js"></script>
+    <script src="./classes/Loja.js"></script>
+    <script src="./classes/Fornecedor.js"></script>
+    <script src="./classes/Produto.js"></script>
+    <script src="./classes/Funcionario.js"></script>
+    
     <script src="./classes/SubMenu.js"></script>
     
     

@@ -2,6 +2,19 @@
 
 ///---------------------------------------------------------Tela principal de venda-------------------------------------------------------
 
+
+//funcao responsavel pela autenticacao de usuario no setor venda
+function autenticacaoVenda(){
+
+    if(1==1){
+        document.getElementById('janela2').innerHTML = telaVenda();
+        carregarDadosItensVenda();
+        loarding();
+    }
+
+}
+
+
 // funcao responsavel por criar a tela de vendas
 function telaVenda(){
     var codigoHTML='';
@@ -44,13 +57,9 @@ function telaVenda(){
                 codigoHTML+='<div class="card border-danger" style="margin:5px;">'
                     codigoHTML+='<div class="card-header"><strong>Pagamento</strong></div>'    
                     codigoHTML+='<div class="card-body">'
-                        codigoHTML+='<div class="btn-group btn-group-toggle btn-lg btn-block" data-toggle="buttons">'
-                            codigoHTML+='<label class="btn btn-primary">'
-                                codigoHTML+='<input type="radio" name="options" id="option1"><span class="fas fa-dollar-sign iconsTam"></span> Dinheiro'
-                            codigoHTML+='</label>'
-                            codigoHTML+='<label class="btn btn-info">'
-                                codigoHTML+='<input type="radio" name="options" id="option2"><span class="fas fa-credit-card iconsTam"></span> Cartão'
-                            codigoHTML+='</label>'
+                        codigoHTML+='<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
+                            codigoHTML+='<button type="button" class="btn btn-primary"><span class="fas fa-dollar-sign iconsTam"></span> Dinheiro</button>'
+                            codigoHTML+='<button type="button" class="btn btn-info"><span class="fas fa-credit-card iconsTam"></span> Cartão</button>'
                         codigoHTML+='</div>'
                     codigoHTML+='</div>'
                 codigoHTML+='</div>'
@@ -75,11 +84,10 @@ function telaVenda(){
     codigoHTML+='<div id="dadosItemVenda">'
     codigoHTML+='</div>'
 
-    document.getElementById('janela2').innerHTML = codigoHTML;
-
-    carregarDadosItensVenda();
+    return codigoHTML;
 
 }
+
 
 //funcao reponsavel por carregar a lista e exibir os dados do item da venda
 function carregarDadosItensVenda(){
