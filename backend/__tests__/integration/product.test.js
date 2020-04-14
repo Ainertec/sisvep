@@ -52,6 +52,70 @@ describe('teste Product', () => {
 
     expect(response.status).toBe(400);
   });
+  it('shuld update a product', async () => {
+    const product = await factory.create('Product');
+
+    const response = await request(app)
+      .put('/products')
+      .send({
+        name: 'Tortugita',
+        description: 'Chocolate com Morango',
+        price: product.price,
+        cost: product.cost,
+        barcode: product.barcode,
+        validity: product.validity,
+        stock: product.stock,
+      })
+      .query({
+        id: String(product._id),
+      });
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        name: 'Tortugita',
+        description: 'Chocolate com Morango',
+      })
+    );
+  });
+  it('shuld not update a product with a invalid id', async () => {
+    const product = await factory.create('Product');
+
+    const response = await request(app)
+      .put('/products')
+      .send({
+        name: 'Tortugita',
+        description: 'Chocolate com Morango',
+        price: product.price,
+        cost: product.cost,
+        barcode: product.barcode,
+        validity: product.validity,
+        stock: product.stock,
+      })
+      .query({
+        id: 'asdfghjklqwe',
+      });
+    console.log(response.body);
+
+    expect(response.status).toBe(400);
+  });
+  it('shuld delete a product', async () => {
+    const product = await factory.create('Product');
+
+    const response = await request(app)
+      .delete('/products')
+      .query({
+        id: String(product._id),
+      });
+    console.log(response.body);
+    expect(response.status).toBe(200);
+  });
+  it('shuld not delete a product whit invalid id', async () => {
+    const response = await request(app).delete('/products').query({
+      id: '000000000000',
+    });
+    console.log(response.body);
+    expect(response.status).toBe(400);
+  });
 });
 
 describe('Products list', () => {
@@ -59,7 +123,7 @@ describe('Products list', () => {
     try {
       connectionManager.openConnection();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   });
   afterAll(() => {
@@ -74,9 +138,7 @@ describe('Products list', () => {
       description: 'Bão de mais',
     });
 
-    const response = await request(app)
-      .get('/products')
-      .query({ name: 'Chocolate' });
+    const response = await request(app).get('/products').query({ name: 'Chocolate' });
     expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -149,7 +211,7 @@ describe('Products list', () => {
     });
     expect(response.status).toBe(400);
   });
-  it('shuld not list products by barcode ', async () => {
+  it('shuld list products by barcode ', async () => {
     await factory.create('Product', {
       name: 'Pão',
       barcode: 12345,

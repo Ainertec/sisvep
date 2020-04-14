@@ -2,22 +2,7 @@ const routes = require('express').Router();
 const { celebrate, Joi, Segments } = require('celebrate');
 const ProductController = require('./app/controllers/ProductController');
 
-routes.post(
-  '/products',
-  celebrate({
-    [Segments.BODY]: Joi.object().keys({
-      name: Joi.string().required(),
-      description: Joi.string(),
-      price: Joi.number().required(),
-      cost: Joi.number().required(),
-      barcode: Joi.number().required(),
-      validity: Joi.date().required(),
-      stock: Joi.number().required(),
-    }),
-  }),
-  ProductController.store
-);
-
+// Products
 /**
  * @param name:String
  * @description without parmameter return all products
@@ -57,5 +42,50 @@ routes.get(
   }),
   ProductController.showByBarcode
 );
+
+routes.post(
+  '/products',
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      name: Joi.string().required(),
+      description: Joi.string(),
+      price: Joi.number().required(),
+      cost: Joi.number().required(),
+      barcode: Joi.number().required(),
+      validity: Joi.date().required(),
+      stock: Joi.number().required(),
+    }),
+  }),
+  ProductController.store
+);
+routes.put(
+  '/products',
+  celebrate({
+    [Segments.QUERY]: {
+      id: Joi.string().required().min(12),
+    },
+    [Segments.BODY]: Joi.object().keys({
+      name: Joi.string().required(),
+      description: Joi.string(),
+      price: Joi.number().required(),
+      cost: Joi.number().required(),
+      barcode: Joi.number().required(),
+      validity: Joi.date().required(),
+      stock: Joi.number().required(),
+    }),
+  }),
+  ProductController.update
+);
+
+routes.delete(
+  '/products',
+  celebrate({
+    [Segments.QUERY]: {
+      id: Joi.string().required().min(12),
+    },
+  }),
+  ProductController.delete
+);
+//
 
 module.exports = routes;
