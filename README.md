@@ -39,7 +39,7 @@ Para o funcionário é necessário: sistema de cadastro, sistema de busca por id
 - OBS.: o sistema deverá calcular as horas trabalhadas dentro de um período informado para um funcionário informado, somente funcionário administrador poderá criar funcionários administradores ou comuns.
 
 # Fiado
-O fiado é formado pelo: ID, nome, CPF pu CNPJ, telefone, lista de itens que compoem o preço total devido(nome do item, valor do item, e data da venda do item), situação.
+O fiado é formado pelo: ID, nome, CPF pu CNPJ, telefone, lista de itens que compoem o preço total devido(nome do item, valor do item, e data da venda do item), situação, lista de valores pagos(data do pagamento, valor pago).
 Para o fiado é necessário: sistema de cadastro, sistema de cadastro de novas dividas para o mesmo fiado, sistema de busca pelo nome, sistema de busca pelo cpf ou cnpj, sistema de exibir todos, sistema de delete, e sistema de update.
 
 # Relatório
