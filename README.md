@@ -30,7 +30,7 @@ OBS.: o sistema de exclusão deverá excluir todas as vendas com mais de 7 anos,
 
 # Loja
 A loja é formada pelo: ID, CNPJ ou CPF, nome, telefone, email, endereço.
-Para a loja é necessário: sistema de cadastro, sistema de exibir todos, sistema de busca por id, sistema de exclusão, sistema de atualização.
+Para a loja é necessário: sistema de cadastro, sistema de exibir todos, sistema de busca por todos, sistema de exclusão, sistema de atualização.
 - OBS.: o sistema deve permitir o cadastro de apenas uma loja.
 
 # Funcionário (Comum)/(Admin)
