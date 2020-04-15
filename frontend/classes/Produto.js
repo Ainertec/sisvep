@@ -6,14 +6,12 @@
 //funcao responsavel pela autenticacao de usuario no setor produto
 function autenticacaoProduto(tipo){
 
-    if(tipo==1){
-        document.getElementById('janela2').innerHTML = telaProduto(0);
-        loarding();
-    }else if(tipo==2){
+    if(tipo=='Cadastrar'){
+        document.getElementById('janela2').innerHTML = telaProduto(tipo);
+    }else if(tipo=='Atualizar'){
         document.getElementById('janela2').innerHTML = telaBuscarProduto();
-        document.getElementById('dadosDoProduto').innerHTML = telaProduto(0);
+        document.getElementById('dadosDoProduto').innerHTML = telaProduto(tipo);
         document.getElementById('listaDeProdutos').innerHTML = carregarListaProdutos();
-        loarding();
     }
 
 }
@@ -23,9 +21,9 @@ function autenticacaoProduto(tipo){
 function telaProduto(tipo){
      var codigoHTML='';
 
-    if(tipo==0){
+    if(tipo=='Atualizar'){
         codigoHTML+='<h3 class="text-center">Atualizar Produto</h3>'
-    }else{
+    }else if(tipo=='Cadastrar'){
         codigoHTML+='<h3 class="text-center">Cadastrar Produto</h3>'
     }
     
@@ -33,7 +31,7 @@ function telaProduto(tipo){
         codigoHTML+='<form>'
             codigoHTML+='<div class="form-row">'
                 
-                if(tipo==0){
+                if(tipo=='Atualizar'){
                     codigoHTML+='<div class="form-group col-md-6">'
                         codigoHTML+='<label for="id">ID:</label>'
                         codigoHTML+='<input type="text" class="form-control" id="id" placeholder="ID" disabled>'
@@ -95,9 +93,15 @@ function telaProduto(tipo){
             codigoHTML+='</div>'
             
             codigoHTML+='<div class="form-row">'
-                codigoHTML+='<button onclick="document.getElementById(\'dadosDoFornecedor\').innerHTML = carregarDadosFornecedor(1);" type="button" class="btn btn-primary" style="margin: 5px;"><span class="fas fa-save"></span> Cadastrar Fornecedor</button>'
-                codigoHTML+='<button type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-save"></span> Salvar</button>'
-                codigoHTML+='<button type="button" class="btn btn-danger" style="margin: 5px;"><span class="fas fa-trash-alt"></span> Excluir</button>'
+                codigoHTML+='<button onclick="document.getElementById(\'dadosDoFornecedor\').innerHTML = carregarDadosFornecedor(\'Cadastrar\');" type="button" class="btn btn-warning" style="margin: 5px;"><span class="fas fa-save"></span> Cadastrar Fornecedor</button>'    
+                
+                if(tipo=='Atualizar'){
+                    codigoHTML+='<button type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-edit"></span> Salvar</button>'
+                    codigoHTML+='<button type="button" class="btn btn-danger" style="margin: 5px;"><span class="fas fa-trash-alt"></span> Excluir</button>'
+                }else if(tipo=='Cadastrar'){
+                    codigoHTML+='<button type="button" class="btn btn-primary" style="margin: 5px;"><span class="fas fa-save"></span> Salvar</button>'
+                }
+
             codigoHTML+='</div>'
         codigoHTML+='</form>'
     codigoHTML+='</div>'
@@ -119,21 +123,26 @@ function telaBuscarProduto(){
     codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
         codigoHTML+='<h5 class="text-center">Buscar</h5>'
         codigoHTML+='<div class="input-group mb-3">'
-            codigoHTML+='<input id="buscaProduto" type="text" class="form-control" placeholder="Nome ou código de barras" aria-label="Recipients username" aria-describedby="botaoBuscar">'
+            codigoHTML+='<input id="buscaProduto" type="text" class="form-control" placeholder="Nome ou código de barras">'
+        codigoHTML+='</div>'
+        codigoHTML+='<div class="input-group mb-3">'
+            codigoHTML+='<input id="buscaProdutoDate" type="date" class="form-control">'
         codigoHTML+='</div>'
         codigoHTML+='<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
             codigoHTML+='<button type="button" class="btn btn-outline-primary">Buscar por Código de barras</button>'
             codigoHTML+='<button type="button" class="btn btn-outline-primary">Buscar por Nome</button>'
             codigoHTML+='<button type="button" class="btn btn-outline-primary">Exibir todos</button>'
         codigoHTML+='</div>'
+        codigoHTML+='<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
+            codigoHTML+='<button type="button" class="btn btn-outline-primary">Buscar por Data de validade</button>'
+            codigoHTML+='<button type="button" class="btn btn-outline-primary">Buscar por Data de inclusão</button>'
+        codigoHTML+='</div>'
     codigoHTML+='</div>'
 
 
-    codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
-        codigoHTML+='<h5 class="text-center">Lista</h5>'
-        codigoHTML+='<div id="listaDeProdutos" class="list-group">'
+    codigoHTML+='<h5 class="text-center">Lista</h5>'
+    codigoHTML+='<div id="listaDeProdutos" class="list-group">'
 
-        codigoHTML+='</div>'
     codigoHTML+='</div>'
 
 

@@ -19,12 +19,6 @@ function mensagemDeAviso(mensagem){
     limparTelaDeMensagem();
 }
 
-//funcao para gerar mensagem de carregamento
-function loarding(){
-    document.getElementById('mensagemDeErro').innerHTML = '<span class="badge badge-light h5">Aguarde ...</span>';;
-    limparTelaDeMensagem();
-}
-
 //funcao para limpar tela de mensagens
 function limparTelaDeMensagem(){
     setTimeout(function(){document.getElementById('mensagemDeErro').innerHTML=""},2000);

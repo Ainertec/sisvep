@@ -5,8 +5,7 @@
 function autenticacaoLoja(){
 
     if(1==1){
-        document.getElementById('janela2').innerHTML = telaLoja(0);
-        loarding();
+        document.getElementById('janela2').innerHTML = telaLoja('Cadastrar');
     }
 
 }
@@ -17,17 +16,17 @@ function telaLoja(tipo){
 
     var codigoHTML='';
 
-    if(tipo==0){
+    if(tipo=='Atualizar'){
         codigoHTML+='<h3 class="text-center">Atualizar Loja</h3>'
-    }else{
-        codigoHTML+='<h3 class="text-center">Atualizar Loja</h3>'
+    }else if(tipo=='Cadastrar'){
+        codigoHTML+='<h3 class="text-center">Cadastrar Loja</h3>'
     }
     
     codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
         codigoHTML+='<form>'
             codigoHTML+='<div class="form-row">'
                 
-                if(tipo==0){
+                if(tipo=='Atualizar'){
                     codigoHTML+='<div class="form-group col-md-6">'
                         codigoHTML+='<label for="id">ID:</label>'
                         codigoHTML+='<input type="text" class="form-control" id="id" placeholder="ID" disabled>'
@@ -61,8 +60,13 @@ function telaLoja(tipo){
                 codigoHTML+='</div>'
             codigoHTML+='</div>'
             codigoHTML+='<div class="form-row">'
-                codigoHTML+='<button type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-save"></span> Salvar</button>'
-                codigoHTML+='<button type="button" class="btn btn-danger" style="margin: 5px;"><span class="fas fa-trash-alt"></span> Excluir</button>'
+
+                if(tipo=='Atualizar'){
+                    codigoHTML+='<button type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-edit"></span> Salvar</button>'
+                    codigoHTML+='<button type="button" class="btn btn-danger" style="margin: 5px;"><span class="fas fa-trash-alt"></span> Excluir</button>'
+                }else if(tipo=='Cadastrar'){
+                    codigoHTML+='<button type="button" class="btn btn-primary" style="margin: 5px;"><span class="fas fa-save"></span> Salvar</button>'
+                }
             codigoHTML+='</div>'
         codigoHTML+='</form>'
     codigoHTML+='</div>'

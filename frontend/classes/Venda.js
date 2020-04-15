@@ -9,7 +9,6 @@ function autenticacaoVenda(){
     if(1==1){
         document.getElementById('janela2').innerHTML = telaVenda();
         carregarDadosItensVenda();
-        loarding();
     }
 
 }
