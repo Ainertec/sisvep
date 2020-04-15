@@ -34,17 +34,13 @@ Para a loja é necessário: sistema de cadastro, sistema de exibir todos, sistem
 - OBS.: o sistema deve permitir o cadastro de apenas uma loja.
 
 # Funcionário (Comum)/(Admin)
-O funcionário é formado pelo: ID, CPF ou CNPJ, nome, (relação de horas trabalhadas por dia trabalhado), código de acesso, tipo de funcionário (comum/admin).
+O funcionário é formado pelo: ID, nome, login, senha, tipo de funcionário (comum/admin).
 Para o funcionário é necessário: sistema de cadastro, sistema de busca por id, sistema de exibir todos, sistema de busca por nome, sistema de busca por código de acesso, sistema de cadastrar horas trabalhadas, sistema de atualizar, sistema de excluir.
 - OBS.: o sistema deverá calcular as horas trabalhadas dentro de um período informado para um funcionário informado, somente funcionário administrador poderá criar funcionários administradores ou comuns.
 
-# Fiado
-O fiado é formado pelo: ID, nome, CPF pu CNPJ, telefone, lista de itens que compoem o preço total devido(nome do item, valor do item, e data da venda do item), situação, lista de valores pagos(data do pagamento, valor pago).
-Para o fiado é necessário: sistema de cadastro, sistema de cadastro de novas dividas para o mesmo fiado, sistema de busca pelo nome, sistema de busca pelo cpf ou cnpj, sistema de exibir todos, sistema de delete, e sistema de update.
-
 # Relatório
 Relatório de lucro mensal (e uma lista separada por meses, aonde cada mês é composto pela soma das vendas referentes a ele). Relatório de produtos vendidos (é uma lista com todos os produtos dizendo quanto de cada produto foi vendido). Relatório de vendas por mês(é uma lista separada por meses aonde é somada todas as vendas referente ao mesmo). Relatório de representação de produtos nas vendas (é uma lista separada pelos produtos, a lista contém a porcentagem de respresentação de cada produto, a porcentagem é feita da seguinte forma soma-se a quantidade total de vendas de todos os produtos, depois é pego a quantidade de vendas de um unico produto depois é feito a regra de três sobre ele). Relatório de respresentação de produto sobre lucro total (é uma lista de produtos, é somado a valor total arrecadado com os produtos vendidos, após isso é feito a regra de três sobre o valor do produto e o valor total de todos os itens).
-Relatório de representação de fornecimento de produtos por Fronecedor (é uma lista de fornecedores, aonde é feito uma soma dos produtos fornecidos por cada fornecedor). Relatório de horas trabalhadas mensais por funcionario (é uma lista de meses, nessa lista cada mês tem todos os funcionarios e a quantidade de horas trabalhadas por cada um naquele mesmo mês). Relatório de valores fiados (é uma lista de fiados, é formado pela soma total de divida de cada fiado). Valor total arrecadado (é devolvido o valor total de todas as vendas).
+Relatório de representação de fornecimento de produtos por Fronecedor (é uma lista de fornecedores, aonde é feito uma soma dos produtos fornecidos por cada fornecedor). Valor total arrecadado (é devolvido o valor total de todas as vendas).
 ```
 <br/><br/>
 Ferramentas de desenvolvimento:<br/>
