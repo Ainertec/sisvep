@@ -35,8 +35,8 @@ Para a loja é necessário: sistema de cadastro, sistema de exibir todos, sistem
 
 # Funcionário (Comum)/(Admin)
 O funcionário é formado pelo: ID, nome, login, senha, tipo de funcionário (comum/admin).
-Para o funcionário é necessário: sistema de cadastro, sistema de busca por id, sistema de exibir todos, sistema de busca por nome, sistema de busca por código de acesso, sistema de cadastrar horas trabalhadas, sistema de atualizar, sistema de excluir.
-- OBS.: o sistema deverá calcular as horas trabalhadas dentro de um período informado para um funcionário informado, somente funcionário administrador poderá criar funcionários administradores ou comuns.
+Para o funcionário é necessário: sistema de cadastro, sistema de exibir todos, sistema de busca por nome, sistema de atualizar, sistema de excluir.
+- OBS.: somente funcionário administrador poderá criar funcionários administradores ou comuns.
 
 # Relatório
 Relatório de lucro mensal (e uma lista separada por meses, aonde cada mês é composto pela soma das vendas referentes a ele). Relatório de produtos vendidos (é uma lista com todos os produtos dizendo quanto de cada produto foi vendido). Relatório de vendas por mês(é uma lista separada por meses aonde é somada todas as vendas referente ao mesmo). Relatório de representação de produtos nas vendas (é uma lista separada pelos produtos, a lista contém a porcentagem de respresentação de cada produto, a porcentagem é feita da seguinte forma soma-se a quantidade total de vendas de todos os produtos, depois é pego a quantidade de vendas de um unico produto depois é feito a regra de três sobre ele). Relatório de respresentação de produto sobre lucro total (é uma lista de produtos, é somado a valor total arrecadado com os produtos vendidos, após isso é feito a regra de três sobre o valor do produto e o valor total de todos os itens).
