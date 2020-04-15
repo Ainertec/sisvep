@@ -15,7 +15,7 @@ imagem - diagrama_caso_de_uso_sisvep.png<br/>
 ```
 # Produto
 O produto é formado pelo: ID, Nome, descrição, valor unitário, código (barcode), data de validade, data de inclusão, referencia do fornecedor, valor de custo, quantidade estoque.
-Para o produto é necessário: sistema de cadastro, sistema de busca por código, sistema de exibir todos, sistema de busca por id, sistema de busca por data de validade, sistema de busca por referencia do fornecedor, sistema de busca por data de inclusão, sistema de busca por quantidade em estoque, sistema de busca por nome, sistema de exclusão, sistema de atualização, sistema de atualização de estoque.
+Para o produto é necessário: sistema de cadastro, sistema de busca por código, sistema de exibir todos, sistema de busca por data de validade, sistema de busca por data de inclusão, sistema de busca por quantidade em estoque, sistema de busca por nome, sistema de exclusão, sistema de atualização, sistema de atualização de estoque.
 - OBS.: o sistema deve alertar quando o estoque estiver abaixo de uma quantidade determinada pelo usuário, o sistema deve alertar que existem produtos vencendo quando estes estiverem com 7 dias próximos de  seu vencimento, o sistema não deve permitir vendas de produtos com estoque zerado.
 
 # Fornecedor
