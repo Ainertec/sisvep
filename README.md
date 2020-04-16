@@ -34,7 +34,7 @@ Para a loja é necessário: sistema de cadastro, sistema de exibir todos, sistem
 - OBS.: o sistema deve permitir o cadastro de apenas uma loja.
 
 # Funcionário (Comum)/(Admin)
-O funcionário é formado pelo: ID, nome, login, senha, tipo de funcionário (comum/admin).
+O funcionário é formado pelo: ID, nome, login, senha, tipo de funcionário (comum/admin), email.
 Para o funcionário é necessário: sistema de cadastro, sistema de exibir todos, sistema de busca por nome, sistema de atualizar, sistema de excluir.
 - OBS.: somente funcionário administrador poderá criar funcionários administradores ou comuns.
 
