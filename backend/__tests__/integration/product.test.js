@@ -94,7 +94,6 @@ describe('teste Product', () => {
       .query({
         id: 'asdfghjklqwe',
       });
-    console.log(response.body);
 
     expect(response.status).toBe(400);
   });
@@ -106,25 +105,21 @@ describe('teste Product', () => {
       .query({
         id: String(product._id),
       });
-    console.log(response.body);
+  
     expect(response.status).toBe(200);
   });
   it('shuld not delete a product whit invalid id', async () => {
     const response = await request(app).delete('/products').query({
-      id: '000000000000',
+      id: '123as0000012a',
     });
-    console.log(response.body);
     expect(response.status).toBe(400);
   });
 });
 
 describe('Products list', () => {
   beforeAll(() => {
-    try {
       connectionManager.openConnection();
-    } catch (error) {
-      console.error(error);
-    }
+    
   });
   afterAll(() => {
     connectionManager.closeConnection();
