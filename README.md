@@ -41,7 +41,7 @@ Para o funcionário é necessário: sistema de cadastro, sistema de exibir todos
 # Relatório
 Relatório de lucro mensal (e uma lista separada por meses, aonde cada mês é composto pela soma das vendas referentes a ele). Relatório de produtos vendidos (é uma lista com todos os produtos dizendo quanto de cada produto foi vendido). Relatório de vendas por mês(é uma lista separada por meses aonde é somada a quantidade de vendas referente ao mesmo). Relatório de representação de produtos nas vendas (é uma lista separada pelos produtos, a lista contém a porcentagem de respresentação de cada produto, a porcentagem é feita da seguinte forma soma-se a quantidade total de vendas de todos os produtos, depois é pego a quantidade de vendas de um unico produto depois é feito a regra de três sobre ele). Relatório de respresentação de produto sobre lucro total (é uma lista de produtos, é somado a valor total arrecadado com os produtos vendidos, após isso é feito a regra de três sobre o valor do produto e o valor total de todos os itens).
 Relatório de representação de fornecimento de produtos por Fronecedor (é uma lista de fornecedores, aonde é feito uma soma dos produtos fornecidos por cada fornecedor). Valor total arrecadado (é devolvido o valor total de todas as vendas).
-OBS.: os relatórios a frente devem retornar seu valor dentro de um periodo informado pelo cliente: Relatório de lucro mensal e Relátorio de vendas por mês.
+- OBS.: os relatórios a frente devem retornar seu valor dentro de um periodo informado pelo cliente: Relatório de lucro mensal e Relátorio de vendas por mês.
 ```
 <br/><br/>
 Ferramentas de desenvolvimento:<br/>
