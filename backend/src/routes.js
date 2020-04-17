@@ -4,11 +4,26 @@ const { celebrate, Joi, Segments } = require('celebrate');
 
 const ProductController = require('./app/controllers/ProductController');
 const SessionController = require('./app/controllers/SessionController');
+const ForgotPasswordController = require('./app/controllers/ForgotPasswordController');
+
 const authMiddleware = require('./app/middleware/auth');
 
 // session
 
-routes.post('/sessions', SessionController.store);
+routes.post(
+  '/sessions',
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      name: Joi.string().required(),
+      password: Joi.string().required(),
+    }),
+  }),
+  SessionController.store
+);
+// forgot password
+
+routes.get('/forgot', ForgotPasswordController.show);
+routes.post('/forgot', ForgotPasswordController.store);
 
 routes.use(authMiddleware);
 // Products

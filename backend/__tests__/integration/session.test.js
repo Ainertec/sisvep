@@ -4,7 +4,7 @@ const app = require('../../src/app');
 const User = require('../../src/app/models/User');
 const connectionManager = require('../utils/connectionManager');
 
-describe('teste Product', () => {
+describe('Login', () => {
   beforeAll(() => {
     connectionManager.openConnection();
   });

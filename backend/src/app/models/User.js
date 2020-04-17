@@ -14,7 +14,6 @@ const UserSchema = new mongoose.Schema({
 
   password_hash: {
     type: String,
-    // select: false,
   },
   question: {
     type: String,
@@ -29,6 +28,7 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
 });
+
 UserSchema.virtual('password', { type: String, require: true });
 
 UserSchema.pre('save', async function (next) {
@@ -41,6 +41,7 @@ UserSchema.pre('save', async function (next) {
 UserSchema.method('checkPassword', function (password) {
   return bcrypt.compare(password, this.password_hash);
 });
+
 UserSchema.method('generateToken', function () {
   return jwt.sign({ id: this._id }, process.env.APP_SECRET);
 });

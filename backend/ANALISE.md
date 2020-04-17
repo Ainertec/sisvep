@@ -1,7 +1,7 @@
 ## Requisitos Funcionais
 
-- Relacionar produtos com fornecedores, crud de anbós;
-- Buscar um produto por nome,ID, código, validade, inclusão, estoque e por fornecedor;
+- Relacionar produtos com fornecedores, crud de ambós;
+- Buscar um produto por nome,código, validade, inclusão, estoque e por fornecedor;
 - Buscar um fornecedor por nome, cpf/cnpj, id;
 - Relacionar venda com funcionario e produto, crud;
 - Buscar uma venda por id, data, forma de pagamento, funcionário e valor total;
