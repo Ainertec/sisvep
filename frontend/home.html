@@ -18,6 +18,8 @@
           <li class="nav-item" id="statusLogin"></li>
       </ul>
     </nav>
+
+    <div id="modal"></div>
     
     <div id="janelaTotal" style="margin-left: 50px; margin-right: 50px;">
 
@@ -28,15 +30,13 @@
         <section class="col-2 bg.bg-transparent" style="height: 630px;">
             <h5 class="text-center" style="margin-top: 15px;">Menu</h5>
             <ul class="list-group list-group-flush">
-                <a onclick="autenticacaoVenda();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-shopping-cart iconsTam"></span> Venda</a>
+                <a onclick="autenticacaoVendaFacede();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-shopping-cart iconsTam"></span> Venda</a>
                 <a onclick="subMenuProduto();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-box-open iconsTam"></span> Produto</a>
                 <a onclick="autenticacaoFornecedor();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-people-carry iconsTam"></span> Fornecedor</a>
-                <a onclick="subMenuFiado();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-hand-holding-usd iconsTam"></span> Fiado</a>
-                <a onclick="autenticacaoFuncionarioFacede(0);" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-user iconsTam"></span> Funcionário</a>
-                <a class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-boxes iconsTam"></span> Estoque</a>
-                <a class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-chart-line iconsTam"></span> Relatórios</a>
-                <a class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-print iconsTam"></span> Impressão</a>
-                <a onclick="subMenuAdministrador();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-user-tie iconsTam"></span> Administrador</a>
+                <a onclick="autenticacaoFuncionarioFacede();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-user-tie iconsTam"></span> Funcionário</a>
+                <a onclick="autenticacaoEstoqueFacede();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-boxes iconsTam"></span> Estoque</a>
+                <a onclick="autenticacaoRelatorioFacede();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-chart-line iconsTam"></span> Relatórios</a>
+                <a onclick="subMenuImpressao();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-print iconsTam"></span> Impressão</a>
                 <a onclick="autenticacaoLoja();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-store-alt iconsTam"></span> Loja</a>
             </ul>
         </section>
@@ -62,12 +62,13 @@
     </div>
 
 
-    <!--<script src="./axios/axios.js"></script>-->
+    <script src="./axios/axios.js"></script>
     <script src="./bootstrap/js/jquery.min.js"></script>
     <script src="./bootstrap/js/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="./bootstrap/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <!--<script src="./bootstrap/js/instascan.min.js"></script>-->
-    <!--<script src="./bootstrap/js/highchartsgrafico.js"></script>-->
+    <script src="./bootstrap/js/instascan.min.js"></script>
+    <script src="./bootstrap/js/JsBarcode.all.min.js"></script>
+    <script src="./bootstrap/js/highchartsgrafico.js"></script>
 
 
     <script src="./classes/Requisicao.js"></script>
@@ -78,7 +79,9 @@
     <script src="./classes/Fornecedor.js"></script>
     <script src="./classes/Produto.js"></script>
     <script src="./classes/Funcionario.js"></script>
-    
+    <script src="./classes/Impressao.js"></script>
+    <script src="./classes/Estoque.js"></script>
+    <script src="./classes/Relatorio.js"></script>
     <script src="./classes/SubMenu.js"></script>
     
     

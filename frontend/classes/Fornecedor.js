@@ -8,8 +8,7 @@ function autenticacaoFornecedor(){
     if(1==1){
         document.getElementById('janela2').innerHTML = telaFornecedor();
         document.getElementById('listaDeFornecedores').innerHTML = carregarListaFornecedor();
-        document.getElementById('dadosDoFornecedor').innerHTML = carregarDadosFornecedor(0);
-        loarding();
+        document.getElementById('dadosDoFornecedor').innerHTML = carregarDadosFornecedor('Atualizar');
     }
 
 }
@@ -36,11 +35,10 @@ function telaFornecedor(){
     codigoHTML+='</div>'
 
 
-    codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
-        codigoHTML+='<h5 class="text-center">Lista</h5>'
-        codigoHTML+='<div id="listaDeFornecedores" class="list-group">'
+    
+    codigoHTML+='<h5 class="text-center">Lista</h5>'
+    codigoHTML+='<div id="listaDeFornecedores" class="list-group">'
 
-        codigoHTML+='</div>'
     codigoHTML+='</div>'
 
 
@@ -50,7 +48,7 @@ function telaFornecedor(){
             codigoHTML+='<div id="dadosDoFornecedor">'
             codigoHTML+='</div>'
             codigoHTML+='<div class="form-row">'
-                codigoHTML+='<button type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-save"></span> Salvar</button>'
+                codigoHTML+='<button type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-edit"></span> Salvar</button>'
                 codigoHTML+='<button type="button" class="btn btn-danger" style="margin: 5px;"><span class="fas fa-trash-alt"></span> Excluir</button>'
             codigoHTML+='</div>'
         codigoHTML+='</form>'
@@ -86,7 +84,7 @@ function carregarDadosFornecedor(tipo){
     
     var codigoHTML='';
 
-    if(tipo==1){
+    if(tipo=='Cadastrar'){
         codigoHTML+='<h5 class="text-center" style="margin-top:40px;">Cadastrar Fornecedor</h5>'
     }
 
@@ -117,7 +115,7 @@ function carregarDadosFornecedor(tipo){
             codigoHTML+='</textArea>'
         codigoHTML+='</div>'
 
-        if(tipo==0){
+        if(tipo=='Atualizar'){
             codigoHTML+='<div class="form-group col-md-6">'
                 codigoHTML+='<label for="idFornecedor">ID:</label>'
                 codigoHTML+='<input type="Number" class="form-control" id="idFornecedor" placeholder="ID" disabled>'
