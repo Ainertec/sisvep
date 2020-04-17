@@ -20,7 +20,6 @@ describe('test User', () => {
       name: 'Cleiton',
       password: 'asd',
     });
-    console.log(user);
     const compareHash = await bcrypt.compare('asd', user.password_hash);
     expect(compareHash).toBe(true);
   });

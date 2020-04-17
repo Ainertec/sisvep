@@ -1,7 +1,16 @@
 const routes = require('express').Router();
-const { celebrate, Joi, Segments } = require('celebrate');
-const ProductController = require('./app/controllers/ProductController');
 
+const { celebrate, Joi, Segments } = require('celebrate');
+
+const ProductController = require('./app/controllers/ProductController');
+const SessionController = require('./app/controllers/SessionController');
+const authMiddleware = require('./app/middleware/auth');
+
+// session
+
+routes.post('/sessions', SessionController.store);
+
+routes.use(authMiddleware);
 // Products
 /**
  * @param name:String

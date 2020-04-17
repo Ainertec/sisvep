@@ -3,6 +3,9 @@ const factory = require('../factories');
 const app = require('../../src/app');
 const Product = require('../../src/app/models/Product');
 const connectionManager = require('../utils/connectionManager');
+// const loginManager = require('../utils/loginManager');
+
+// const token = loginManager.login();
 
 describe('teste Product', () => {
   beforeAll(() => {
@@ -20,17 +23,19 @@ describe('teste Product', () => {
       name: 'Chocolate',
       description: 'Bão de mais',
     });
-
-    const response = await request(app).post('/products').send({
-      name: 'Muzarela',
-      description: product.description,
-      price: product.price,
-      cost: product.cost,
-      barcode: product.barcode,
-      validity: product.validity,
-      stock: product.stock,
-    });
-
+    const user = await factory.create('User');
+    const response = await request(app)
+      .post('/products')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .send({
+        name: 'Muzarela',
+        description: product.description,
+        price: product.price,
+        cost: product.cost,
+        barcode: product.barcode,
+        validity: product.validity,
+        stock: product.stock,
+      });
     expect(response.status).toBe(200);
   });
 
@@ -39,24 +44,31 @@ describe('teste Product', () => {
       name: 'Chocolate',
       description: 'Bão de mais',
     });
-
-    const response = await request(app).post('/products').send({
-      // name: 'pão',
-      description: product.description,
-      price: product.price,
-      cost: product.cost,
-      barcode: product.barcode,
-      validity: product.validity,
-      stock: product.stock,
-    });
+    const user = await factory.create('User');
+    const response = await request(app)
+      .post('/products')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .send({
+        // name: 'pão',
+        description: product.description,
+        price: product.price,
+        cost: product.cost,
+        barcode: product.barcode,
+        validity: product.validity,
+        stock: product.stock,
+      });
 
     expect(response.status).toBe(400);
   });
+
   it('shuld update a product', async () => {
     const product = await factory.create('Product');
 
+    const user = await factory.create('User');
+
     const response = await request(app)
       .put('/products')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
       .send({
         name: 'Tortugita',
         description: 'Chocolate com Morango',
@@ -79,9 +91,11 @@ describe('teste Product', () => {
   });
   it('shuld not update a product with a invalid id', async () => {
     const product = await factory.create('Product');
+    const user = await factory.create('User');
 
     const response = await request(app)
       .put('/products')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
       .send({
         name: 'Tortugita',
         description: 'Chocolate com Morango',
@@ -92,34 +106,40 @@ describe('teste Product', () => {
         stock: product.stock,
       })
       .query({
-        id: 'asdfghjklqwe',
+        id: '123as0000012a',
       });
+    console.log(response.body);
 
     expect(response.status).toBe(400);
   });
   it('shuld delete a product', async () => {
     const product = await factory.create('Product');
+    const user = await factory.create('User');
 
     const response = await request(app)
       .delete('/products')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
       .query({
         id: String(product._id),
       });
-  
+
     expect(response.status).toBe(200);
   });
   it('shuld not delete a product whit invalid id', async () => {
-    const response = await request(app).delete('/products').query({
-      id: '123as0000012a',
-    });
+    const user = await factory.create('User');
+    const response = await request(app)
+      .delete('/products')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        id: '123as0000012a',
+      });
     expect(response.status).toBe(400);
   });
 });
 
 describe('Products list', () => {
   beforeAll(() => {
-      connectionManager.openConnection();
-    
+    connectionManager.openConnection();
   });
   afterAll(() => {
     connectionManager.closeConnection();
@@ -128,12 +148,16 @@ describe('Products list', () => {
     await Product.deleteMany({});
   });
   it('shuld list products by name ', async () => {
+    const user = await factory.create('User');
     await factory.create('Product', {
       name: 'Chocolate',
       description: 'Bão de mais',
     });
 
-    const response = await request(app).get('/products').query({ name: 'Chocolate' });
+    const response = await request(app)
+      .get('/products')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({ name: 'Chocolate' });
     expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -143,6 +167,7 @@ describe('Products list', () => {
     );
   });
   it('shuld list all products ', async () => {
+    const user = await factory.create('User');
     await factory.create('Product', {
       name: 'Pão',
       description: 'Bão de mais',
@@ -152,7 +177,10 @@ describe('Products list', () => {
       description: 'Bão de mais',
     });
 
-    const response = await request(app).get('/products').query();
+    const response = await request(app)
+      .get('/products')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query();
     expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -166,14 +194,18 @@ describe('Products list', () => {
   });
 
   it('shuld list products by validity ', async () => {
+    const user = await factory.create('User');
     await factory.create('Product', {
       name: 'Pão',
       validity: new Date(2020, 1, 8),
     });
 
-    const response = await request(app).get('/products_validity').query({
-      date: '2020-02',
-    });
+    const response = await request(app)
+      .get('/products_validity')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        date: '2020-02',
+      });
     expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -183,37 +215,57 @@ describe('Products list', () => {
     );
   });
   it('shuld not list products without month informated ', async () => {
-    const response = await request(app).get('/products_validity').query({
-      date: '2020',
-    });
+    const user = await factory.create('User');
+    const response = await request(app)
+      .get('/products_validity')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        date: '2020',
+      });
     expect(response.status).toBe(400);
   });
   it('shuld not list products with month not existent ', async () => {
-    const response = await request(app).get('/products_validity').query({
-      date: '2020-13',
-    });
+    const user = await factory.create('User');
+    const response = await request(app)
+      .get('/products_validity')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        date: '2020-13',
+      });
     expect(response.status).toBe(400);
   });
   it('shuld not list products with date unformatade ', async () => {
-    const response = await request(app).get('/products_validity').query({
-      date: '13-02',
-    });
+    const user = await factory.create('User');
+    const response = await request(app)
+      .get('/products_validity')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        date: '13-02',
+      });
     expect(response.status).toBe(400);
   });
   it('shuld not list products with day informated', async () => {
-    const response = await request(app).get('/products_validity').query({
-      date: '2020-03-23',
-    });
+    const user = await factory.create('User');
+    const response = await request(app)
+      .get('/products_validity')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        date: '2020-03-23',
+      });
     expect(response.status).toBe(400);
   });
   it('shuld list products by barcode ', async () => {
+    const user = await factory.create('User');
     await factory.create('Product', {
       name: 'Pão',
       barcode: 12345,
     });
-    const response = await request(app).get('/products_barcode').query({
-      barcode: 12345,
-    });
+    const response = await request(app)
+      .get('/products_barcode')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        barcode: 12345,
+      });
     expect(response.status).toBe(200);
     expect(response.body).toEqual(
       expect.objectContaining({
