@@ -19,6 +19,10 @@ module.exports = {
 
     const user = await User.findOne({ name });
 
+    if (!user) {
+      return res.status(401).json({ message: 'User does not exist' });
+    }
+
     if (response !== user.response) {
       return res.status(401).json({ message: 'Incorret response' });
     }
