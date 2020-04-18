@@ -4,10 +4,19 @@
 
 
 
+
+
+
+
+
+
+
 //funcao responsavel autenticar o acesso ao setor de relatorio
 function autenticacaoRelatorioFacede(){
 
-    if(1==1){
+    var situacao = autenticacaoLogin();
+    
+    if(JSON.parse(situacao).tipo == 'Administrador'){
         document.getElementById('janela2').innerHTML = telaGeralRelatorio();
         graficoLucroMensal();
         graficoProdutosVendidos();
@@ -15,10 +24,18 @@ function autenticacaoRelatorioFacede(){
         graficoRepresentacaoDeProdutoSobreVendas();
         graficoRepresentacaoDeProdutoSobreLucro();
         graficoQuantidadeProdutosporFornecedor();
-
+    }else{
+        mensagemDeErro("Usuário não autorizado!");
     }
 
 }
+
+
+
+
+
+
+
 
 
 
@@ -35,6 +52,13 @@ function telaGeralRelatorio(){
     
     return codigoHTML;
 }
+
+
+
+
+
+
+
 
 
 
@@ -72,6 +96,11 @@ function graficoLucroMensal(){
         }]
     });
 }
+
+
+
+
+
 
 
 
@@ -126,6 +155,11 @@ function graficoProdutosVendidos(){
 
 
 
+
+
+
+
+
 //funcao responsavel por gerar a tela de quantidade de vendas por mes
 function graficoQuantidadeVendasMensal(){
 
@@ -160,6 +194,12 @@ function graficoQuantidadeVendasMensal(){
         }]
     });
 }
+
+
+
+
+
+
 
 
 
@@ -224,6 +264,12 @@ function graficoRepresentacaoDeProdutoSobreVendas(){
 
 
 
+
+
+
+
+
+
 //funcao responsavel por gerar a tela de quantidade de produtos fornecidos por cada fornecedor
 function graficoQuantidadeProdutosporFornecedor(){
 
@@ -268,6 +314,10 @@ function graficoQuantidadeProdutosporFornecedor(){
     });
 
 }
+
+
+
+
 
 
 

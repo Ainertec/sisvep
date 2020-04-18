@@ -3,6 +3,14 @@
 ///--------------------------------------------------Sub Menus------------------------------------------------------------------------------
 
 
+
+
+
+
+
+
+
+
 //funcao reponsavel pelo sub menu do produto
 function subMenuProduto(){
     
@@ -11,10 +19,10 @@ function subMenuProduto(){
     codigoHTML+='<h3 class="text-center">Produto</h3>'
     codigoHTML+='<div class="card-deck col-8 mx-auto d-block" style="margin-top:30px;">'
         codigoHTML+='<button onclick="autenticacaoProduto(\'Cadastrar\');" type="button" class="btn btn-light border-danger btn-lg btn-block">'
-            codigoHTML+='<span class="fas fa-users"></span> Cadastrar Produto'
+            codigoHTML+='<span class="fas fa-cart-plus"></span> Cadastrar Produto'
         codigoHTML+='</button>'
         codigoHTML+='<button onclick="autenticacaoProduto(\'Atualizar\');" type="button" class="btn btn-light border-danger btn-lg btn-block">'
-            codigoHTML+='<span class="fas fa-user-times"></span> Buscar Produto'
+            codigoHTML+='<span class="fas fa-search"></span> Buscar Produto'
         codigoHTML+='</button>'
         
     codigoHTML+='</div>'
@@ -24,25 +32,11 @@ function subMenuProduto(){
 }
 
 
-//funcao reponsavel pelo sub menu do administrador
-function subMenuAdministrador(){
-    
-    var codigoHTML='';
-
-    codigoHTML+='<h3 class="text-center">Administrador</h3>'
-    codigoHTML+='<div class="card-deck col-8 mx-auto d-block" style="margin-top:30px;">'
-        codigoHTML+='<button type="button" class="btn btn-light border-danger btn-lg btn-block">'
-            codigoHTML+='<span class="fas fa-users"></span> Cadastrar Administrador'
-        codigoHTML+='</button>'
-        codigoHTML+='<button type="button" class="btn btn-light border-danger btn-lg btn-block">'
-            codigoHTML+='<span class="fas fa-user-times"></span> Buscar Administrador'
-        codigoHTML+='</button>'
-        
-    codigoHTML+='</div>'
 
 
-    document.getElementById('janela2').innerHTML = codigoHTML;
-}
+
+
+
 
 
 
@@ -54,7 +48,7 @@ function subMenuImpressao(){
     codigoHTML+='<h3 class="text-center">Impressão</h3>'
     codigoHTML+='<div class="card-deck col-8 mx-auto d-block" style="margin-top:30px;">'
         codigoHTML+='<button onclick="telaDadosEtiqueta();" type="button" class="btn btn-light border-danger btn-lg btn-block">'
-            codigoHTML+='<span class="fas fa-users"></span> Impressão Etiquetas'
+            codigoHTML+='<span class="fas fa-barcode"></span> Impressão Etiquetas'
         codigoHTML+='</button>'
         
     codigoHTML+='</div>'

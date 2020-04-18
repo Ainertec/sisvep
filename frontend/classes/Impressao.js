@@ -2,6 +2,14 @@
 //--------------------------------------------------------tela principal de impressão -----------------------------------------
 
 
+
+
+
+
+
+
+
+
 //funcao responsavel por gerar a tela principal das etiquetas
 function telaDadosEtiqueta(){
     
@@ -22,7 +30,7 @@ function telaDadosEtiqueta(){
                 codigoHTML+='</div>'
             codigoHTML+='</div>'
             codigoHTML+='<div class="form-row">'
-                codigoHTML+='<button onclick="gerarEtiquetasCodigoDeBarras(document.getElementById(\'quantidade\').value, document.getElementById(\'codigo\').value)" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-save"></span> Gerar</button>'
+                codigoHTML+='<button onclick="gerarEtiquetasCodigoDeBarras(document.getElementById(\'quantidade\').value, document.getElementById(\'codigo\').value)" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-file-pdf"></span> Gerar</button>'
             codigoHTML+='</div>'
         codigoHTML+='</form>'
     codigoHTML+='</div>'
@@ -30,6 +38,14 @@ function telaDadosEtiqueta(){
     document.getElementById('janela2').innerHTML = codigoHTML;
 
 }
+
+
+
+
+
+
+
+
 
 
 //funcao para gerar etiquetas com código de barras

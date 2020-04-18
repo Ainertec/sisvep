@@ -1,3 +1,15 @@
+
+///----------------------------------------------------setor requisicao --------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 //funcao de requisicao get sem paramentro JSON
 async function requisicaoGET(url){
 
@@ -17,6 +29,14 @@ async function requisicaoGET(url){
 
 	return retorno;
 }
+
+
+
+
+
+
+
+
 
 
 //funcao de requisicao get sem paramentro JSON
@@ -39,6 +59,14 @@ async function requisicaoDELETE(url,json){
 }
 
 
+
+
+
+
+
+
+
+
 //funcao de requisicao post com paramentro JSON
 async function requisicaoPOST(url,json){
 	await axios.post('http://localhost:3333/'+url,json)
@@ -51,6 +79,14 @@ async function requisicaoPOST(url,json){
 		mensagemDeErro(error);
 	});
 }
+
+
+
+
+
+
+
+
 
 
 //funcao de requisicao put com paramentro JSON

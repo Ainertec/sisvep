@@ -1,15 +1,39 @@
 
 ///-------------------------------------------------tela principal funcionario ------------------------------------------------------
 
+
+
+
+
+
+
+
+
+
 //funcao responsavel pela autenticacao no setor de funcionario
 function autenticacaoFuncionarioFacede(){
+
+    var situacao = autenticacaoLogin();
     
-    if(1==1){
+    if(JSON.parse(situacao).tipo == 'Administrador'){
+        document.getElementById('janela2').innerHTML = telaFuncionario('Admin');
+        document.getElementById('listaFuncionarios').innerHTML = carregarListaFuncionario();
+    }else if(JSON.parse(situacao).tipo == 'Comum'){
         document.getElementById('janela2').innerHTML = telaFuncionario('Comum');
     }else{
-        document.getElementById('janela2').innerHTML = telaFuncionario('Admin');
+        mensagemDeErro("Usuário não autorizado!");
     }
+    
 } 
+
+
+
+
+
+
+
+
+
 
 
 //funcao responsavel por gerar a tela de funcionario
@@ -19,20 +43,27 @@ function telaFuncionario(tipo){
 
 
     if(tipo=='Admin'){
-        codigoHTML+='<h3 class="text-center">Funcionário</h3>'
+        codigoHTML+='<h3 class="text-center">Funcionário(Administrador)</h3>'
 
         codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
-            codigoHTML+='<h5 class="text-center">Buscar</h5>'
+            codigoHTML+='<h5 class="text-center">Buscar Funcionário</h5>'
             codigoHTML+='<div class="input-group mb-3">'
                 codigoHTML+='<input id="buscaProduto" type="text" class="form-control" placeholder="Nome">'
             codigoHTML+='</div>'
             codigoHTML+='<div class="btn-group btn-lg btn-block" role="group">'
-                codigoHTML+='<button type="button" class="btn btn-outline-primary">Buscar por Nome</button>'
-                codigoHTML+='<button type="button" class="btn btn-outline-primary">Exibir todos</button>'
+                codigoHTML+='<button type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
+                codigoHTML+='<button type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Exibir todos</button>'
             codigoHTML+='</div>'
         codigoHTML+='</div>'
     }
 
+    if(tipo=='Admin'){
+        codigoHTML+='<h5 class="text-center">Lista Funcionários</h5>'
+        codigoHTML+='<div class="col-12 layer1" style="position: relative; height: 300px; z-index: 1; overflow: scroll;">'
+            codigoHTML+='<div id="listaFuncionarios">'
+            codigoHTML+='</div>'
+        codigoHTML+='</div>'
+    }
 
     codigoHTML+='<h5 class="text-center">Dados Funcionário</h5>'
 
@@ -84,6 +115,36 @@ function telaFuncionario(tipo){
             codigoHTML+='</div>'
         codigoHTML+='</form>'
     codigoHTML+='</div>'
+
+    return codigoHTML;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+//funcao responsavel por carregar lista com os funcionarios pesquisados
+function carregarListaFuncionario(){
+
+    var codigoHTML='';
+
+    for(var cont=0; cont<10; cont++){
+        codigoHTML+='<a href="#" class="list-group-item list-group-item-action">'
+            codigoHTML+='<div class="d-flex w-100 justify-content-between">'
+                codigoHTML+='<h5 class="mb-1">Nome: </h5>'
+                codigoHTML+='<small>Tipo: </small>'
+            codigoHTML+='</div>'
+            codigoHTML+='<small>Descrição: </small>'
+        codigoHTML+='</a>'
+    }
+
 
     return codigoHTML;
 

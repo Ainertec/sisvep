@@ -1,14 +1,35 @@
 
 ///---------------------------------------------------tela loja--------------------------------------------------------------------------
 
+
+
+
+
+
+
+
+
+
 //funcao responsavel pela autenticacao de usuario no setor loja
 function autenticacaoLoja(){
 
-    if(1==1){
+    var situacao = autenticacaoLogin();
+    
+    if(JSON.parse(situacao).tipo == 'Administrador'){
         document.getElementById('janela2').innerHTML = telaLoja('Cadastrar');
+    }else{
+        mensagemDeErro("Usuário não autorizado!");
     }
 
 }
+
+
+
+
+
+
+
+
 
 
 //funcao responsavel por criar a tela da loja
