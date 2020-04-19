@@ -8,30 +8,26 @@ const ProviderSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  phone: [
-    {
-      type: Number,
-      required: true,
-      trim: true,
-    },
-  ],
-  email: [
-    {
-      type: String,
-      required: true,
-      trim: true,
-      lowcase: true,
-    },
-  ],
+  phone: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+
+  email: {
+    type: String,
+    required: true,
+    trim: true,
+    lowcase: true,
+  },
   identification: {
     type: String,
     required: true,
   },
   products: [
     {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.ObjectId,
       ref: 'Product',
-      required: true,
     },
   ],
 });

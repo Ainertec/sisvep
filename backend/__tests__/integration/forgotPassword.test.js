@@ -26,7 +26,6 @@ describe('Reset password', () => {
     const response = await request(app).get('/forgot').query({
       name: user.name,
     });
-    console.log(response.body);
     expect(response.body).toEqual(
       expect.objectContaining({
         question: user.question,

@@ -71,6 +71,7 @@ routes.post(
   '/products',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
+      providerId: Joi.string().required(),
       name: Joi.string().required(),
       description: Joi.string(),
       price: Joi.number().required(),
@@ -87,6 +88,7 @@ routes.put(
   celebrate({
     [Segments.QUERY]: {
       id: Joi.string().required().min(12),
+      providerId: Joi.string().required().min(12),
     },
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string().required(),

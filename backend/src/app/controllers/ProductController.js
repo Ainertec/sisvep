@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Product = require('../models/Product');
+const Provider = require('../models/Provider');
 
 module.exports = {
   async showByBarcode(req, res) {
@@ -43,6 +44,7 @@ module.exports = {
   },
   async store(req, res) {
     const { name, description, barcode, price, cost, validity, stock } = req.body;
+    const { providerId } = req.body;
 
     const product = await Product.create({
       name,
@@ -53,13 +55,19 @@ module.exports = {
       validity,
       stock,
     });
+
+    await Provider.findOneAndUpdate({ _id: providerId }, { $addToSet: { products: product._id } });
+    // const provider = await Provider.findOne({});
+    // await provider.populate('products').execPopulate();
+    // console.log(provider);
+
     return res.status(200).json(product);
     // return res.status(400).send();
   },
 
   async update(req, res) {
     const { name, description, barcode, price, cost, validity, stock } = req.body;
-    const { id } = req.query;
+    const { id, providerId } = req.query;
     let _id;
 
     try {
@@ -68,8 +76,8 @@ module.exports = {
       return res.status(400).json('Invalid ID.');
     }
 
-    const product = await Product.findByIdAndUpdate(
-      { _id },
+    const product = await Product.findOneAndUpdate(
+      { _id: id },
       {
         name,
         description,
@@ -81,7 +89,18 @@ module.exports = {
       }
     );
     if (!product) return res.status(400).json('Id does not exist');
+
     const productUpdated = await Product.findById(_id);
+
+    await Provider.findOneAndUpdate(
+      { _id: providerId },
+      { $addToSet: { products: productUpdated._id } }
+    );
+
+    // const provider = await Provider.findOne({ _id: providerId });
+    // await provider.populate('products').execPopulate();
+    // console.log(provider);
+
     return res.json(productUpdated);
   },
   async delete(req, res) {
@@ -93,8 +112,7 @@ module.exports = {
     } catch (error) {
       return res.status(400).json('Invalid ID.');
     }
-
-    await Product.findByIdAndDelete({ _id });
+    await Product.findOneAndRemove({ _id: id });
     return res.json('Product deleted.');
   },
 };

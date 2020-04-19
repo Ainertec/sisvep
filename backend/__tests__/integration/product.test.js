@@ -2,6 +2,7 @@ const request = require('supertest');
 const factory = require('../factories');
 const app = require('../../src/app');
 const Product = require('../../src/app/models/Product');
+const Provider = require('../../src/app/models/Provider');
 const connectionManager = require('../utils/connectionManager');
 // const loginManager = require('../utils/loginManager');
 
@@ -16,9 +17,12 @@ describe('teste Product', () => {
   // });
   beforeEach(async () => {
     await Product.deleteMany({});
+    await Provider.deleteMany({});
   });
 
   it('shuld create a Product', async () => {
+    const provider = await factory.create('Provider');
+
     const product = await factory.build('Product', {
       name: 'Chocolate',
       description: 'Bão de mais',
@@ -28,6 +32,7 @@ describe('teste Product', () => {
       .post('/products')
       .set('Authorization', `Bearer ${user.generateToken()}`)
       .send({
+        providerId: provider._id,
         name: 'Muzarela',
         description: product.description,
         price: product.price,
@@ -36,6 +41,7 @@ describe('teste Product', () => {
         validity: product.validity,
         stock: product.stock,
       });
+
     expect(response.status).toBe(200);
   });
 
@@ -62,6 +68,7 @@ describe('teste Product', () => {
   });
 
   it('shuld update a product', async () => {
+    const provider = await factory.create('Provider');
     const product = await factory.create('Product');
 
     const user = await factory.create('User');
@@ -80,7 +87,11 @@ describe('teste Product', () => {
       })
       .query({
         id: String(product._id),
+        providerId: String(provider._id),
       });
+    const providers = await Provider.findOne().lean();
+    // console.log('Fornecedores', providers);
+
     expect(response.status).toBe(200);
     expect(response.body).toEqual(
       expect.objectContaining({
@@ -107,24 +118,31 @@ describe('teste Product', () => {
       })
       .query({
         id: '123as0000012a',
+        providerId: '123as0000012a',
       });
-    console.log(response.body);
+    // console.log(response.body);
 
     expect(response.status).toBe(400);
   });
   it('shuld delete a product', async () => {
     const product = await factory.create('Product');
+    const provider = await factory.create('Provider', {
+      products: product._id,
+    });
+    // const providers = await Provider.findOne({}).lean();
+    console.log(provider);
     const user = await factory.create('User');
-
     const response = await request(app)
       .delete('/products')
       .set('Authorization', `Bearer ${user.generateToken()}`)
       .query({
         id: String(product._id),
       });
-
+    const providers = await Provider.findOne().lean();
+    console.log(providers);
     expect(response.status).toBe(200);
   });
+
   it('shuld not delete a product whit invalid id', async () => {
     const user = await factory.create('User');
     const response = await request(app)
