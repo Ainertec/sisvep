@@ -124,7 +124,7 @@ function telaProduto(tipo){
             codigoHTML+='</div>'
             
             codigoHTML+='<div class="form-row">'
-                codigoHTML+='<button onclick="document.getElementById(\'dadosDoFornecedor\').innerHTML = carregarDadosFornecedor(\'Cadastrar\'); " type="button" class="btn btn-warning" style="margin: 5px;"><span class="fas fa-people-carry"></span> Cadastrar Fornecedor</button>'    
+                codigoHTML+='<button onclick="document.getElementById(\'dadosDoFornecedor\').innerHTML = carregarTelaDadosFornecedor(\'Cadastrar\'); " type="button" class="btn btn-warning" style="margin: 5px;"><span class="fas fa-people-carry"></span> Cadastrar Fornecedor</button>'    
                 
                 if(tipo=='Atualizar'){
                     codigoHTML+='<button onclick="atualizarProduto();" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-edit"></span> Salvar</button>'
@@ -258,31 +258,12 @@ function carregarCamposComDadosProduto(posicao){
 
 
 
-//funcao resopnsavel por validar os dados preenchidos nos campos
-function validaDadosCampo(campo){
-    campo.forEach(function (item) {
-        if($(item).val() == '' && $(item).val() == null)
-            return false;    
-    });
-
-    return true;
-}
-
-
-
-
-
-
-
-
-
-
 //function responsavel por cadastrar produto
 function cadastrarProduto(){
 
     if(document.getElementById('nomeFornecedor') != null && validaDadosCampo(['#nomeFornecedor'])){
 
-        if(validaDadosCampo(['#barcode','#nome','#valorUni','#valorCus','#dataValidade','#dataChegada','#qtdEstoque','#nomeFornecedor','#cpf-cnpjFornecedor','#telefoneFornecedor','#emailFornecedor'])){
+        if(validaDadosCampo(['#barcode','#nome','#valorUni','#valorCus','#dataValidade','#dataChegada','#qtdEstoque','#nomeFornecedor','#cpfCnpjFornecedor','#telefoneFornecedor','#emailFornecedor'])){
 
             var json = '{"codigo":"'+$('#barcode').val()+'",'
                     json +='"nome":"'+$('#nome').val()+'",'
@@ -293,7 +274,7 @@ function cadastrarProduto(){
                     json +='"quantidadeEstoque":'+$('#qtdEstoque').val()+','
                     json +='"descricao":"'+$('#descricao').val()+'",'
                     json +='"nomeFornecedor":"'+$('#nomeFornecedor').val()+'",'
-                    json +='"cpf-cnpjFornecedor":"'+$('#cpf-cnpjFornecedor').val()+'",'
+                    json +='"cpfCnpjFornecedor":"'+$('#cpf-cnpjFornecedor').val()+'",'
                     json +='"telefoneFornecedor":"'+$('#telefoneFornecedor').val()+'",'
                     json +='"descricaoFornecedor":"'+$('#descricaoFornecedor').val()+'",'
                     json +='"emailFornecedor":"'+$('#emailFornecedor').val()+'"}'
@@ -384,7 +365,7 @@ function atualizarProduto(){
     
     if(document.getElementById('nomeFornecedor') != null && validaDadosCampo(['#nomeFornecedor'])){
 
-        if(validaDadosCampo(['#id','#barcode','#nome','#valorUni','#valorCus','#dataValidade','#dataChegada','#qtdEstoque','#nomeFornecedor','#cpf-cnpjFornecedor','#telefoneFornecedor','#emailFornecedor'])){
+        if(validaDadosCampo(['#id','#barcode','#nome','#valorUni','#valorCus','#dataValidade','#dataChegada','#qtdEstoque','#nomeFornecedor','#cpfCnpjFornecedor','#telefoneFornecedor','#emailFornecedor'])){
 
             var json = '{"codigo":"'+$('#barcode').val()+'",'
                     json +='"nome":"'+$('#nome').val()+'",'
@@ -399,7 +380,7 @@ function atualizarProduto(){
                         json +='"descricao":"" ,'
                     }
                     json +='"nomeFornecedor":"'+$('#nomeFornecedor').val()+'",'
-                    json +='"cpf-cnpjFornecedor":"'+$('#cpf-cnpjFornecedor').val()+'",'
+                    json +='"cpfCnpjFornecedor":"'+$('#cpf-cnpjFornecedor').val()+'",'
                     json +='"telefoneFornecedor":"'+$('#telefoneFornecedor').val()+'",'
                     if(validaDadosCampo(['#descricaoFornecedor'])){
                         json +='"descricaoFornecedor":"'+$('#descricaoFornecedor').val()+'",'
@@ -465,7 +446,12 @@ function atualizarProduto(){
 //funcao responsavel por apagar um produto
 function excluirProduto(){
 
-    var json = '{"id":"'+$('#id').val()+'"}';
+    if(validaDadosCampo(['#id'])){
+        var json = '{"id":"'+$('#id').val()+'"}';
 
-    document.getElementById('janela2').innerHTML = 'Produto excluido id: '+json;
+        document.getElementById('janela2').innerHTML = 'Produto excluido id: '+json;
+    }else{
+        mensagemDeErro('Não é possivel, falta de ID!');
+    }
+
 }

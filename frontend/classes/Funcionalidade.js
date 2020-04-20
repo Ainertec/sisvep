@@ -32,3 +32,22 @@ function mensagemDeAviso(mensagem){
 function limparTelaDeMensagem(){
     setTimeout(function(){document.getElementById('mensagemDeErro').innerHTML=""},2000);
 }
+
+
+
+
+
+
+
+
+
+
+//funcao resopnsavel por validar os dados preenchidos nos campos
+function validaDadosCampo(campo){
+    campo.forEach(function (item) {
+        if($(item).val() == '' && $(item).val() == null)
+            return false;    
+    });
+
+    return true;
+}

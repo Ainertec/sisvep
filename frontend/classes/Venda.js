@@ -136,6 +136,20 @@ function carregarDadosItensVenda(json){
 
     var codigoHTML='', codigoHTML2='';
 
+    codigoHTML2+='<table class="table table-danger">'
+        codigoHTML2+='<tbody>'
+            codigoHTML2+='<tr>'
+                codigoHTML2+='<th>Código: '+json.codigo+'</th>'
+                codigoHTML2+='<th>Nome: '+json.nome+'</th>'
+                codigoHTML2+='<th>Preço Uni.: R$ '+(json.preco).toFixed(2)+'</th>'
+                codigoHTML2+='<th>Quantidade: '+$('#qtdItemDaVenda').val()+'</th>'
+            codigoHTML2+='</tr>'
+        codigoHTML2+='</tbody>'
+    codigoHTML2+='</table>'
+
+    document.getElementById('dadosItemVenda').innerHTML = codigoHTML2;
+
+    
     if(document.getElementById('codigoProduto'+json.codigo) != null){
 
         document.getElementById('quantidadeProduto'+json.codigo).innerHTML=parseInt($('#quantidadeProduto'+json.codigo).text()) + parseInt($('#qtdItemDaVenda').val());
@@ -145,18 +159,6 @@ function carregarDadosItensVenda(json){
 
         VETORCODIGOITENSVENDA.push(json.codigo);
 
-        codigoHTML2+='<table class="table table-danger">'
-            codigoHTML2+='<tbody>'
-                codigoHTML2+='<tr>'
-                    codigoHTML2+='<th>Código: '+json.codigo+'</th>'
-                    codigoHTML2+='<th>Nome: '+json.nome+'</th>'
-                    codigoHTML2+='<th>Preço Uni.: R$ '+(json.preco).toFixed(2)+'</th>'
-                    codigoHTML2+='<th>Quantidade: '+$('#qtdItemDaVenda').val()+'</th>'
-                codigoHTML2+='</tr>'
-            codigoHTML2+='</tbody>'
-        codigoHTML2+='</table>'
-
-
         codigoHTML+='<tr id="produto-'+json.codigo+'">'
             codigoHTML+='<td id="codigoProduto'+json.codigo+'">'+json.codigo+'</td>'
             codigoHTML+='<td id="nomeProduto'+json.codigo+'">'+json.nome+'</td>'
@@ -164,8 +166,6 @@ function carregarDadosItensVenda(json){
             codigoHTML+='<td id="quantidadeProduto'+json.codigo+'">'+$('#qtdItemDaVenda').val()+'</td>'
         codigoHTML+='</tr>'
 
-
-        document.getElementById('dadosItemVenda').innerHTML = codigoHTML2;
         $('#tabelaCarregarItensParaVenda').append(codigoHTML);
 
     }
@@ -261,14 +261,30 @@ function modalPagamento(tipo){
 function removerProdutoDaLista(codigoProduto){
 
     if(document.getElementById('produto-'+codigoProduto) != null){
-        VETORCODIGOITENSVENDA.forEach(function (item, indice, array) {
-            if(codigoProduto==item){
-                VETORCODIGOITENSVENDA[indice]=-1;
-            }
-          });
-        document.getElementById('produto-'+codigoProduto).innerHTML='';
-        gerarValorTotal();
-        mensagemDeAviso('Item removido com sucesso!');
+
+        if(parseInt($('#quantidadeProduto'+codigoProduto).text())-$('#qtdItemDaVenda').val() > 0){
+
+            var valorUnit = parseFloat($('#valorProduto'+codigoProduto).text())/parseInt($('#quantidadeProduto'+codigoProduto).text());
+            document.getElementById('quantidadeProduto'+codigoProduto).innerHTML = parseInt($('#quantidadeProduto'+codigoProduto).text())-$('#qtdItemDaVenda').val();
+            document.getElementById('valorProduto'+codigoProduto).innerHTML = valorUnit * parseInt($('#quantidadeProduto'+codigoProduto).text());
+            gerarValorTotal();        
+            mensagemDeAviso('Item removido com sucesso!');
+
+        }else if(parseInt($('#quantidadeProduto'+codigoProduto).text())-$('#qtdItemDaVenda').val() == 0){
+        
+            VETORCODIGOITENSVENDA.forEach(function (item, indice, array) {
+                if(codigoProduto==item){
+                    VETORCODIGOITENSVENDA[indice]=-1;
+                }
+              });
+            document.getElementById('produto-'+codigoProduto).innerHTML='';
+            gerarValorTotal();        
+            mensagemDeAviso('Item removido com sucesso!');
+        
+        }else{
+            mensagemDeErro('Quantidade para remover invalida!');
+        }
+
     }else{
         mensagemDeErro('Código de barras inválido!');
     }
