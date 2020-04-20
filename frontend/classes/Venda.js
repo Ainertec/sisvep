@@ -5,8 +5,19 @@
 
 
 
+
+
+
+
+
+
 //vetor com códigos dos produtos da venda
-var vetorCodigoItensVenda=[];
+var VETORCODIGOITENSVENDA=[];
+
+
+
+
+
 
 
 
@@ -15,12 +26,19 @@ var vetorCodigoItensVenda=[];
 //funcao responsavel pela autenticacao de usuario no setor venda
 function autenticacaoVendaFacede(){
 
-    if(1==1){
-        vetorCodigoItensVenda=[];
+    var situacao = autenticacaoLogin();
+    VETORCODIGOITENSVENDA=[];
+    
+    if(JSON.parse(situacao).tipo == 'Administrador' || JSON.parse(situacao).tipo == 'Comum'){
         document.getElementById('janela2').innerHTML = telaVenda();
+    }else{
+        mensagemDeErro("Usuário não autorizado!");
     }
 
 }
+
+
+
 
 
 
@@ -63,7 +81,7 @@ function telaVenda(){
                                 codigoHTML+='<label for="campocodigoadicionaritemvenda">Produto</label>'
                                 codigoHTML+='<input id="campocodigoadicionaritemvenda" type="Number" class="form-control form-control-sm col-4" style="margin-left:10px" placeholder="Código" aria-describedby="buttonAdicionarItemDaVenda">'
                                 codigoHTML+='<div class="input-group-append">'
-                                    codigoHTML+='<button onclick="buscarProduto(document.getElementById(\'campocodigoadicionaritemvenda\').value);" class="btn btn-primary btn-sm" type="button" id="buttonAdicionarItemDaVenda"><span class="fas fa-plus iconsTam"></span> Adicionar</button>'
+                                    codigoHTML+='<button onclick="buscarProdutoVenda(document.getElementById(\'campocodigoadicionaritemvenda\').value);" class="btn btn-primary btn-sm" type="button" id="buttonAdicionarItemDaVenda"><span class="fas fa-plus iconsTam"></span> Adicionar</button>'
                                 codigoHTML+='</div>'
                             codigoHTML+='</div>'
                         codigoHTML+='</div>'
@@ -110,6 +128,9 @@ function telaVenda(){
 
 
 
+
+
+
 //funcao reponsavel por carregar a lista e exibir os dados do item da venda
 function carregarDadosItensVenda(json){
 
@@ -122,36 +143,40 @@ function carregarDadosItensVenda(json){
     
     }else{
 
-    vetorCodigoItensVenda.push(json.codigo);
+        VETORCODIGOITENSVENDA.push(json.codigo);
 
-    codigoHTML2+='<table class="table table-danger">'
-        codigoHTML2+='<tbody>'
-            codigoHTML2+='<tr>'
-                codigoHTML2+='<th>Código: '+json.codigo+'</th>'
-                codigoHTML2+='<th>Nome: '+json.nome+'</th>'
-                codigoHTML2+='<th>Preço Uni.: R$ '+(json.preco).toFixed(2)+'</th>'
-                codigoHTML2+='<th>Quantidade: '+$('#qtdItemDaVenda').val()+'</th>'
-            codigoHTML2+='</tr>'
-        codigoHTML2+='</tbody>'
-    codigoHTML2+='</table>'
-
-
-    codigoHTML+='<tr id="produto-'+json.codigo+'">'
-        codigoHTML+='<td id="codigoProduto'+json.codigo+'">'+json.codigo+'</td>'
-        codigoHTML+='<td id="nomeProduto'+json.codigo+'">'+json.nome+'</td>'
-        codigoHTML+='<td id="valorProduto'+json.codigo+'">'+(json.preco*$('#qtdItemDaVenda').val()).toFixed(2)+'</td>'
-        codigoHTML+='<td id="quantidadeProduto'+json.codigo+'">'+$('#qtdItemDaVenda').val()+'</td>'
-    codigoHTML+='</tr>'
+        codigoHTML2+='<table class="table table-danger">'
+            codigoHTML2+='<tbody>'
+                codigoHTML2+='<tr>'
+                    codigoHTML2+='<th>Código: '+json.codigo+'</th>'
+                    codigoHTML2+='<th>Nome: '+json.nome+'</th>'
+                    codigoHTML2+='<th>Preço Uni.: R$ '+(json.preco).toFixed(2)+'</th>'
+                    codigoHTML2+='<th>Quantidade: '+$('#qtdItemDaVenda').val()+'</th>'
+                codigoHTML2+='</tr>'
+            codigoHTML2+='</tbody>'
+        codigoHTML2+='</table>'
 
 
-    document.getElementById('dadosItemVenda').innerHTML = codigoHTML2;
-    $('#tabelaCarregarItensParaVenda').append(codigoHTML);
+        codigoHTML+='<tr id="produto-'+json.codigo+'">'
+            codigoHTML+='<td id="codigoProduto'+json.codigo+'">'+json.codigo+'</td>'
+            codigoHTML+='<td id="nomeProduto'+json.codigo+'">'+json.nome+'</td>'
+            codigoHTML+='<td id="valorProduto'+json.codigo+'">'+(json.preco*$('#qtdItemDaVenda').val()).toFixed(2)+'</td>'
+            codigoHTML+='<td id="quantidadeProduto'+json.codigo+'">'+$('#qtdItemDaVenda').val()+'</td>'
+        codigoHTML+='</tr>'
+
+
+        document.getElementById('dadosItemVenda').innerHTML = codigoHTML2;
+        $('#tabelaCarregarItensParaVenda').append(codigoHTML);
 
     }
 
     gerarValorTotal();
 
 }
+
+
+
+
 
 
 
@@ -227,17 +252,23 @@ function modalPagamento(tipo){
 
 
 
+
+
+
+
+
 //funcao responsavel por retirar o produto da lista
 function removerProdutoDaLista(codigoProduto){
 
     if(document.getElementById('produto-'+codigoProduto) != null){
-        vetorCodigoItensVenda.forEach(function (item, indice, array) {
+        VETORCODIGOITENSVENDA.forEach(function (item, indice, array) {
             if(codigoProduto==item){
-                vetorCodigoItensVenda[indice]=-1;
+                VETORCODIGOITENSVENDA[indice]=-1;
             }
           });
         document.getElementById('produto-'+codigoProduto).innerHTML='';
         gerarValorTotal();
+        mensagemDeAviso('Item removido com sucesso!');
     }else{
         mensagemDeErro('Código de barras inválido!');
     }
@@ -249,14 +280,18 @@ function removerProdutoDaLista(codigoProduto){
 
 
 
+
+
+
+
 //funcao responsavel por gerar e apresentar o valor total
 function gerarValorTotal(){
 
     var cont=0, valorTotal=0;
 
-    while(vetorCodigoItensVenda[cont]){
-        if(document.getElementById('valorProduto'+vetorCodigoItensVenda[cont]) != null){
-            valorTotal+=parseFloat($('#valorProduto'+vetorCodigoItensVenda[cont]).text());
+    while(VETORCODIGOITENSVENDA[cont]){
+        if(document.getElementById('valorProduto'+VETORCODIGOITENSVENDA[cont]) != null){
+            valorTotal+=parseFloat($('#valorProduto'+VETORCODIGOITENSVENDA[cont]).text());
         }
         cont++;
     }
@@ -269,16 +304,28 @@ function gerarValorTotal(){
 
 
 
-//funcao responsavel por buscar e enviar os itens para a lista
-function buscarProduto(codigo){
-    
-    var json = JSON.parse('{"codigo":'+codigo+', "nome":"produto1", "preco":23.30}');
-    
-    carregarDadosItensVenda(json);
 
-    beepAlerta();
+
+
+
+//funcao responsavel por buscar e enviar os itens para a lista
+function buscarProdutoVenda(codigo){
+    
+    if(codigo != ''){
+        var json = JSON.parse('{"codigo":'+codigo+', "nome":"produto1", "preco":23.30}');
+    
+        carregarDadosItensVenda(json);
+
+        beepAlerta();
+    }else{
+
+        mensagemDeErro('Código de barras inválido!');
+
+    }
 
 }
+
+
 
 
 
@@ -307,6 +354,8 @@ function beepAlerta(){
 
 
 
+
+
 //funcao responsavel por receber o codigo de barras lido pelo celular em real time
 function socketCodigoBarrasRealTime(){
     
@@ -322,7 +371,7 @@ function socketCodigoBarrasRealTime(){
          
         ws.onmessage = function (evt) { 
            var received_msg = evt.data;
-           buscarProduto(received_msg);
+           buscarProdutoVenda(received_msg);
            alert("Message is received...");
         };
          
@@ -342,6 +391,9 @@ function socketCodigoBarrasRealTime(){
 
 
 
+
+
+
 //funcao responsavel por cadastrar a venda após concluida
 function cadastrarVenda(formaPagamento){
     
@@ -350,7 +402,7 @@ function cadastrarVenda(formaPagamento){
     var aux=true;
 
 
-    vetorCodigoItensVenda.forEach(function (item) {
+    VETORCODIGOITENSVENDA.forEach(function (item) {
         if(document.getElementById('codigoProduto'+item) != null){
             if(aux){
                 json+='{"nome":"'+$('#nomeProduto'+item).text()+'" , "quantidade":'+parseInt($('#quantidadeProduto'+item).text())+' , "precoUni":'+ (parseFloat($('#valorProduto'+item).text()) / parseInt($('#quantidadeProduto'+item).text())).toFixed(2) +'}'

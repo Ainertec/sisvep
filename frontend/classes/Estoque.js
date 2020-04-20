@@ -2,15 +2,35 @@
 
 ///---------------------------------------------tela principal de Estoque-----------------------------------------------
 
+
+
+
+
+
+
+
+
+
 //funcao responsavel pela autenticacao no setor estoque
 function autenticacaoEstoqueFacede(){
     
-    if(1==1){
+    var situacao = autenticacaoLogin();
+    
+    if(JSON.parse(situacao).tipo == 'Administrador' || JSON.parse(situacao).tipo == 'Comum'){
         document.getElementById('janela2').innerHTML = telaEstoque();
-        document.getElementById('tabelaDeProdutosEstoque').innerHTML = carregarProdutosEstoque();
+    }else{
+        mensagemDeErro("Usuário não autorizado!");
     }
 
 }
+
+
+
+
+
+
+
+
 
 
 //funcao responsavel pela tela principal de estoque
@@ -30,9 +50,9 @@ function telaEstoque(){
             codigoHTML+='<input id="buscaProdutoQuantidade" type="Number" class="form-control" placeholder="Quantidade">'
         codigoHTML+='</div>'
         codigoHTML+='<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
-            codigoHTML+='<button type="button" class="btn btn-outline-primary">Buscar por Nome</button>'
-            codigoHTML+='<button type="button" class="btn btn-outline-primary">Buscar por Quantidade</button>'
-            codigoHTML+='<button type="button" class="btn btn-outline-primary">Exibir todos</button>'
+            codigoHTML+='<button onclick="buscarProdutoEstoque();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
+            codigoHTML+='<button onclick="buscarProdutoEstoque();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Quantidade</button>'
+            codigoHTML+='<button onclick="buscarProdutoEstoque();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Exibir todos</button>'
         codigoHTML+='</div>'
     codigoHTML+='</div>'
 
@@ -45,8 +65,16 @@ function telaEstoque(){
 }
 
 
+
+
+
+
+
+
+
+
 //funcao responsavel por carregar os dados dos produtos para estoque
-function carregarProdutosEstoque(){
+function carregarProdutosEstoque(json){
     
     var codigoHTML='', cont=0;
 
@@ -61,14 +89,14 @@ function carregarProdutosEstoque(){
     codigoHTML+='</thead>'
     codigoHTML+='<tbody>'
 
-    while(cont<10){
+    while(json[cont]){
 
         codigoHTML+='<tr>'
-            codigoHTML+='<td>1234567</td>'
-            codigoHTML+='<td>Mark</td>'
-            codigoHTML+='<td>200</td>'
-            codigoHTML+='<td><input id="quantidadeItem" type="Number" class="form-control" placeholder="Adicionar quantidade"></td>'
-            codigoHTML+='<td><button type="button" class="btn btn-primary">Atualizar</button></td>'
+            codigoHTML+='<td>'+json[cont].codigo+'</td>'
+            codigoHTML+='<td>'+json[cont].nome+'</td>'
+            codigoHTML+='<td id="quantidadeAtual'+json[cont].id+'">'+json[cont].quantidade+'</td>'
+            codigoHTML+='<td><input id="quantidadeItem'+json[cont].id+'" type="Number" class="form-control" placeholder="Adicionar quantidade"></td>'
+            codigoHTML+='<td><button onclick="atualizarEstoqueDeProduto(\''+json[cont].id+'\')" type="button" class="btn btn-primary"><span class="fas fa-sync-alt"></span> Atualizar</button></td>'
         codigoHTML+='</tr>'
 
         cont++;
@@ -79,4 +107,40 @@ function carregarProdutosEstoque(){
 
     return codigoHTML;
 
+}
+
+
+
+
+
+
+
+
+
+
+//funcao responsavel por buscar e listar os produtos da busca
+function buscarProdutoEstoque(){
+
+    var json = '[{"id":"1a2", "codigo":123, "nome":"Produto 1", "quantidade":300},{"id":"2b3", "codigo":345, "nome":"Produto 2", "quantidade":200},{"id":"3c4", "codigo":567, "nome":"Produto 3", "quantidade":150}]'
+
+    json=JSON.parse(json);
+
+    document.getElementById('tabelaDeProdutosEstoque').innerHTML = carregarProdutosEstoque(json);
+
+}
+
+
+
+
+
+
+
+
+
+//funcao rsponsavel por atualizar a quantidade de um determinado produto
+function atualizarEstoqueDeProduto(id){
+
+    var json = '{"quantidade":'+(parseInt($('#quantidadeAtual'+id).text())+parseInt($('#quantidadeItem'+id).val()))+'}'
+
+    document.getElementById('janela2').innerHTML = json;
 }

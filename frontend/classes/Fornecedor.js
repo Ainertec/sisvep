@@ -2,16 +2,36 @@
 ///---------------------------------------------------------Tela principal de fornecedor-------------------------------------------------------
 
 
-//funcao responsavel pela autenticacao de usuario no setor fornecedor
-function autenticacaoFornecedor(){
 
-    if(1==1){
+
+
+
+
+
+
+
+//funcao responsavel pela autenticacao de usuario no setor fornecedor
+function autenticacaoFornecedorFacede(){
+
+    var situacao = autenticacaoLogin();
+    
+    if(JSON.parse(situacao).tipo == 'Administrador' || JSON.parse(situacao).tipo == 'Comum'){
         document.getElementById('janela2').innerHTML = telaFornecedor();
         document.getElementById('listaDeFornecedores').innerHTML = carregarListaFornecedor();
         document.getElementById('dadosDoFornecedor').innerHTML = carregarDadosFornecedor('Atualizar');
+    }else{
+        mensagemDeErro("Usuário não autorizado!");
     }
 
 }
+
+
+
+
+
+
+
+
 
 
 //funcao reponsavel por gerar a tela de fornecedor
@@ -23,27 +43,28 @@ function telaFornecedor(){
     
 
     codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
-        codigoHTML+='<h5 class="text-center">Buscar</h5>'
+        codigoHTML+='<h5 class="text-center">Buscar Fornecedor</h5>'
         codigoHTML+='<div class="input-group mb-3">'
             codigoHTML+='<input id="buscaFornecedor" type="text" class="form-control" placeholder="Nome ou CPF/CNPJ" aria-label="Recipients username" aria-describedby="botaoBuscar">'
         codigoHTML+='</div>'
         codigoHTML+='<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
-            codigoHTML+='<button type="button" class="btn btn-outline-primary">Buscar por CPF/CNPJ</button>'
-            codigoHTML+='<button type="button" class="btn btn-outline-primary">Buscar por Nome</button>'
-            codigoHTML+='<button type="button" class="btn btn-outline-primary">Exibir todos</button>'
+            codigoHTML+='<button type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por CPF/CNPJ</button>'
+            codigoHTML+='<button type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
+            codigoHTML+='<button type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Exibir todos</button>'
         codigoHTML+='</div>'
     codigoHTML+='</div>'
 
 
     
-    codigoHTML+='<h5 class="text-center">Lista</h5>'
-    codigoHTML+='<div id="listaDeFornecedores" class="list-group">'
-
+    codigoHTML+='<h5 class="text-center">Lista Fronecedores</h5>'
+    codigoHTML+='<div class="col-12 layer1" style="position: relative; height: 300px; z-index: 1; overflow: scroll;">'
+        codigoHTML+='<div id="listaDeFornecedores" class="list-group">'
+        codigoHTML+='</div>'
     codigoHTML+='</div>'
 
 
     codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
-        codigoHTML+='<h5 class="text-center">Dados</h5>'
+        codigoHTML+='<h5 class="text-center">Dados Fornecedor</h5>'
         codigoHTML+='<form>'
             codigoHTML+='<div id="dadosDoFornecedor">'
             codigoHTML+='</div>'
@@ -57,6 +78,14 @@ function telaFornecedor(){
     return codigoHTML;
 
 }
+
+
+
+
+
+
+
+
 
 
 //funcao responsavel pela lista de fornecedores
@@ -76,6 +105,13 @@ function carregarListaFornecedor(){
 
     return codigoHTML;
 }
+
+
+
+
+
+
+
 
 
 
