@@ -35,12 +35,30 @@ describe('Provider', () => {
         identification: '176.963.917-98',
         products: [product._id, product2._id],
       });
-    console.log(response.body);
+    // console.log(response.body);
     expect(response.body).toEqual(
       expect.objectContaining({
         name: 'José Aldo',
       })
     );
     expect(response.status).toBe(200);
+  });
+  it('should not create a provider with invalid products', async () => {
+    const user = await factory.create('User');
+    const product = await factory.create('Product');
+
+    const response = await request(app)
+      .post('/providers')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .send({
+        name: 'José Aldo',
+        description: 'Campeão dos pesados',
+        phone: '(22)992726852',
+        email: 'cleitnbaloneker@gmail.com',
+        identification: '176.963.917-98',
+        products: ['qwertsd1234', product._id],
+      });
+    console.log(response.body);
+    expect(response.status).toBe(400);
   });
 });

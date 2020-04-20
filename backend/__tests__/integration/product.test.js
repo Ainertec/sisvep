@@ -67,8 +67,10 @@ describe('teste Product', () => {
   });
 
   it('shuld update a product', async () => {
-    const provider = await factory.create('Provider');
     const product = await factory.create('Product');
+    const provider = await factory.create('Provider', {
+      products: [product._id],
+    });
 
     const user = await factory.create('User');
 
@@ -89,7 +91,7 @@ describe('teste Product', () => {
         providerId: String(provider._id),
       });
     const providers = await Provider.findOne().lean();
-    // console.log('Fornecedores', providers);
+    console.log('Fornecedores', providers);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(
