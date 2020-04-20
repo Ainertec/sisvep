@@ -2,22 +2,21 @@ const request = require('supertest');
 const factory = require('../factories');
 const app = require('../../src/app');
 const Product = require('../../src/app/models/Product');
+const User = require('../../src/app/models/User');
 const Provider = require('../../src/app/models/Provider');
 const connectionManager = require('../utils/connectionManager');
-// const loginManager = require('../utils/loginManager');
-
-// const token = loginManager.login();
 
 describe('teste Product', () => {
   beforeAll(() => {
     connectionManager.openConnection();
   });
-  // afterAll(() => {
-  //   connectionManager.closeConnection();
-  // });
+  afterAll(() => {
+    connectionManager.closeConnection();
+  });
   beforeEach(async () => {
     await Product.deleteMany({});
     await Provider.deleteMany({});
+    await User.deleteMany({});
   });
 
   it('shuld create a Product', async () => {
@@ -129,8 +128,6 @@ describe('teste Product', () => {
     const provider = await factory.create('Provider', {
       products: product._id,
     });
-    // const providers = await Provider.findOne({}).lean();
-    console.log(provider);
     const user = await factory.create('User');
     const response = await request(app)
       .delete('/products')
@@ -139,8 +136,9 @@ describe('teste Product', () => {
         id: String(product._id),
       });
     const providers = await Provider.findOne().lean();
-    console.log(providers);
+    // console.log(providers);
     expect(response.status).toBe(200);
+    expect(providers.products).toEqual([]);
   });
 
   it('shuld not delete a product whit invalid id', async () => {
@@ -153,18 +151,9 @@ describe('teste Product', () => {
       });
     expect(response.status).toBe(400);
   });
-});
 
-describe('Products list', () => {
-  beforeAll(() => {
-    connectionManager.openConnection();
-  });
-  afterAll(() => {
-    connectionManager.closeConnection();
-  });
-  beforeEach(async () => {
-    await Product.deleteMany({});
-  });
+  // list
+
   it('shuld list products by name ', async () => {
     const user = await factory.create('User');
     await factory.create('Product', {

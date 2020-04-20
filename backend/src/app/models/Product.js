@@ -36,15 +36,15 @@ const ProductSchema = new mongoose.Schema(
   }
 );
 
-ProductSchema.pre('findOneAndRemove', function (next) {
-  console.log('Fala meu Bruxo!!!!');
-
-  Provider.update(
-    { products: this._id },
-    { $pull: { products: this._id } },
-    { multi: true }
-  ).exec();
-  next();
+ProductSchema.post('findOneAndRemove', (document) => {
+  const productId = document._id;
+  Provider.find({ products: { $in: [productId] } }).then((providers) => {
+    Promise.all(
+      providers.map((provider) =>
+        Provider.findOneAndUpdate(provider._id, { $pull: { products: productId } }, { new: true })
+      )
+    );
+  });
 });
 
 module.exports = mongoose.model('Product', ProductSchema);
