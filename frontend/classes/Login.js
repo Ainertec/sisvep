@@ -95,7 +95,7 @@ function efetuarLogin(){
     logout();
 
     if(1==1){
-        sessionStorage.setItem("login",JSON.stringify({"_id":"1a23e","nome":"Ana Paula","tipo":"Comum"}));
+        sessionStorage.setItem("login",JSON.stringify({"_id":"1a23e","nome":"Ana Paula","tipo":"Administrador"}));
         window.location.href="home.html";
         mensagemDeAviso("Usuário autenticado!");
     }

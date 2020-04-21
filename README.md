@@ -25,7 +25,7 @@ Para o fornecedor é necessário: sistema de cadastro, sistema de busca por nome
 
 # Venda
 A venda é formada pelo: ID, data e hora da venda, nome de cada item da venda, valor unitário de cada item da venda, quantidade vendida de cada item da venda, valor total dos itens, forma de pagamento, nome do funcionário responsável.
-Para a venda é necessário: sistema de cadastro, sistema de busca por data da venda, sistema de busca por forma de pagamento, sistema de busca por referencia do funcionário, sistema de busca por id, sistema de busca por valor total, sistema de exclusão.
+Para a venda é necessário: sistema de cadastro, sistema de busca por id, sistema de exclusão.
 OBS.: o sistema de exclusão deverá excluir todas as vendas com mais de 7 anos, o sistema deverá atualizar o estoque de cada produto presente na venda retirando do estoque a quantidade presente na venda.
 
 # Loja
