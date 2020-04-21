@@ -6,7 +6,9 @@ const Provider = require('../src/app/models/Provider');
 const User = require('../src/app/models/User');
 
 const getId = async () => {
-  const provider = await factory.create('Product');
+  const provider = await factory.create('Product', {
+    stock: 12,
+  });
   return provider._id;
 };
 

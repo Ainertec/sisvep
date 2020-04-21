@@ -19,7 +19,6 @@ module.exports = {
 
     return res.json(providers);
   },
-
   async show(req, res) {
     const { name } = req.query;
 
@@ -29,7 +28,6 @@ module.exports = {
 
     return res.json(providers);
   },
-
   async store(req, res) {
     const { name, description, phone, email, identification, products } = req.body;
 
@@ -77,7 +75,6 @@ module.exports = {
 
     return res.json(provider);
   },
-
   async delete(req, res) {
     const { id } = req.params;
 
@@ -85,7 +82,26 @@ module.exports = {
       return res.status(400).json({ message: `invalid provider id` });
     }
 
-    await Provider.findOneAndDelete({ _id: id });
+    const provider = await Provider.findOne({ _id: id });
+
+    if (!provider) {
+      return res.status(404).json({ message: 'Provider does not exist' });
+    }
+
+    await provider.populate('products').execPopulate();
+
+    let hasProductInStock = false;
+
+    for (const iterator of provider.products) {
+      if (iterator.stock != 0) {
+        hasProductInStock = true;
+        break;
+      }
+    }
+    if (hasProductInStock) {
+      return res.status(401).json({ message: `You have producs in stock for ${provider.name} ` });
+    }
+    await Provider.deleteOne({ _id: provider._id });
 
     return res.status(200).send();
   },

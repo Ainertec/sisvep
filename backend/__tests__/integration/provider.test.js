@@ -112,7 +112,12 @@ describe('Provider', () => {
   });
   it('should delete a provider', async () => {
     const user = await factory.create('User');
-    const provider = await factory.create('Provider');
+    const product = await factory.create('Product', {
+      stock: 0,
+    });
+    const provider = await factory.create('Provider', {
+      products: product._id,
+    });
 
     const response = await request(app)
       .delete(`/providers/${provider._id}`)
@@ -124,13 +129,36 @@ describe('Provider', () => {
   });
   it('should not delete a provider with invalid id', async () => {
     const user = await factory.create('User');
-    const provider = await factory.create('Provider');
 
     const response = await request(app)
       .delete(`/providers/${'afsjb15'}`)
       .set('Authorization', `Bearer ${user.generateToken()}`);
 
     expect(response.status).toBe(400);
+  });
+  it('should not delete a provider with products with stock != 0', async () => {
+    const user = await factory.create('User');
+
+    const product = await factory.create('Product', {
+      stock: 12,
+    });
+    const provider = await factory.create('Provider', {
+      products: product._id,
+    });
+    const response = await request(app)
+      .delete(`/providers/${provider._id}`)
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.status).toBe(401);
+  });
+  it('should not delete a provider with inexistent provider', async () => {
+    const user = await factory.create('User');
+
+    const response = await request(app)
+      .delete(`/providers/${'5e9f6c9bc91740083c5c4d98'}`)
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.status).toBe(404);
   });
 
   // LIST
