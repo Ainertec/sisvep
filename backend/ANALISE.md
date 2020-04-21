@@ -39,7 +39,7 @@ Para o produto é necessário: Crud, sistema de busca por: código, todos, id, d
 
 O fornecedor é formado pelo: ID, Nome, descrição, telefone, email, CNPJ ou CPF.
 
-Para o fornecedor é necessário: Crud sistema de busca por nome, sistema de busca por CNPJ ou CPF e id.
+Para o fornecedor é necessário: Crud, sistema de busca por nome, sistema de busca por CNPJ ou CPF e id.
 
 - OBS.: Nenhum
 

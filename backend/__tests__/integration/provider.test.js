@@ -58,7 +58,123 @@ describe('Provider', () => {
         identification: '176.963.917-98',
         products: ['qwertsd1234', product._id],
       });
-    console.log(response.body);
     expect(response.status).toBe(400);
+  });
+  it('should update a provider', async () => {
+    const user = await factory.create('User');
+    const product = await factory.create('Product');
+    const provider = await factory.create('Provider');
+
+    let productsArray = provider.products;
+    productsArray.push(product._id);
+
+    const response = await request(app)
+      .put('/providers')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        id: String(provider._id),
+      })
+      .send({
+        name: 'Cleiton',
+        description: provider.description,
+        phone: provider.phone,
+        email: 'cleitnbaloneker@gmail.com',
+        identification: provider.identification,
+        products: productsArray,
+      });
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        name: 'Cleiton',
+      })
+    );
+    expect(response.status).toBe(200);
+  });
+  it('should not update a provider with invalid id', async () => {
+    const user = await factory.create('User');
+    const provider = await factory.create('Provider');
+
+    const response = await request(app)
+      .put('/providers')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        id: String('122321435'),
+      })
+      .send({
+        name: 'Cleiton',
+        description: provider.description,
+        phone: provider.phone,
+        email: 'cleitnbaloneker@gmail.com',
+        identification: provider.identification,
+        products: provider.products,
+      });
+
+    expect(response.status).toBe(400);
+  });
+  it('should delete a provider', async () => {
+    const user = await factory.create('User');
+    const provider = await factory.create('Provider');
+
+    const response = await request(app)
+      .delete(`/providers/${provider._id}`)
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    const deletedProvider = await Provider.findOne({});
+    expect(deletedProvider).toBe(null);
+    expect(response.status).toBe(200);
+  });
+  it('should not delete a provider with invalid id', async () => {
+    const user = await factory.create('User');
+    const provider = await factory.create('Provider');
+
+    const response = await request(app)
+      .delete(`/providers/${'afsjb15'}`)
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.status).toBe(400);
+  });
+
+  // LIST
+
+  it('should list all providers', async () => {
+    const user = await factory.create('User');
+    const provider = await factory.create('Provider');
+    await factory.create('Provider', {
+      name: 'Cleiton',
+    });
+
+    const response = await request(app)
+      .get('/providers')
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: provider.name,
+        }),
+        expect.objectContaining({
+          name: 'Cleiton',
+        }),
+      ])
+    );
+  });
+  it('should list providers by name', async () => {
+    const user = await factory.create('User');
+    await factory.create('Provider', {
+      name: 'Cleiton',
+    });
+
+    const response = await request(app)
+      .get('/providers_by_name')
+      .query({
+        name: 'Cleiton',
+      })
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'Cleiton',
+        }),
+      ])
+    );
   });
 });

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Provider = require('../models/Provider');
-const Product = require('../models/Product');
 
 const verifyId = (products) => {
   let hasInvalidId = false;
@@ -15,6 +14,22 @@ const verifyId = (products) => {
 };
 
 module.exports = {
+  async index(req, res) {
+    const providers = await Provider.find();
+
+    return res.json(providers);
+  },
+
+  async show(req, res) {
+    const { name } = req.query;
+
+    const providers = await Provider.find({
+      name: { $regex: new RegExp(name), $options: 'i' },
+    });
+
+    return res.json(providers);
+  },
+
   async store(req, res) {
     const { name, description, phone, email, identification, products } = req.body;
 
@@ -31,5 +46,47 @@ module.exports = {
     });
     await provider.populate('products').execPopulate();
     return res.json(provider);
+  },
+  async update(req, res) {
+    const { name, description, phone, email, identification, products } = req.body;
+
+    const { id } = req.query;
+
+    if (verifyId(products)) {
+      return res.status(400).json({ message: `invalid product id` });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: `invalid provider id` });
+    }
+
+    const provider = await Provider.findOneAndUpdate(
+      { _id: id },
+      {
+        name,
+        description,
+        phone,
+        email,
+        identification,
+        products,
+      },
+      { new: true }
+    );
+
+    await provider.populate('products').execPopulate();
+
+    return res.json(provider);
+  },
+
+  async delete(req, res) {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: `invalid provider id` });
+    }
+
+    await Provider.findOneAndDelete({ _id: id });
+
+    return res.status(200).send();
   },
 };

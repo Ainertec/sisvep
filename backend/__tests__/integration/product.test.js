@@ -90,8 +90,6 @@ describe('teste Product', () => {
         id: String(product._id),
         providerId: String(provider._id),
       });
-    const providers = await Provider.findOne().lean();
-    console.log('Fornecedores', providers);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(

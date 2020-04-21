@@ -131,6 +131,17 @@ routes.delete(
   ProductController.delete
 );
 // Provider
+routes.get('/providers', ProviderController.index);
+
+routes.get(
+  '/providers_by_name',
+  celebrate({
+    [Segments.QUERY]: {
+      name: Joi.string().required(),
+    },
+  }),
+  ProviderController.show
+);
 
 routes.post(
   '/providers',
@@ -145,6 +156,33 @@ routes.post(
     }),
   }),
   ProviderController.store
+);
+
+routes.put(
+  '/providers',
+  celebrate({
+    [Segments.QUERY]: {
+      id: Joi.string().required(),
+    },
+    [Segments.BODY]: Joi.object().keys({
+      name: Joi.string().required(),
+      description: Joi.string().required(),
+      identification: Joi.string().required(),
+      phone: Joi.string().required(),
+      email: Joi.string().required(),
+      products: Joi.array().required(),
+    }),
+  }),
+  ProviderController.update
+);
+routes.delete(
+  '/providers/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().required(),
+    },
+  }),
+  ProviderController.delete
 );
 
 module.exports = routes;
