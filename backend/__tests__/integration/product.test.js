@@ -123,6 +123,29 @@ describe('teste Product', () => {
 
     expect(response.status).toBe(400);
   });
+  it('shuld not update a product with a invalid provider id', async () => {
+    const product = await factory.create('Product');
+    const user = await factory.create('User');
+
+    const response = await request(app)
+      .put('/products')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .send({
+        name: 'Tortugita',
+        description: 'Chocolate com Morango',
+        price: product.price,
+        cost: product.cost,
+        barcode: product.barcode,
+        validity: product.validity,
+        stock: product.stock,
+      })
+      .query({
+        id: String(product._id),
+        providerId: '123as0000012a',
+      });
+
+    expect(response.status).toBe(400);
+  });
   it('shuld delete a product', async () => {
     const product = await factory.create('Product');
     const provider = await factory.create('Provider', {
@@ -130,13 +153,10 @@ describe('teste Product', () => {
     });
     const user = await factory.create('User');
     const response = await request(app)
-      .delete('/products')
-      .set('Authorization', `Bearer ${user.generateToken()}`)
-      .query({
-        id: String(product._id),
-      });
+      .delete(`/products/${product._id}`)
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
     const providers = await Provider.findOne().lean();
-    // console.log(providers);
     expect(response.status).toBe(200);
     expect(providers.products).toEqual([]);
   });
@@ -144,11 +164,8 @@ describe('teste Product', () => {
   it('shuld not delete a product whit invalid id', async () => {
     const user = await factory.create('User');
     const response = await request(app)
-      .delete('/products')
-      .set('Authorization', `Bearer ${user.generateToken()}`)
-      .query({
-        id: '123as0000012a',
-      });
+      .delete('/products/123as0000012a')
+      .set('Authorization', `Bearer ${user.generateToken()}`);
     expect(response.status).toBe(400);
   });
 
@@ -199,7 +216,6 @@ describe('teste Product', () => {
       ])
     );
   });
-
   it('shuld list products by validity ', async () => {
     const user = await factory.create('User');
     await factory.create('Product', {

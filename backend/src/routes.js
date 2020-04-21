@@ -105,8 +105,8 @@ routes.put(
   '/products',
   celebrate({
     [Segments.QUERY]: {
-      id: Joi.string().required().min(12),
-      providerId: Joi.string().required().min(12),
+      id: Joi.string().required(),
+      providerId: Joi.string().required(),
     },
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string().required(),
@@ -122,10 +122,10 @@ routes.put(
 );
 
 routes.delete(
-  '/products',
+  '/products/:id',
   celebrate({
-    [Segments.QUERY]: {
-      id: Joi.string().required().min(12),
+    [Segments.PARAMS]: {
+      id: Joi.string().required(),
     },
   }),
   ProductController.delete

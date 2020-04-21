@@ -97,7 +97,7 @@ describe('Provider', () => {
       .put('/providers')
       .set('Authorization', `Bearer ${user.generateToken()}`)
       .query({
-        id: String('122321435'),
+        id: '122321435',
       })
       .send({
         name: 'Cleiton',
@@ -107,7 +107,26 @@ describe('Provider', () => {
         identification: provider.identification,
         products: provider.products,
       });
+    expect(response.status).toBe(400);
+  });
+  it('should not update a provider with invalid products ids', async () => {
+    const user = await factory.create('User');
+    const provider = await factory.create('Provider');
 
+    const response = await request(app)
+      .put('/providers')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        id: '122321435',
+      })
+      .send({
+        name: 'Cleiton',
+        description: provider.description,
+        phone: provider.phone,
+        email: 'cleitnbaloneker@gmail.com',
+        identification: provider.identification,
+        products: ['aadsda123s'],
+      });
     expect(response.status).toBe(400);
   });
   it('should delete a provider', async () => {

@@ -57,23 +57,19 @@ module.exports = {
     });
 
     await Provider.findOneAndUpdate({ _id: providerId }, { $addToSet: { products: product._id } });
-    // const provider = await Provider.findOne({});
-    // await provider.populate('products').execPopulate();
-    // console.log(provider);
 
     return res.status(200).json(product);
-    // return res.status(400).send();
   },
 
   async update(req, res) {
     const { name, description, barcode, price, cost, validity, stock } = req.body;
     const { id, providerId } = req.query;
-    let _id;
 
-    try {
-      _id = mongoose.Types.ObjectId(id);
-    } catch (error) {
-      return res.status(400).json('Invalid ID.');
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: `invalid product id` });
+    }
+    if (!mongoose.Types.ObjectId.isValid(providerId)) {
+      return res.status(400).json({ message: `invalid provider id` });
     }
 
     const product = await Product.findOneAndUpdate(
@@ -90,7 +86,7 @@ module.exports = {
     );
     if (!product) return res.status(400).json('Id does not exist');
 
-    const productUpdated = await Product.findById(_id);
+    const productUpdated = await Product.findOne({ _id: id });
 
     await Provider.findOneAndUpdate(
       { _id: providerId },
@@ -104,14 +100,12 @@ module.exports = {
     return res.json(productUpdated);
   },
   async delete(req, res) {
-    const { id } = req.query;
-    let _id;
+    const { id } = req.params;
 
-    try {
-      _id = mongoose.Types.ObjectId(id);
-    } catch (error) {
-      return res.status(400).json('Invalid ID.');
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: `invalid product id` });
     }
+
     await Product.findOneAndRemove({ _id: id });
     return res.json('Product deleted.');
   },
