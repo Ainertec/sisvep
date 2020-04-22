@@ -1,9 +1,9 @@
 const faker = require('faker');
 const { factory } = require('factory-girl');
-const mongoose = require('mongoose');
 const Product = require('../src/app/models/Product');
 const Provider = require('../src/app/models/Provider');
 const User = require('../src/app/models/User');
+// const { Questions } = require('../src/app/models/User');
 
 const getId = async () => {
   const provider = await factory.create('Product', {
@@ -34,7 +34,7 @@ factory.define('Provider', Provider, {
 factory.define('User', User, {
   name: faker.name.findName(),
   password: faker.internet.password(),
-  question: faker.lorem.word(),
+  question: 'Qual o modelo do seu primeiro carro?',
   response: faker.lorem.words(3),
   admin: true,
 });

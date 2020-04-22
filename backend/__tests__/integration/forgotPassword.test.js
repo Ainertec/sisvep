@@ -19,7 +19,7 @@ describe('Reset password', () => {
   it('should be able to get user question', async () => {
     const user = await factory.create('User', {
       name: 'cleiton',
-      question: 'qual nome da sua mãe?',
+      question: 'Qual o modelo do seu primeiro carro?',
       response: 'cledir',
     });
 
@@ -44,7 +44,7 @@ describe('Reset password', () => {
   it('should rest password', async () => {
     const user = await factory.create('User', {
       name: 'cleiton',
-      question: 'qual nome da sua mãe?',
+      question: 'Qual o modelo do seu primeiro carro?',
       response: 'cledir',
       password: '1234',
     });
@@ -63,7 +63,7 @@ describe('Reset password', () => {
   it('should not reset password with incorrect response for user question', async () => {
     const user = await factory.create('User', {
       name: 'cleiton',
-      question: 'qual nome da sua mãe?',
+      question: 'Qual o modelo do seu primeiro carro?',
       response: 'cledir',
     });
     const response = await request(app).post('/forgot').send({

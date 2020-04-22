@@ -12,20 +12,6 @@ const authMiddleware = require('./app/middleware/auth');
 
 //User
 
-routes.post(
-  '/users',
-  celebrate({
-    [Segments.BODY]: Joi.object().keys({
-      name: Joi.string().required(),
-      password: Joi.string().required(),
-      question: Joi.string().required(),
-      response: Joi.string().required(),
-      admin: Joi.boolean().required(),
-    }),
-  }),
-  UserController.store
-);
-
 // session
 
 routes.post(
@@ -44,6 +30,22 @@ routes.get('/forgot', ForgotPasswordController.show);
 routes.post('/forgot', ForgotPasswordController.store);
 
 routes.use(authMiddleware);
+//users
+
+routes.post(
+  '/users',
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      name: Joi.string().required(),
+      password: Joi.string().required(),
+      question: Joi.string().required(),
+      response: Joi.string().required(),
+      admin: Joi.boolean(),
+    }),
+  }),
+  UserController.store
+);
+
 // Products
 /**
  * @param name:String
