@@ -46,6 +46,23 @@ routes.post(
   UserController.store
 );
 
+routes.put(
+  '/users',
+  celebrate({
+    [Segments.QUERY]: {
+      id: Joi.string().required(),
+    },
+    [Segments.BODY]: Joi.object().keys({
+      name: Joi.string().required(),
+      password: Joi.string().required(),
+      question: Joi.string().required(),
+      response: Joi.string().required(),
+      admin: Joi.boolean(),
+    }),
+  }),
+  UserController.update
+);
+
 // Products
 /**
  * @param name:String

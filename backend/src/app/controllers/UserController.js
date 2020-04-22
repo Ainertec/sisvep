@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const User = require('../models/User');
 const { Questions } = require('../models/User');
 
@@ -32,6 +33,37 @@ module.exports = {
       admin,
     });
     user.password_hash = undefined;
+    return res.json(user);
+  },
+  async update(req, res) {
+    const { name, password, question, response, admin } = req.body;
+    const { id } = req.query;
+    const userId = req.userId;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: `invalid user id` });
+    }
+
+    const authenticatedUser = await User.findOne({ _id: userId });
+
+    const user = await User.findOneAndUpdate(
+      { _id: id },
+      {
+        name,
+        question,
+        response,
+      },
+      { new: true }
+    );
+
+    user.password = password;
+
+    if (authenticatedUser.admin) {
+      user.admin = admin;
+    }
+
+    await user.save();
+
     return res.json(user);
   },
 };
