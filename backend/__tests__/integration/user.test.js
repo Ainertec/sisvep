@@ -164,4 +164,147 @@ describe('User', () => {
     );
     expect(response.status).toBe(200);
   });
+  it('should delete a authenticated user', async () => {
+    const user = await factory.create('User', {
+      admin: true,
+    });
+    const response = await request(app)
+      .delete(`/users/${user._id}`)
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.status).toBe(200);
+  });
+  it('should delete another user', async () => {
+    const user = await factory.create('User', {
+      admin: true,
+    });
+    const user3 = await factory.create('User', {
+      admin: true,
+    });
+    const response = await request(app)
+      .delete(`/users/${user3._id}`)
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.status).toBe(200);
+  });
+  it('should not delete another user without admin privileges ', async () => {
+    const user = await factory.create('User', {
+      admin: false,
+    });
+    const user2 = await factory.create('User', {
+      admin: false,
+    });
+    const response = await request(app)
+      .delete(`/users/${user2._id}`)
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+    expect(response.status).toBe(400);
+  });
+  it('should not delete an user with invalid id ', async () => {
+    const user = await factory.create('User', {
+      admin: false,
+    });
+    const response = await request(app)
+      .delete(`/users/qwerds`)
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.status).toBe(400);
+  });
+
+  //list//
+
+  it('should list all users', async () => {
+    const user = await factory.create('User', {
+      admin: true,
+      name: 'Lucas',
+    });
+    await factory.create('User', {
+      admin: false,
+      name: 'Leonardo',
+    });
+
+    const response = await request(app)
+      .get(`/users`)
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'Lucas',
+        }),
+        expect.objectContaining({
+          name: 'Leonardo',
+        }),
+      ])
+    );
+    expect(response.status).toBe(200);
+  });
+  it('should not list all users witout admin privileges', async () => {
+    const user = await factory.create('User', {
+      admin: false,
+      name: 'Lucas',
+    });
+    await factory.create('User', {
+      admin: false,
+      name: 'Leonardo',
+    });
+
+    const response = await request(app)
+      .get(`/users`)
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.status).toBe(400);
+  });
+  it('should  list all users by name', async () => {
+    const user = await factory.create('User', {
+      admin: true,
+      name: 'Lucas',
+    });
+    await factory.create('User', {
+      admin: false,
+      name: 'Leonardo',
+    });
+    await factory.create('User', {
+      admin: false,
+      name: 'Cleiton',
+    });
+
+    const response = await request(app)
+      .get(`/users_by_name`)
+      .query({
+        name: 'Le',
+      })
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'Leonardo',
+        }),
+      ])
+    );
+
+    expect(response.status).toBe(200);
+  });
+  it('should not list all users by name without admin privileges', async () => {
+    const user = await factory.create('User', {
+      admin: false,
+      name: 'Lucas',
+    });
+
+    const response = await request(app)
+      .get(`/users_by_name`)
+      .query({
+        name: 'L',
+      })
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+    expect(response.status).toBe(400);
+  });
+
+  //Question//
+
+  it('should list the questions', async () => {
+    const response = await request(app).get('/users_questions');
+
+    expect(response.status).toBe(200);
+  });
 });

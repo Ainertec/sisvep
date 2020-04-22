@@ -29,8 +29,19 @@ routes.post(
 routes.get('/forgot', ForgotPasswordController.show);
 routes.post('/forgot', ForgotPasswordController.store);
 
+routes.get('/users_questions', UserController.getQuestion);
 routes.use(authMiddleware);
 //users
+routes.get('/users', UserController.index);
+routes.get(
+  '/users_by_name',
+  celebrate({
+    [Segments.QUERY]: {
+      name: Joi.string().required(),
+    },
+  }),
+  UserController.show
+);
 
 routes.post(
   '/users',
@@ -61,6 +72,15 @@ routes.put(
     }),
   }),
   UserController.update
+);
+routes.delete(
+  '/users/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().required(),
+    },
+  }),
+  UserController.delete
 );
 
 // Products
