@@ -3,6 +3,7 @@ const { factory } = require('factory-girl');
 const Product = require('../src/app/models/Product');
 const Provider = require('../src/app/models/Provider');
 const User = require('../src/app/models/User');
+const Sale = require('../src/app/models/Sale');
 // const { Questions } = require('../src/app/models/User');
 
 const getId = async () => {
@@ -37,6 +38,12 @@ factory.define('User', User, {
   question: 'Qual o modelo do seu primeiro carro?',
   response: faker.lorem.words(3),
   admin: true,
+});
+
+factory.define('Sale', Sale, {
+  itens: { product: getId(), quantity: faker.random.number(10) },
+  total: faker.commerce.price(),
+  payment: 'dinheiro',
 });
 
 module.exports = factory;

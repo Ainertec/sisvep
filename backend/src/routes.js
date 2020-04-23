@@ -7,6 +7,7 @@ const ProviderController = require('./app/controllers/ProviderController');
 const SessionController = require('./app/controllers/SessionController');
 const ForgotPasswordController = require('./app/controllers/ForgotPasswordController');
 const UserController = require('./app/controllers/UserController');
+const SaleController = require('./app/controllers/SaleController');
 
 const authMiddleware = require('./app/middleware/auth');
 
@@ -222,6 +223,20 @@ routes.delete(
     },
   }),
   ProviderController.delete
+);
+
+//SALE//
+
+routes.post(
+  '/sales',
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      payment: Joi.string().required(),
+      total: Joi.number().required(),
+      itens: Joi.array().required(),
+    }),
+  }),
+  SaleController.store
 );
 
 module.exports = routes;

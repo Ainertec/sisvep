@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Product = require('./Product');
 
 const ItemSchema = new mongoose.Schema({
   product: {
@@ -12,7 +13,6 @@ const ItemSchema = new mongoose.Schema({
   },
 });
 
-mongoose.model('Item', ItemSchema);
 const SaleSchema = new mongoose.Schema(
   {
     itens: [ItemSchema],
@@ -23,18 +23,26 @@ const SaleSchema = new mongoose.Schema(
     payment: {
       type: String,
       default: null,
+      required: true,
     },
-    // functionary: {
-    //   type: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Functionary',
-    //     required: true,
-    //   },
-    // },
+    functionary: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
   },
   {
     timestamps: true,
   }
 );
+
+SaleSchema.post('save', async (document) => {
+  for (const iterator of document.itens) {
+    const product = await Product.findOne({ _id: iterator.product._id });
+
+    product.stock = product.stock - iterator.quantity;
+
+    await product.save();
+  }
+});
 
 module.exports = mongoose.model('Sale', SaleSchema);

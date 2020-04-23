@@ -19,7 +19,7 @@
 
 - Controle de estoque (venda e produto);
 - Alerta de produtos vencendo;
-- Não permitir venda com estoques zerados;
+- *Não permitir venda com estoques zerados;
 - Excluir vendas com mais de 7 anos;
 - Cadastro de apenas uma loja;
 - Somente funcionários admin podem criar funcionários;
