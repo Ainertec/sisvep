@@ -55,7 +55,9 @@ module.exports = {
       validity,
       stock,
     });
-
+    if (!mongoose.Types.ObjectId.isValid(providerId)) {
+      return res.status(400).json({ message: `invalid provider id` });
+    }
     await Provider.findOneAndUpdate({ _id: providerId }, { $addToSet: { products: product._id } });
 
     return res.status(200).json(product);

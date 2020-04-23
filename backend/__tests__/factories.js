@@ -4,13 +4,12 @@ const Product = require('../src/app/models/Product');
 const Provider = require('../src/app/models/Provider');
 const User = require('../src/app/models/User');
 const Sale = require('../src/app/models/Sale');
-// const { Questions } = require('../src/app/models/User');
 
 const getId = async () => {
-  const provider = await factory.create('Product', {
+  const product = await factory.create('Product', {
     stock: 12,
   });
-  return provider._id;
+  return product._id;
 };
 
 factory.define('Product', Product, {

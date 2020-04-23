@@ -10,6 +10,7 @@ const UserController = require('./app/controllers/UserController');
 const SaleController = require('./app/controllers/SaleController');
 
 const authMiddleware = require('./app/middleware/auth');
+const authorizationMiddleware = require('./app/middleware/authorization');
 
 //User
 
@@ -31,6 +32,25 @@ routes.get('/forgot', ForgotPasswordController.show);
 routes.post('/forgot', ForgotPasswordController.store);
 
 routes.get('/users_questions', UserController.getQuestion);
+/////////////////Somente para testes ////////////////////
+routes.post(
+  '/users_test',
+  celebrate({
+    [Segments.QUERY]: {
+      teste: Joi.boolean(),
+    },
+    [Segments.BODY]: Joi.object().keys({
+      name: Joi.string().required(),
+      password: Joi.string().required(),
+      question: Joi.string().required(),
+      response: Joi.string().required(),
+      admin: Joi.boolean(),
+    }),
+  }),
+  UserController.store
+);
+
+// Only autenticated users
 routes.use(authMiddleware);
 //users
 routes.get('/users', UserController.index);
@@ -170,6 +190,7 @@ routes.delete(
   }),
   ProductController.delete
 );
+
 // Provider
 routes.get('/providers', ProviderController.index);
 
@@ -238,5 +259,11 @@ routes.post(
   }),
   SaleController.store
 );
+
+// Only admin users
+
+routes.use(authorizationMiddleware);
+
+routes.get('/sales', SaleController.index);
 
 module.exports = routes;

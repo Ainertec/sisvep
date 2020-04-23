@@ -18,7 +18,6 @@ describe('Provider', () => {
     await Sale.deleteMany({});
     await User.deleteMany({});
   });
-
   it('should create a sale', async () => {
     const user = await factory.create('User');
     const product = await factory.create('Product');
@@ -44,7 +43,7 @@ describe('Provider', () => {
         total: 200,
       });
 
-    expect(response.body).toEqual(
+    expect(response.body.sale).toEqual(
       expect.objectContaining({
         payment: 'Dinheiro',
       })
@@ -81,9 +80,7 @@ describe('Provider', () => {
         payment: 'Dinheiro',
         total: 200,
       });
-
-    console.log(response.body.itens);
-    expect(response.body.itens).toEqual(
+    expect(response.body.sale.itens).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           product: expect.objectContaining({
@@ -97,5 +94,100 @@ describe('Provider', () => {
       ])
     );
     expect(response.status).toBe(200);
+  });
+  it('should allert when products stock are below to 5', async () => {
+    const user = await factory.create('User');
+    const product = await factory.create('Product', {
+      name: 'ovomaltine',
+      stock: 6,
+    });
+    const product2 = await factory.create('Product', {
+      name: 'nescal',
+      stock: 4,
+    });
+
+    const itens = [
+      {
+        product: product._id,
+        quantity: 4,
+      },
+      {
+        product: product2._id,
+        quantity: 2,
+      },
+    ];
+
+    const response = await request(app)
+      .post('/sales')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .send({
+        itens: itens,
+        payment: 'Dinheiro',
+        total: 200,
+      });
+
+    expect(response.body.alerts).toEqual(expect.arrayContaining(['ovomaltine', 'nescal']));
+    expect(response.status).toBe(200);
+  });
+  it('should list all sales', async () => {
+    const user = await factory.create('User');
+    const product = await factory.create('Product');
+    const product1 = await factory.create('Product');
+    const product2 = await factory.create('Product');
+    await factory.create('Sale', {
+      payment: 'Dinheiro',
+      itens: [
+        {
+          product: product._id,
+          quantity: 4,
+        },
+      ],
+    });
+    await factory.create('Sale', {
+      payment: 'Debito',
+      itens: [
+        {
+          product: product1._id,
+          quantity: 4,
+        },
+      ],
+    });
+    await factory.create('Sale', {
+      payment: 'Credito',
+
+      itens: [
+        {
+          product: product2._id,
+          quantity: 4,
+        },
+      ],
+    });
+
+    const response = await request(app)
+      .get('/sales')
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          payment: 'Dinheiro',
+        }),
+        expect.objectContaining({
+          payment: 'Debito',
+        }),
+        expect.objectContaining({
+          payment: 'Credito',
+        }),
+      ])
+    );
+  });
+  it('should not list all sales without admin privileges', async () => {
+    const user = await factory.create('User', {
+      admin: false,
+    });
+    const response = await request(app)
+      .get('/sales')
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+    expect(response.status).toBe(401);
   });
 });
