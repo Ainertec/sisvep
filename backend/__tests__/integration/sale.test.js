@@ -190,4 +190,43 @@ describe('Provider', () => {
       .set('Authorization', `Bearer ${user.generateToken()}`);
     expect(response.status).toBe(401);
   });
+  it('should list sales by id', async () => {
+    const user = await factory.create('User');
+    const product = await factory.create('Product');
+    const sale = await factory.create('Sale', {
+      payment: 'Dinheiro',
+      itens: [
+        {
+          product: product._id,
+          quantity: 4,
+        },
+      ],
+    });
+
+    const response = await request(app)
+      .get('/sales_by_id')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        id: String(sale._id),
+      });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        payment: 'Dinheiro',
+      })
+    );
+  });
+  it('should not list sales with invalid id', async () => {
+    const user = await factory.create('User');
+
+    const response = await request(app)
+      .get('/sales_by_id')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        id: '1223adfasvbnm',
+      });
+
+    expect(response.status).toBe(400);
+  });
 });

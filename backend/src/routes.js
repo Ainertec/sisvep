@@ -265,5 +265,14 @@ routes.post(
 routes.use(authorizationMiddleware);
 
 routes.get('/sales', SaleController.index);
+routes.get(
+  '/sales_by_id',
+  celebrate({
+    [Segments.QUERY]: {
+      id: Joi.string().required(),
+    },
+  }),
+  SaleController.show
+);
 
 module.exports = routes;
