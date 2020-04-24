@@ -62,7 +62,6 @@ module.exports = {
 
     return res.status(200).json(product);
   },
-
   async update(req, res) {
     const { name, description, barcode, price, cost, validity, stock } = req.body;
     const { id, providerId } = req.query;
@@ -86,7 +85,7 @@ module.exports = {
         stock,
       }
     );
-    if (!product) return res.status(400).json('Id does not exist');
+    if (!product) return res.status(400).json('product does not exist');
 
     const productUpdated = await Product.findOne({ _id: id });
 

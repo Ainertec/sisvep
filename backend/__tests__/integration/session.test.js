@@ -40,6 +40,19 @@ describe('Login', () => {
 
     expect(response.status).toBe(401);
   });
+  it('should not authenticate with invalid credentials(name)', async () => {
+    const user = await factory.create('User', {
+      name: 'Cleiton',
+      password: '1234',
+    });
+
+    const response = await request(app).post('/sessions').send({
+      name: 'Pablo',
+      password: '123456',
+    });
+
+    expect(response.status).toBe(401);
+  });
 
   it('should return jwt token when authenticated', async () => {
     const user = await factory.create('User', {

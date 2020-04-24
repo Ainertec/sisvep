@@ -26,6 +26,7 @@ describe('teste Product', () => {
       name: 'Chocolate',
       description: 'Bão de mais',
     });
+    console.log(product._id);
     const user = await factory.create('User');
     const response = await request(app)
       .post('/products')
@@ -44,6 +45,28 @@ describe('teste Product', () => {
     expect(response.status).toBe(200);
   });
 
+  it('shuld not create a Product with invalid provider id', async () => {
+    const product = await factory.build('Product', {
+      name: 'Chocolate',
+      description: 'Bão de mais',
+    });
+    const user = await factory.create('User');
+    const response = await request(app)
+      .post('/products')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .send({
+        name: 'pão',
+        description: product.description,
+        price: product.price,
+        cost: product.cost,
+        barcode: product.barcode,
+        validity: product.validity,
+        stock: product.stock,
+        providerId: 'qwertwas',
+      });
+
+    expect(response.status).toBe(400);
+  });
   it('shuld not create a Product with invalid params', async () => {
     const product = await factory.build('Product', {
       name: 'Chocolate',

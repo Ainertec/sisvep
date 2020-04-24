@@ -60,6 +60,20 @@ describe('Reset password', () => {
     expect(response.status).toBe(200);
   });
 
+  it('should not reset password with incorrect user name', async () => {
+    await factory.create('User', {
+      name: 'cleiton',
+      question: 'Qual o modelo do seu primeiro carro?',
+      response: 'cledir',
+    });
+    const response = await request(app).post('/forgot').send({
+      name: 'Json',
+      response: 'Maria Clara',
+      password: '92865120',
+    });
+
+    expect(response.status).toBe(401);
+  });
   it('should not reset password with incorrect response for user question', async () => {
     const user = await factory.create('User', {
       name: 'cleiton',
