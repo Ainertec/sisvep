@@ -31,6 +31,7 @@ function autenticacaoVendaFacede(){
     
     if(JSON.parse(situacao).tipo == 'Administrador' || JSON.parse(situacao).tipo == 'Comum'){
         document.getElementById('janela2').innerHTML = telaVenda();
+        atalhosTeclaVenda();
     }else{
         mensagemDeErro("Usuário não autorizado!");
     }
@@ -69,7 +70,7 @@ function telaVenda(){
                         codigoHTML+='</div>'
                         codigoHTML+='<div class="form-group row">'
                             codigoHTML+='<div class="input-group mb-3">'
-                                codigoHTML+='<label for="campoebuttondeleteitemvenda">Produto</label>'
+                                codigoHTML+='<label for="campocodigodeleteitemvenda">Produto</label>'
                                 codigoHTML+='<input id="campocodigodeleteitemvenda" type="Number" class="form-control form-control-sm col-4" style="margin-left:10px" placeholder="Código" aria-describedby="buttonDeleteItemDaVenda">'
                                 codigoHTML+='<div class="input-group-append">'
                                     codigoHTML+='<button onclick="removerProdutoDaLista(document.getElementById(\'campocodigodeleteitemvenda\').value);" class="btn btn-danger btn-sm" type="button" id="buttonDeleteItemDaVenda"><span class="fas fa-times iconsTam"></span> Remover</button>'
@@ -222,9 +223,9 @@ function modalPagamento(tipo){
                     codigoHTML+='<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>'
                     
                     if(tipo=='dinheiro'){
-                        codigoHTML+='<button onclick="cadastrarVenda(\'Dinheiro\');" type="button" class="btn btn-primary" data-dismiss="modal">Efetuar Pagamento</button>'
+                        codigoHTML+='<button onclick="cadastrarVenda(\'Dinheiro\'); modalImpressaoNota();" type="button" class="btn btn-primary" data-dismiss="modal">Efetuar Pagamento</button>'
                     }else if(tipo=='cartao'){
-                        codigoHTML+='<button onclick="cadastrarVenda(\'Cartão\');" type="button" class="btn btn-primary" data-dismiss="modal">Efetuar Pagamento</button>'
+                        codigoHTML+='<button onclick="cadastrarVenda(\'Cartão\'); modalImpressaoNota();" type="button" class="btn btn-primary" data-dismiss="modal">Efetuar Pagamento</button>'
                     }
 
                 codigoHTML+='</div>'
@@ -410,6 +411,7 @@ function socketCodigoBarrasRealTime(){
 
 
 
+
 //funcao responsavel por cadastrar a venda após concluida
 function cadastrarVenda(formaPagamento){
     
@@ -431,12 +433,134 @@ function cadastrarVenda(formaPagamento){
 
     json+=']}'
     
-    alert(json);
+    //alert(json);
 
     json = JSON.parse(json);
 
-    alert('Cadastrado com sucesso!');
+    //alert('Cadastrado com sucesso!');
 
     setTimeout(function(){autenticacaoVendaFacede();},1000);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+//funcao responsavel por gerar as teclas de atalho da venda
+function atalhosTeclaVenda(){
+    Mousetrap.bind('ctrl+del', function() { removerProdutoDaLista(document.getElementById('campocodigodeleteitemvenda').value); });
+    Mousetrap.bind('ctrl+enter', function() { buscarProdutoVenda(document.getElementById('campocodigoadicionaritemvenda').value); });
+    Mousetrap.bind('d enter', function() { modalPagamento('dinheiro'); });
+    Mousetrap.bind('c enter', function() { modalPagamento('cartao'); });
+    Mousetrap.bind('q', function() { document.getElementById('qtdItemDaVenda').focus(); });
+    Mousetrap.bind('e', function() { document.getElementById('campocodigodeleteitemvenda').focus(); });
+    Mousetrap.bind('a', function() { document.getElementById('campocodigoadicionaritemvenda').focus(); });
+}
+
+
+
+
+
+
+
+
+
+
+
+//funcao responsavel por gerar o modal de impressao e enviar a nota para a impressao
+function modalImpressaoNota(){
+    
+    var codigoHTML='';
+
+    codigoHTML+='<div class="modal fade" id="modalNota" tabindex="-1" role="dialog" aria-labelledby="modalNotaImpressao" aria-hidden="true">'
+        codigoHTML+='<div class="modal-dialog modal-dialog-scrollable" role="document">'
+            codigoHTML+='<div class="modal-content">'
+                codigoHTML+='<div class="modal-header">'
+                    codigoHTML+='<h5 class="modal-title" id="modalNotaImpressao">Nota Compra</h5>'
+                    codigoHTML+='<button type="button" class="close" data-dismiss="modal" aria-label="Close">'
+                    codigoHTML+='<span aria-hidden="true">&times;</span>'
+                    codigoHTML+='</button>'
+                codigoHTML+='</div>'
+                codigoHTML+='<div id="infoDadosnota" class="modal-body">'
+
+                    codigoHTML+='<p>========================</p>'
+                    codigoHTML+='<p>Nome Loja<br/>'
+                    codigoHTML+='CNPJ<br/>'
+                    codigoHTML+='Telefone<br/>'
+                    codigoHTML+='Endereco</p>'
+                    codigoHTML+='<p>=======================<br/>'
+                    codigoHTML+='CUPOM NÃO FISCAL<br/>'
+                    codigoHTML+='=======================</p>'
+                    codigoHTML+='<p>Data<br/>'
+                    codigoHTML+='Hora</p>'
+                    codigoHTML+='<p>-----------------------</p>'
+                    codigoHTML+='<p>Produto X (quantidade)<br/>'
+                    codigoHTML+='Preco Uni.: x.xx<br/>'
+                    codigoHTML+='Produto X (quantidade)<br/>'
+                    codigoHTML+='Preco Uni.: x.xx<br/>'
+                    codigoHTML+='Produto X (quantidade)<br/>'
+                    codigoHTML+='Preco Uni.: x.xx<br/>'
+                    codigoHTML+='Produto X (quantidade)<br/>'
+                    codigoHTML+='Preco Uni.: x.xx<br/>'
+                    codigoHTML+='Produto X (quantidade)<br/>'
+                    codigoHTML+='Preco Uni.: x.xx<br/>'
+                    codigoHTML+='Produto X (quantidade)<br/>'
+                    codigoHTML+='Preco Uni.: x.xx<br/>'
+                    codigoHTML+='Produto X (quantidade)<br/>'
+                    codigoHTML+='Preco Uni.: x.xx<br/>'
+                    codigoHTML+='Produto X (quantidade)<br/>'
+                    codigoHTML+='Preco Uni.: x.xx<br/>'
+                    codigoHTML+='Produto X (quantidade)<br/>'
+                    codigoHTML+='Preco Uni.: x.xx<br/>'
+                    codigoHTML+='Produto X (quantidade)<br/>'
+                    codigoHTML+='Preco Uni.: x.xx<br/>'
+                    codigoHTML+='Produto X (quantidade)<br/>'
+                    codigoHTML+='Preco Uni.: x.xx<br/>'
+                    codigoHTML+='Produto X (quantidade)<br/>'
+                    codigoHTML+='Preco Uni.: x.xx</p>'
+                    codigoHTML+='<p>=======================</p>'
+                    codigoHTML+='<p>Valor total: x.xx<br/>'
+                    codigoHTML+='Valor pago: x.xx</p>'
+                    codigoHTML+='<p>=======================</p>'
+                    codigoHTML+='<p>ID venda: 5626sd5452s5s</p>'
+
+
+                codigoHTML+='</div>'
+            codigoHTML+='</div>'
+        codigoHTML+='</div>'
+    codigoHTML+='</div>'
+
+    document.getElementById('modal').innerHTML = codigoHTML;
+
+    $('#modalNota').modal('show');
+    $('#infoDadosnota').printThis({
+        debug: false,               // show the iframe for debugging
+        importCSS: true,            // import parent page css
+        importStyle: false,         // import style tags
+        printContainer: true,       // print outer container/$.selector
+        loadCSS: "./../bootstrap/css/escopo-css-impressao.css",                // path to additional css file - use an array [] for multiple
+        pageTitle: "",              // add title to print page
+        removeInline: false,        // remove inline styles from print elements
+        removeInlineSelector: "*",  // custom selectors to filter inline styles. removeInline must be true
+        printDelay: 222,            // variable print delay
+        header: false,               // prefix to html
+        footer: null,               // postfix to html
+        base: false,                // preserve the BASE tag or accept a string for the URL
+        formValues: true,           // preserve input/form values
+        canvas: false,              // copy canvas content
+        doctypeString: false,       // enter a different doctype for older markup
+        removeScripts: false,       // remove script tags from print content
+        copyTagClasses: false,      // copy classes from the html & body tag
+        beforePrintEvent: null,     // function for printEvent in iframe
+        beforePrint: null,          // function called before iframe is filled
+        afterPrint: null            // function called before iframe is removed
+    });
 
 }
