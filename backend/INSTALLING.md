@@ -15,11 +15,11 @@ todos os teste feitos para seu insomina.
 
 ### Usando o Insomnia:
 
-- Para evitar a repetição e facilitar o manutenção usei variavéis no workspace.
+- Para evitar a repetição e facilitar a manutenção usei variavéis no workspace.
 
 - `baseUrl` a url que o node está rodando.
 
-- `resource` a rota que está sendo acessada, geralmente o nome da página em ingles e lowcase.
+- `resource` a rota que está sendo acessada, geralmente o nome da página em inglês e lowcase.
 
 - Também foi utilizado as funções do insomina para auxiliar nos teste das rotas.
 
