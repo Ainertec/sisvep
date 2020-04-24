@@ -15,7 +15,7 @@ const verifyId = (products) => {
 
 module.exports = {
   async index(req, res) {
-    const providers = await Provider.find();
+    const providers = await Provider.find().populate({ path: 'products' });
 
     return res.json(providers);
   },
@@ -24,7 +24,7 @@ module.exports = {
 
     const providers = await Provider.find({
       name: { $regex: new RegExp(name), $options: 'i' },
-    });
+    }).populate({ path: 'products' });
 
     return res.json(providers);
   },

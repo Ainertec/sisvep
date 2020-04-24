@@ -55,10 +55,15 @@ module.exports = {
       validity,
       stock,
     });
-    if (!mongoose.Types.ObjectId.isValid(providerId)) {
-      return res.status(400).json({ message: `invalid provider id` });
+    if (providerId) {
+      if (!mongoose.Types.ObjectId.isValid(providerId)) {
+        return res.status(400).json({ message: `invalid provider id` });
+      }
+      await Provider.findOneAndUpdate(
+        { _id: providerId },
+        { $addToSet: { products: product._id } }
+      );
     }
-    await Provider.findOneAndUpdate({ _id: providerId }, { $addToSet: { products: product._id } });
 
     return res.status(200).json(product);
   },
@@ -69,6 +74,7 @@ module.exports = {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: `invalid product id` });
     }
+
     if (!mongoose.Types.ObjectId.isValid(providerId)) {
       return res.status(400).json({ message: `invalid provider id` });
     }

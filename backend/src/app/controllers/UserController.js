@@ -92,6 +92,11 @@ module.exports = {
 
     const authenticatedUser = await User.findOne({ _id: userId });
 
+    const existUser = await User.findOne({ name });
+
+    if (existUser) {
+      return res.status(400).json({ message: 'User aready exist' });
+    }
     const user = await User.findOneAndUpdate(
       { _id: id },
       {
@@ -109,6 +114,8 @@ module.exports = {
     }
 
     await user.save();
+    user.password_hash = undefined;
+    user.response = undefined;
 
     return res.json(user);
   },

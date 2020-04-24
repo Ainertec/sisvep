@@ -149,7 +149,7 @@ routes.post(
   '/products',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
-      providerId: Joi.string().required(),
+      providerId: Joi.string(),
       name: Joi.string().required(),
       description: Joi.string(),
       price: Joi.number().required(),
@@ -240,7 +240,7 @@ routes.delete(
   '/providers/:id',
   celebrate({
     [Segments.PARAMS]: {
-      id: Joi.string().required(),
+      id: Joi.required(),
     },
   }),
   ProviderController.delete

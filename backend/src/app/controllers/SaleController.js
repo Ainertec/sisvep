@@ -9,12 +9,16 @@ module.exports = {
       return res.status(400).json({ message: `invalid provider id` });
     }
 
-    const sale = await Sale.findOne({ _id: id });
+    const sale = await Sale.findOne({ _id: id })
+      .populate('itens.product')
+      .populate({ path: 'functionary', select: 'name' });
 
     return res.json(sale);
   },
   async index(req, res) {
-    const sales = await Sale.find();
+    const sales = await Sale.find()
+      .populate('itens.product')
+      .populate({ path: 'functionary', select: 'name' });
 
     return res.json(sales);
   },
@@ -37,6 +41,10 @@ module.exports = {
         alerts.push(item.product.name);
       }
     });
+
+    sale.functionary.password_hash = undefined;
+    sale.functionary.response = undefined;
+    sale.functionary.question = undefined;
 
     return res.json({
       sale,
