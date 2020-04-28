@@ -8,6 +8,7 @@ const SessionController = require('./app/controllers/SessionController');
 const ForgotPasswordController = require('./app/controllers/ForgotPasswordController');
 const UserController = require('./app/controllers/UserController');
 const SaleController = require('./app/controllers/SaleController');
+const TransactionController = require('./app/controllers/TransactionController');
 
 const authMiddleware = require('./app/middleware/auth');
 const authorizationMiddleware = require('./app/middleware/authorization');
@@ -274,5 +275,10 @@ routes.get(
   }),
   SaleController.show
 );
+
+// transactions
+
+routes.get('/transactions', TransactionController.show);
+routes.get('/transactions_solds', TransactionController.index);
 
 module.exports = routes;
