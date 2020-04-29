@@ -39,11 +39,11 @@ Para o funcionário é necessário: sistema de cadastro, sistema de exibir todos
 - OBS.: somente funcionário administrador poderá criar funcionários administradores ou comuns.
 
 # Relatório
-Relatório de lucro mensal (e uma lista separada por meses, aonde cada mês é composto pela soma das vendas referentes a ele).
+* Relatório de lucro mensal (e uma lista separada por meses, aonde cada mês é composto pela soma das vendas referentes a ele).
 
-Relatório de produtos vendidos (é uma lista com todos os produtos dizendo quanto de cada produto foi vendido).
+* Relatório de produtos vendidos (é uma lista com todos os produtos dizendo quanto de cada produto foi vendido).
 
-Relatório de vendas por mês(é uma lista separada por meses aonde é somada a quantidade de vendas referente ao mesmo).
+* Relatório de vendas por mês(é uma lista separada por meses aonde é somada a quantidade de vendas referente ao mesmo).
 
 Relatório de representação de produtos nas vendas (é uma lista separada pelos produtos, a lista contém a porcentagem de respresentação de cada produto, a porcentagem é feita da seguinte forma soma-se a quantidade total de vendas de todos os produtos, depois é pego a quantidade de vendas de um unico produto depois é feito a regra de três sobre ele). 
 

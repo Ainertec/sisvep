@@ -5,12 +5,12 @@ const Provider = require('../src/app/models/Provider');
 const User = require('../src/app/models/User');
 const Sale = require('../src/app/models/Sale');
 
-const getId = async () => {
-  const product = await factory.create('Product', {
-    stock: 12,
-  });
-  return product._id;
-};
+// const getId = async () => {
+//   const product = await factory.create('Product', {
+//     stock: 12,
+//   });
+//   return product._id;
+// };
 
 factory.define('Product', Product, {
   name: faker.commerce.productName(),
@@ -28,7 +28,7 @@ factory.define('Provider', Provider, {
   phone: faker.phone.phoneNumber(),
   email: faker.internet.email(),
   identification: faker.name.title(),
-  products: getId(),
+  products: factory.assoc('Product', '_id'),
 });
 
 factory.define('User', User, {
@@ -40,9 +40,10 @@ factory.define('User', User, {
 });
 
 factory.define('Sale', Sale, {
-  itens: { product: getId(), quantity: faker.random.number(10) },
+  itens: [{ product: factory.assoc('Product', '_id'), quantity: faker.random.number(10) }],
   total: faker.commerce.price(),
   payment: 'dinheiro',
+  functionary: factory.assoc('User', '_id'),
 });
 
 module.exports = factory;

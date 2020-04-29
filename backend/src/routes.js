@@ -279,6 +279,8 @@ routes.get(
 // transactions
 
 routes.get('/transactions', TransactionController.show);
-routes.get('/transactions_solds', TransactionController.index);
+routes.get('/transactions_soldouts', TransactionController.index);
+routes.get('/transactions_solds_by_month', TransactionController.byMonth);
+routes.get('/transactions_products_total_percent', TransactionController.soldsProductsPercent);
 
 module.exports = routes;
