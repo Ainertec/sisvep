@@ -4,7 +4,7 @@
 - execute o comando `yarn dev` ou `npm run dev` para rodar o backend.
 
 ### Importando para o insomnia:
-- Caso você queira ver as rotas assim como seu parâmetro e retornos, é possivel importar
+- Caso você queira ver as rotas assim como seus parâmetros e retornos, é possivel importar
 todos os teste feitos para seu insomina.
 
 - Basta clicar no botão abaixo:
