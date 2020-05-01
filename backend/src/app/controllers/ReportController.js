@@ -1,7 +1,9 @@
-const Sale = require('../models/Sale');
+/* eslint-disable no-return-assign */
 const isBefore = require('date-fns/isBefore');
 const isValid = require('date-fns/isValid');
 const parseISO = require('date-fns/parseISO');
+const Provider = require('../models/Provider');
+const Sale = require('../models/Sale');
 
 module.exports = {
   async show(req, res) {
@@ -41,6 +43,7 @@ module.exports = {
         _id: {
           id: '$products._id',
           name: '$products.name',
+          price: '$products.price',
           description: '$products.description',
           stock: '$products.stock',
           validity: '$products.validity',
@@ -72,12 +75,9 @@ module.exports = {
       })
       .sort({ total: -1 });
 
-    console.log(sales);
-
     return res.json(sales);
   },
   async soldsProductsPercent(req, res) {
-    const soldsTotal = await Sale.count();
     const products = await Sale.aggregate()
       .unwind('itens')
       .lookup({
@@ -92,18 +92,73 @@ module.exports = {
           id: '$products._id',
           name: '$products.name',
           description: '$products.description',
+          price: '$products.price',
           stock: '$products.stock',
           validity: '$products.validity',
         },
-        percent: { $sum: 1 },
+        soldout: { $sum: '$itens.quantity' },
       })
       .sort({ soldout: -1 });
 
-    products.map((product) => {
-      return (product.percent = (product.percent * 100) / soldsTotal).toFixed(2);
-    });
-    console.log(products);
+    const totalProducts = products.reduce((sum, product) => {
+      return sum + product.soldout;
+    }, 0);
 
-    return res.status(200).send();
+    products.map((product) => {
+      return (product.soldout = ((product.soldout / totalProducts) * 100).toFixed(2));
+    });
+
+    return res.json(products);
+  },
+  async amountProductsPercent(req, res) {
+    const products = await Sale.aggregate()
+      .unwind('itens')
+      .lookup({
+        from: 'products',
+        localField: 'itens.product',
+        foreignField: '_id',
+        as: 'products',
+      })
+      .unwind('products')
+      .group({
+        _id: {
+          id: '$products._id',
+          name: '$products.name',
+          price: '$products.price',
+          description: '$products.description',
+          stock: '$products.stock',
+          validity: '$products.validity',
+        },
+        soldout: { $sum: { $multiply: ['$itens.quantity', '$products.price'] } },
+      })
+      .sort({ soldout: -1 });
+
+    const totalProducts = products.reduce((sum, product) => {
+      return sum + product.soldout;
+    }, 0);
+
+    products.map((product) => {
+      return (product.soldout = ((product.soldout / totalProducts) * 100).toFixed(2));
+    });
+
+    return res.json(products);
+  },
+  async providersProducts(req, res) {
+    const providers = await Provider.aggregate()
+      .addFields({
+        totalProducts: { $size: '$products' },
+      })
+      .sort({ total: -1 });
+
+    return res.json(providers);
+  },
+  async salesAmount(req, res) {
+    const sales = await Sale.find();
+
+    const totalSales = sales.reduce((sum, sale) => {
+      return sum + sale.total;
+    }, 0);
+
+    return res.json({ total: totalSales.toFixed(2) });
   },
 };

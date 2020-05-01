@@ -8,12 +8,12 @@ const SessionController = require('./app/controllers/SessionController');
 const ForgotPasswordController = require('./app/controllers/ForgotPasswordController');
 const UserController = require('./app/controllers/UserController');
 const SaleController = require('./app/controllers/SaleController');
-const TransactionController = require('./app/controllers/TransactionController');
+const ReportController = require('./app/controllers/ReportController');
 
 const authMiddleware = require('./app/middleware/auth');
 const authorizationMiddleware = require('./app/middleware/authorization');
 
-//User
+// User
 
 // session
 
@@ -29,11 +29,29 @@ routes.post(
 );
 // forgot password
 
-routes.get('/forgot', ForgotPasswordController.show);
-routes.post('/forgot', ForgotPasswordController.store);
+routes.get(
+  '/forgot',
+  celebrate({
+    [Segments.QUERY]: {
+      name: Joi.string().required(),
+    },
+  }),
+  ForgotPasswordController.show
+);
+routes.post(
+  '/forgot',
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      name: Joi.string().required().exist(),
+      response: Joi.string().required(),
+      password: Joi.string().required(),
+    }),
+  }),
+  ForgotPasswordController.store
+);
 
 routes.get('/users_questions', UserController.getQuestion);
-/////////////////Somente para testes ////////////////////
+// /////////////// Somente para testes  ////////////////////
 routes.post(
   '/users_test',
   celebrate({
@@ -53,7 +71,7 @@ routes.post(
 
 // Only autenticated users
 routes.use(authMiddleware);
-//users
+// users
 routes.get('/users', UserController.index);
 routes.get(
   '/users_by_name',
@@ -247,7 +265,7 @@ routes.delete(
   ProviderController.delete
 );
 
-//SALE//
+// SALE //
 
 routes.post(
   '/sales',
@@ -278,9 +296,30 @@ routes.get(
 
 // transactions
 
-routes.get('/transactions', TransactionController.show);
-routes.get('/transactions_soldouts', TransactionController.index);
-routes.get('/transactions_solds_by_month', TransactionController.byMonth);
-routes.get('/transactions_products_total_percent', TransactionController.soldsProductsPercent);
+routes.get(
+  '/report',
+  celebrate({
+    [Segments.QUERY]: {
+      initialDate: Joi.string().required(),
+      finalDate: Joi.string().required(),
+    },
+  }),
+  ReportController.show
+);
+routes.get('/report_soldouts', ReportController.index);
+routes.get(
+  '/report_solds_by_month',
+  celebrate({
+    [Segments.QUERY]: {
+      initialDate: Joi.string().required(),
+      finalDate: Joi.string().required(),
+    },
+  }),
+  ReportController.byMonth
+);
+routes.get('/report_products_total_percent', ReportController.soldsProductsPercent);
+routes.get('/report_products_amount_percent', ReportController.amountProductsPercent);
+routes.get('/report_providers_products', ReportController.providersProducts);
+routes.get('/report_sales_amount', ReportController.salesAmount);
 
 module.exports = routes;

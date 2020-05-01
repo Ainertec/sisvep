@@ -1,4 +1,8 @@
 const mongoose = require('mongoose');
+const parseISO = require('date-fns/parseISO');
+const isValid = require('date-fns/isValid');
+const endOfMonth = require('date-fns/endOfMonth');
+const startOfMonth = require('date-fns/startOfMonth');
 const Product = require('../models/Product');
 const Provider = require('../models/Provider');
 
@@ -8,27 +12,22 @@ module.exports = {
     const product = await Product.findOne({ barcode });
     return res.json(product);
   },
-
   async show(req, res) {
     const { date } = req.query;
-    const dateArray = date.split('-');
-    const dateLength = String(dateArray[0]);
 
-    if (!dateArray[1]) return res.status(400).json('month does not informated!');
+    const initial = startOfMonth(parseISO(date));
+    const final = endOfMonth(initial);
 
-    if (dateArray[1] <= 0 || dateArray[1] >= 13)
-      return res.status(400).json('month does not exist!');
-
-    if (dateArray[2]) return res.status(400).json('asas');
-
-    if (dateLength.length !== 4) return res.status(400).json('Date formate incorret');
+    if (!isValid(initial)) {
+      return res.status(400).json({ message: 'invalid date' });
+    }
 
     const products = await Product.find({
-      validity: { $gte: `${date} 1`, $lte: `${date} 31` },
+      validity: { $gte: initial, $lte: final },
     });
+
     return res.json(products);
   },
-
   async index(req, res) {
     const { name } = req.query;
 

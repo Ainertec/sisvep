@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
 const mongoose = require('mongoose');
 const Product = require('./Product');
 
@@ -39,7 +41,7 @@ SaleSchema.post('save', async (document) => {
   for (const iterator of document.itens) {
     const product = await Product.findOne({ _id: iterator.product._id });
 
-    product.stock = product.stock - iterator.quantity;
+    product.stock -= iterator.quantity;
 
     await product.save();
   }

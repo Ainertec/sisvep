@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -8,7 +9,7 @@ const Questions = Object.freeze({
   terceira: 'Qual o nome do seu primeiro animal de estimação?',
   quarta: 'Qual o nome da sua mãe?',
   quinta: 'Qual sua cor preferida?',
-  getQuestions: function () {
+  getQuestions() {
     const ques = [this.primeira, this.segunda, this.terceira, this.quarta, this.quinta];
     return ques;
   },

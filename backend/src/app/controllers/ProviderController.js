@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 const mongoose = require('mongoose');
 const Provider = require('../models/Provider');
 
@@ -7,7 +8,6 @@ const verifyId = (products) => {
     const isValid = mongoose.Types.ObjectId.isValid(product);
     if (!isValid) {
       hasInvalidId = true;
-      return;
     }
   });
   return hasInvalidId;
@@ -93,7 +93,7 @@ module.exports = {
     let hasProductInStock = false;
 
     for (const iterator of provider.products) {
-      if (iterator.stock != 0) {
+      if (iterator.stock !== 0) {
         hasProductInStock = true;
         break;
       }

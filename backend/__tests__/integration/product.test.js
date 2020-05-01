@@ -26,7 +26,6 @@ describe('teste Product', () => {
       name: 'Chocolate',
       description: 'Bão de mais',
     });
-    console.log(product._id);
     const user = await factory.create('User');
     const response = await request(app)
       .post('/products')
@@ -44,7 +43,6 @@ describe('teste Product', () => {
 
     expect(response.status).toBe(200);
   });
-
   it('shuld not create a Product with invalid provider id', async () => {
     const product = await factory.build('Product', {
       name: 'Chocolate',
@@ -88,7 +86,6 @@ describe('teste Product', () => {
 
     expect(response.status).toBe(400);
   });
-
   it('shuld update a product', async () => {
     const product = await factory.create('Product');
     const provider = await factory.create('Provider', {
@@ -183,7 +180,6 @@ describe('teste Product', () => {
     expect(response.status).toBe(200);
     expect(providers.products).toEqual([]);
   });
-
   it('shuld not delete a product whit invalid id', async () => {
     const user = await factory.create('User');
     const response = await request(app)
@@ -191,7 +187,6 @@ describe('teste Product', () => {
       .set('Authorization', `Bearer ${user.generateToken()}`);
     expect(response.status).toBe(400);
   });
-
   // list
 
   it('shuld list products by name ', async () => {
@@ -243,14 +238,14 @@ describe('teste Product', () => {
     const user = await factory.create('User');
     await factory.create('Product', {
       name: 'Pão',
-      validity: new Date(2020, 1, 8),
+      validity: new Date(2020, 2, 8),
     });
 
     const response = await request(app)
       .get('/products_validity')
       .set('Authorization', `Bearer ${user.generateToken()}`)
       .query({
-        date: '2020-02',
+        date: '2020-03',
       });
     expect(response.body).toEqual(
       expect.arrayContaining([
@@ -259,16 +254,6 @@ describe('teste Product', () => {
         }),
       ])
     );
-  });
-  it('shuld not list products without month informated ', async () => {
-    const user = await factory.create('User');
-    const response = await request(app)
-      .get('/products_validity')
-      .set('Authorization', `Bearer ${user.generateToken()}`)
-      .query({
-        date: '2020',
-      });
-    expect(response.status).toBe(400);
   });
   it('shuld not list products with month not existent ', async () => {
     const user = await factory.create('User');
@@ -280,23 +265,13 @@ describe('teste Product', () => {
       });
     expect(response.status).toBe(400);
   });
-  it('shuld not list products with date unformatade ', async () => {
+  it('shuld not list products with date unformatad ', async () => {
     const user = await factory.create('User');
     const response = await request(app)
       .get('/products_validity')
       .set('Authorization', `Bearer ${user.generateToken()}`)
       .query({
         date: '13-02',
-      });
-    expect(response.status).toBe(400);
-  });
-  it('shuld not list products with day informated', async () => {
-    const user = await factory.create('User');
-    const response = await request(app)
-      .get('/products_validity')
-      .set('Authorization', `Bearer ${user.generateToken()}`)
-      .query({
-        date: '2020-03-23',
       });
     expect(response.status).toBe(400);
   });

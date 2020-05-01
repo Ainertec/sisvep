@@ -5,13 +5,6 @@ const Provider = require('../src/app/models/Provider');
 const User = require('../src/app/models/User');
 const Sale = require('../src/app/models/Sale');
 
-// const getId = async () => {
-//   const product = await factory.create('Product', {
-//     stock: 12,
-//   });
-//   return product._id;
-// };
-
 factory.define('Product', Product, {
   name: faker.commerce.productName(),
   description: faker.commerce.productAdjective(),
@@ -23,12 +16,12 @@ factory.define('Product', Product, {
 });
 
 factory.define('Provider', Provider, {
-  name: faker.commerce.productName(),
+  name: faker.name.findName(),
   description: faker.commerce.productAdjective(),
   phone: faker.phone.phoneNumber(),
   email: faker.internet.email(),
   identification: faker.name.title(),
-  products: factory.assoc('Product', '_id'),
+  products: factory.assocMany('Product', 2, '_id'),
 });
 
 factory.define('User', User, {

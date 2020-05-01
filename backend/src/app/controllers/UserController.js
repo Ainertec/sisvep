@@ -10,7 +10,7 @@ module.exports = {
   },
   async show(req, res) {
     const { name } = req.query;
-    const userId = req.userId;
+    const { userId } = req;
     const user = await User.findOne({ _id: userId });
 
     if (!user.admin) {
@@ -29,7 +29,7 @@ module.exports = {
     return res.json(users);
   },
   async index(req, res) {
-    const userId = req.userId;
+    const { userId } = req;
     const user = await User.findOne({ _id: userId });
 
     if (!user.admin) {
@@ -47,7 +47,7 @@ module.exports = {
   },
   async store(req, res) {
     const { name, password, question, response, admin } = req.body;
-    const userId = req.userId;
+    const { userId } = req;
     const { teste } = req.query;
 
     const questions = Questions.getQuestions();
@@ -84,7 +84,7 @@ module.exports = {
   async update(req, res) {
     const { name, password, question, response, admin } = req.body;
     const { id } = req.query;
-    const userId = req.userId;
+    const { userId } = req;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: `invalid user id` });
@@ -121,7 +121,7 @@ module.exports = {
   },
   async delete(req, res) {
     const { id } = req.params;
-    const userId = req.userId;
+    const { userId } = req;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: `invalid user id` });
@@ -130,15 +130,14 @@ module.exports = {
     if (userId === id) {
       await User.deleteOne({ _id: id });
       return res.status(200).send();
-    } else {
-      const user = await User.findOne({ _id: userId });
-      if (!user.admin) {
-        return res
-          .status(400)
-          .json({ message: 'You cannot delete another user without admin privileges' });
-      }
-      await User.deleteOne({ _id: id });
-      return res.status(200).send();
     }
+    const user = await User.findOne({ _id: userId });
+    if (!user.admin) {
+      return res
+        .status(400)
+        .json({ message: 'You cannot delete another user without admin privileges' });
+    }
+    await User.deleteOne({ _id: id });
+    return res.status(200).send();
   },
 };

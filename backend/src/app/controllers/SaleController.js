@@ -1,5 +1,5 @@
-const Sale = require('../models/Sale');
 const mongoose = require('mongoose');
+const Sale = require('../models/Sale');
 
 module.exports = {
   async show(req, res) {
@@ -24,7 +24,7 @@ module.exports = {
   },
   async store(req, res) {
     const { itens, payment, total } = req.body;
-    const userId = req.userId;
+    const {userId} = req;
     const alerts = [];
 
     const sale = await Sale.create({
