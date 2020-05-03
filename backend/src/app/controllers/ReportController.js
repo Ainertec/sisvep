@@ -1,4 +1,3 @@
-/* eslint-disable no-return-assign */
 const isBefore = require('date-fns/isBefore');
 const isValid = require('date-fns/isValid');
 const parseISO = require('date-fns/parseISO');
@@ -104,11 +103,14 @@ module.exports = {
       return sum + product.soldout;
     }, 0);
 
-    products.map((product) => {
-      return (product.soldout = ((product.soldout / totalProducts) * 100).toFixed(2));
+    const productsPecent = products.map((product) => {
+      const newProduct = product;
+      newProduct.soldout = ((product.soldout / totalProducts) * 100).toFixed(2);
+      return newProduct;
     });
+    console.log(productsPecent);
 
-    return res.json(products);
+    return res.json(productsPecent);
   },
   async amountProductsPercent(req, res) {
     const products = await Sale.aggregate()
@@ -137,11 +139,13 @@ module.exports = {
       return sum + product.soldout;
     }, 0);
 
-    products.map((product) => {
-      return (product.soldout = ((product.soldout / totalProducts) * 100).toFixed(2));
+    const productsPercent = products.map((product) => {
+      const newProduct = product;
+      newProduct.soldout = ((product.soldout / totalProducts) * 100).toFixed(2);
+      return newProduct;
     });
 
-    return res.json(products);
+    return res.json(productsPercent);
   },
   async providersProducts(req, res) {
     const providers = await Provider.aggregate()

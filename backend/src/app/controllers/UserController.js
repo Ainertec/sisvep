@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const mongoose = require('mongoose');
 const User = require('../models/User');
 const { Questions } = require('../models/User');
@@ -21,9 +22,9 @@ module.exports = {
       name: { $regex: new RegExp(name), $options: 'i' },
     });
 
-    users.map((user) => {
-      user.password_hash = undefined;
-      user.response = undefined;
+    users.forEach((userInterator) => {
+      userInterator.password_hash = undefined;
+      userInterator.response = undefined;
     });
 
     return res.json(users);
@@ -38,9 +39,9 @@ module.exports = {
 
     const users = await User.find();
 
-    users.map((user) => {
-      user.password_hash = undefined;
-      user.response = undefined;
+    users.forEach((userInterator) => {
+      userInterator.password_hash = undefined;
+      userInterator.response = undefined;
     });
 
     return res.json(users);

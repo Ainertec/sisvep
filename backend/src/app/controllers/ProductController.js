@@ -99,10 +99,6 @@ module.exports = {
       { $addToSet: { products: productUpdated._id } }
     );
 
-    // const provider = await Provider.findOne({ _id: providerId });
-    // await provider.populate('products').execPopulate();
-    // console.log(provider);
-
     return res.json(productUpdated);
   },
   async delete(req, res) {

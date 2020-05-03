@@ -1,16 +1,10 @@
-/* eslint-disable no-restricted-syntax */
 const mongoose = require('mongoose');
 const Provider = require('../models/Provider');
 
-const verifyId = (products) => {
-  let hasInvalidId = false;
-  products.map((product) => {
-    const isValid = mongoose.Types.ObjectId.isValid(product);
-    if (!isValid) {
-      hasInvalidId = true;
-    }
+const verifyProductsIds = (products) => {
+  return products.every((product) => {
+    return mongoose.Types.ObjectId.isValid(product);
   });
-  return hasInvalidId;
 };
 
 module.exports = {
@@ -31,7 +25,7 @@ module.exports = {
   async store(req, res) {
     const { name, description, phone, email, identification, products } = req.body;
 
-    if (verifyId(products)) {
+    if (!verifyProductsIds(products)) {
       return res.status(400).json({ message: `invalid product id` });
     }
     const provider = await Provider.create({
@@ -50,7 +44,7 @@ module.exports = {
 
     const { id } = req.query;
 
-    if (verifyId(products)) {
+    if (!verifyProductsIds(products)) {
       return res.status(400).json({ message: `invalid product id` });
     }
 
@@ -90,14 +84,10 @@ module.exports = {
 
     await provider.populate('products').execPopulate();
 
-    let hasProductInStock = false;
+    const hasProductInStock = provider.products.every((product) => {
+      return product.stock !== 0;
+    });
 
-    for (const iterator of provider.products) {
-      if (iterator.stock !== 0) {
-        hasProductInStock = true;
-        break;
-      }
-    }
     if (hasProductInStock) {
       return res.status(401).json({ message: `You have producs in stock for ${provider.name} ` });
     }

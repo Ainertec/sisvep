@@ -24,7 +24,7 @@ module.exports = {
   },
   async store(req, res) {
     const { itens, payment, total } = req.body;
-    const {userId} = req;
+    const { userId } = req;
     const alerts = [];
 
     const sale = await Sale.create({
@@ -36,7 +36,7 @@ module.exports = {
 
     await sale.populate('itens.product').populate('functionary').execPopulate();
 
-    sale.itens.map((item) => {
+    sale.itens.forEach((item) => {
       if (item.product.stock <= 5) {
         alerts.push(item.product.name);
       }
