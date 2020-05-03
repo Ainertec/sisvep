@@ -25,7 +25,7 @@ function telaAutenticacao(){
             codigoHTML+='<button onclick="efetuarLogin();" type="button" class="btn btn-primary border border-danger col-md-3">'
                 codigoHTML+='<span class="fas fa-key"></span> Acessar'
             codigoHTML+='</button>'
-            codigoHTML+='<a href="#" onclick="document.getElementById(\'areaRecuperarSenha\').innerHTML = telaRecuperacaoSenha();" style="margin-left:20px;" class="col-md-3">Esqueceu a senha?</a>'
+            codigoHTML+='<a href="#" onclick="if(document.getElementById(\'login\').value!=\'\'){telaRecuperacaoSenha();}else{mensagemDeErro(\'Digite o nome de usuario!\');}" style="margin-left:20px;" class="col-md-3">Esqueceu a senha?</a>'
         codigoHTML+='</div>'
     codigoHTML+='</form>'
     codigoHTML+='<div id="areaRecuperarSenha">'
@@ -45,24 +45,43 @@ function telaAutenticacao(){
 
 
 //funcao responsavel por gerar a tela de recuperacao de senha
-function telaRecuperacaoSenha(){
+async function telaRecuperacaoSenha(){
 
-    var codigoHTML='';
+    var codigoHTML='', questao = await requisicaoGET('forgot?name='+document.getElementById('login').value, null);
 
     codigoHTML='<h3 class="text-center" style="margin-top:30px;">Recuperar conta</h3>'
-    codigoHTML+='<form class="text-center" style="margin-top:10px;">'
+    codigoHTML+='<div class="text-center" style="margin-top:10px;">'
         codigoHTML+='<div class="form-row col-4 rounded mx-auto d-block">'
-            codigoHTML+='<label for="pergunta">Responda a pergunta de segurança:</label>'
+            codigoHTML+='<label for="pergunta">Responda a pergunta de segurança: '+questao.data.question+'</label>'
             codigoHTML+='<input id="pergunta" type="text" class="form-control mb-2" placeholder="Resposta">'
-            codigoHTML+='<input id="senha" type="password" class="form-control mb-2" placeholder="Digite uma nova senha">'
-            codigoHTML+='<button type="button" class="btn btn-primary border border-danger col-md-3">'
+            codigoHTML+='<input id="novaSenha" type="password" class="form-control mb-2" placeholder="Digite uma nova senha">'
+            codigoHTML+='<button onclick="recuperarSenha();" type="button" class="btn btn-primary border border-danger col-md-3">'
                 codigoHTML+='<span class="fas fa-key"></span> Recuperar'
             codigoHTML+='</button>'
         codigoHTML+='</div>'
-    codigoHTML+='</form>'
+    codigoHTML+='</div>'
 
-    return codigoHTML;
+    document.getElementById('areaRecuperarSenha').innerHTML = codigoHTML;
+}
 
+
+
+
+
+
+
+
+
+//funcao responsavel por recuperar a senha
+async function recuperarSenha(){
+    if(validaDadosCampo(['#login','#pergunta','#novaSenha'])){
+        var result = await requisicaoPOST('forgot',JSON.parse('{"name":"'+document.getElementById('login').value+'","response":"'+document.getElementById('pergunta').value+'","password":"'+document.getElementById('novaSenha').value+'"}'), null);
+        if(result){
+            mensagemDeAviso('Atualizado com sucesso!');
+        }   
+    }else{
+        mensagemDeErro('Preencha todos os dados!');
+    }
 }
 
 
@@ -90,14 +109,26 @@ function logout(){
 
 
 //funcao responsavel por efetuar login
-function efetuarLogin(){
+async function efetuarLogin(){
     
     logout();
 
-    if(1==1){
-        sessionStorage.setItem("login",JSON.stringify({"_id":"1a23e","nome":"Ana Paula","tipo":"Administrador"}));
-        window.location.href="home.html";
-        mensagemDeAviso("Usuário autenticado!");
+    if(validaDadosCampo(['#login','#senha'])){
+        var json = await requisicaoPOST('sessions',JSON.parse('{"name":"'+document.getElementById('login').value+'","password":"'+document.getElementById('senha').value+'"}'), null);
+
+        if(!json){
+            mensagemDeErro("Login/senha incorretos ou usuario inexistente!");
+        } else if(json.data.user._id){
+            if(json.data.user.admin){
+                sessionStorage.setItem("login",JSON.stringify({"_id":(json.data.user._id).toString(),"nome":(json.data.user.name).toString(),"tipo":"Administrador","token":(json.data.token).toString(),"question":(json.data.user.question).toString()}));
+            }else{
+                sessionStorage.setItem("login",JSON.stringify({"_id":(json.data.user._id).toString(),"nome":(json.data.user.name).toString(),"tipo":"Comum","token":(json.data.token).toString(),"question":(json.data.user.question).toString()}));
+            }
+            window.location.href="home.html";
+            mensagemDeAviso("Usuário autenticado!");
+        }
+    }else{
+        mensagemDeErro('Preencha todos os campos!');
     }
 
 }
