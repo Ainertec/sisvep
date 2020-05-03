@@ -11,11 +11,11 @@
 
 
 //funcao de requisicao get sem paramentro JSON
-async function requisicaoGET(url){
+async function requisicaoGET(url, authorization){
 
 	var retorno;
-	
-	await axios.get('http://localhost:3333/'+url)
+
+	await axios.get('http://localhost:3333/'+url, authorization)
 		.then(function(response){
 			if(response.status==200){
 				retorno=response;
@@ -40,22 +40,17 @@ async function requisicaoGET(url){
 
 
 //funcao de requisicao get sem paramentro JSON
-async function requisicaoDELETE(url,json){
-	var requisicao;
-
-	if(json==null){
-		requisicao = await axios.delete('http://localhost:3333/'+url)
-	}else{
-		requisicao = await axios.delete('http://localhost:3333/'+url+json)
-	}
-	requisicao.then(function(response){
-		if(response.status!=200){
-			mensagemDeErro(response);
-		}
-	})
-	.catch(function(error){
-		mensagemDeErro(error);
-	});
+async function requisicaoDELETE(url,json, authorization){
+	
+	await axios.delete('http://localhost:3333/'+url+json, authorization)
+		.then(function(response){
+			if(response.status!=200){
+				mensagemDeErro(response);
+			}
+		})
+		.catch(function(error){
+			mensagemDeErro(error);
+		});
 }
 
 
@@ -68,16 +63,22 @@ async function requisicaoDELETE(url,json){
 
 
 //funcao de requisicao post com paramentro JSON
-async function requisicaoPOST(url,json){
-	await axios.post('http://localhost:3333/'+url,json)
+async function requisicaoPOST(url,json,authorization){
+	var retorno;
+
+	await axios.post('http://localhost:3333/'+url,json, authorization)
 	.then(function(response){
 		if(response.status!=200){
 			mensagemDeErro(response);
+		}else{
+			retorno = response;
 		}
 	})
 	.catch(function(error){
 		mensagemDeErro(error);
 	});
+
+	return retorno;
 }
 
 
@@ -90,8 +91,8 @@ async function requisicaoPOST(url,json){
 
 
 //funcao de requisicao put com paramentro JSON
-async function requisicaoPUT(url,json){
-	await axios.put('http://localhost:3333/'+url,json)
+async function requisicaoPUT(url,json,authorization){
+	await axios.put('http://localhost:3333/'+url,json, authorization)
 	.then(function(response){
 		if(response.status!=200){
 			mensagemDeErro(response);
