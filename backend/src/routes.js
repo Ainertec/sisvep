@@ -13,8 +13,6 @@ const ReportController = require('./app/controllers/ReportController');
 const authMiddleware = require('./app/middleware/auth');
 const authorizationMiddleware = require('./app/middleware/authorization');
 
-// User
-
 // session
 
 routes.post(
@@ -27,6 +25,7 @@ routes.post(
   }),
   SessionController.store
 );
+
 // forgot password
 
 routes.get(
@@ -71,8 +70,10 @@ routes.post(
 
 // Only autenticated users
 routes.use(authMiddleware);
-// users
+
+// Users
 routes.get('/users', UserController.index);
+
 routes.get(
   '/users_by_name',
   celebrate({
@@ -104,8 +105,8 @@ routes.put(
       id: Joi.string().required(),
     },
     [Segments.BODY]: Joi.object().keys({
-      name: Joi.string().required(),
-      password: Joi.string().required(),
+      name: Joi.string(),
+      password: Joi.string(),
       question: Joi.string().required(),
       response: Joi.string().required(),
       admin: Joi.boolean(),
@@ -137,10 +138,7 @@ routes.get(
   }),
   ProductController.index
 );
-/**
- * @param date: String
- * @description return all products with a validity infomated
- */
+
 routes.get(
   '/products_validity',
   celebrate({
@@ -150,10 +148,17 @@ routes.get(
   }),
   ProductController.show
 );
-/**
- * @param barcode: Number
- * @description return the product with the barcode infomated
- */
+
+routes.get(
+  '/products_created_date',
+  celebrate({
+    [Segments.QUERY]: {
+      date: Joi.string().required(),
+    },
+  }),
+  ProductController.showByCreated
+);
+
 routes.get(
   '/products_barcode',
   celebrate({
@@ -284,6 +289,7 @@ routes.post(
 routes.use(authorizationMiddleware);
 
 routes.get('/sales', SaleController.index);
+
 routes.get(
   '/sales_by_id',
   celebrate({
@@ -294,7 +300,9 @@ routes.get(
   SaleController.show
 );
 
-// transactions
+routes.delete('/sales', SaleController.delete);
+
+// Report
 
 routes.get(
   '/report',
@@ -306,7 +314,7 @@ routes.get(
   }),
   ReportController.show
 );
-routes.get('/report_soldouts', ReportController.index);
+
 routes.get(
   '/report_solds_by_month',
   celebrate({
@@ -317,9 +325,14 @@ routes.get(
   }),
   ReportController.byMonth
 );
+routes.get('/report_soldouts', ReportController.index);
+
 routes.get('/report_products_total_percent', ReportController.soldsProductsPercent);
+
 routes.get('/report_products_amount_percent', ReportController.amountProductsPercent);
+
 routes.get('/report_providers_products', ReportController.providersProducts);
+
 routes.get('/report_sales_amount', ReportController.salesAmount);
 
 module.exports = routes;
