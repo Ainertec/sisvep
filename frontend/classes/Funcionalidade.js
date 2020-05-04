@@ -44,10 +44,11 @@ function limparTelaDeMensagem(){
 
 //funcao resopnsavel por validar os dados preenchidos nos campos
 function validaDadosCampo(campo){
+    var validacao = true;
     campo.forEach(function (item) {
-        if($(item).val() == '' && $(item).val() == null)
-            return false;    
+        if($(item).val() == '' || $(item).val() == null)
+            validacao = false;    
     });
 
-    return true;
+    return validacao;
 }

@@ -59,11 +59,11 @@ function telaFuncionario(tipo){
         codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
             codigoHTML+='<h5 class="text-center">Buscar Funcionário</h5>'
             codigoHTML+='<div class="input-group mb-3">'
-                codigoHTML+='<input id="buscaProduto" type="text" class="form-control" placeholder="Nome">'
+                codigoHTML+='<input id="buscaFuncionarioByName" type="text" class="form-control" placeholder="Nome">'
             codigoHTML+='</div>'
             codigoHTML+='<div class="btn-group btn-lg btn-block" role="group">'
-                codigoHTML+='<button onclick="buscarFuncionario(\'Administrador\');" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
-                codigoHTML+='<button onclick="buscarFuncionario(\'Administrador\');" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Exibir todos</button>'
+                codigoHTML+='<button onclick="buscarFuncionario(\'Administrador\',\'nome\');" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
+                codigoHTML+='<button onclick="buscarFuncionario(\'Administrador\',\'todos\');" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Exibir todos</button>'
             codigoHTML+='</div>'
         codigoHTML+='</div>'
     }
@@ -86,21 +86,31 @@ function telaFuncionario(tipo){
                     codigoHTML+='<input type="text" class="form-control" id="id" placeholder="ID" disabled>'
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="form-group col-md-6">'
-                    codigoHTML+='<label for="nome">Nome:</label>'
-                    codigoHTML+='<input type="Text" class="form-control" id="nome" placeholder="Nome">'
-                codigoHTML+='</div>'
-            codigoHTML+='</div>'
-            codigoHTML+='<div class="form-row">'
-                codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="login">Login:</label>'
                     codigoHTML+='<input type="text" class="form-control" id="login" placeholder="Login">'
                 codigoHTML+='</div>'
+            codigoHTML+='</div>'
+            codigoHTML+='<div class="form-row">'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="senha">Senha:</label>'
                     codigoHTML+='<input type="password" class="form-control" id="senha" placeholder="Senha">'
                 codigoHTML+='</div>'
+                codigoHTML+='<div class="form-group col-md-6">'
+                    codigoHTML+='<label for="question">Pergunta recuperação de senha:</label>'
+                        codigoHTML+='<select class="custom-select mr-sm-6" id="question">'
+                        codigoHTML+='<option value="Qual o modelo do seu primeiro carro?">Qual o modelo do seu primeiro carro?</option>'
+                        codigoHTML+='<option value="Qual o nome do seu melhor amigo de infância?">Qual o nome do seu melhor amigo de infância?</option>'
+                        codigoHTML+='<option value="Qual o nome do seu primeiro animal de estimação?">Qual o nome do seu primeiro animal de estimação?</option>'
+                        codigoHTML+='<option value="Qual o nome da sua mãe?">Qual o nome da sua mãe?</option>'
+                        codigoHTML+='<option value="Qual sua cor preferida?">Qual sua cor preferida?</option>'
+                    codigoHTML+='</select>'
+                codigoHTML+='</div>'
             codigoHTML+='</div>'
             codigoHTML+='<div class="form-row">'
+                codigoHTML+='<div class="form-group col-md-6">'
+                    codigoHTML+='<label for="senha">Resposta pergunta:</label>'
+                    codigoHTML+='<input type="text" class="form-control" id="response" placeholder="Resposta">'
+                codigoHTML+='</div>'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="tipoFun">Tipo de funcionário:</label>'
                     if(tipo=='Comum'){
@@ -108,13 +118,9 @@ function telaFuncionario(tipo){
                     }else if(tipo=='Admin'){
                         codigoHTML+='<select class="custom-select mr-sm-6" id="tipoFun">'
                     }
-                        codigoHTML+='<option value="Comum">Comum</option>'
-                        codigoHTML+='<option value="Administrador">Administrador</option>'
+                        codigoHTML+='<option value=false>Comum</option>'
+                        codigoHTML+='<option value=true>Administrador</option>'
                     codigoHTML+='</select>'
-                codigoHTML+='</div>'
-                codigoHTML+='<div class="form-group col-md-6">'
-                    codigoHTML+='<label for="email">Email:</label>'
-                    codigoHTML+='<input type="email" class="form-control" id="email" placeholder="Email@email.com.br">'
                 codigoHTML+='</div>'
             codigoHTML+='</div>'
             codigoHTML+='<div class="form-row">'
@@ -126,7 +132,7 @@ function telaFuncionario(tipo){
             codigoHTML+='</div>'
         codigoHTML+='</form>'
     codigoHTML+='</div>'
-
+    
     return codigoHTML;
 
 }
@@ -148,8 +154,13 @@ function carregarListaFuncionario(json,posicao){
 
     codigoHTML+='<a onclick="carregarDadosFuncionario('+posicao+');" href="#" class="list-group-item list-group-item-action">'
         codigoHTML+='<div class="d-flex w-100 justify-content-between">'
-            codigoHTML+='<h5 class="mb-1">Nome: '+json.nome+'</h5>'
-            codigoHTML+='<small>Tipo: '+json.tipofun+'</small>'
+            codigoHTML+='<h5 class="mb-1">Nome: '+json.name+'</h5>'
+            if(json.admin){
+                codigoHTML+='<small>Tipo: Administrador</small>'
+            }else{
+                codigoHTML+='<small>Tipo: Comum</small>'
+            }
+            
         codigoHTML+='</div>'
     codigoHTML+='</a>'
 
@@ -170,12 +181,10 @@ function carregarListaFuncionario(json,posicao){
 //funcao responsavel por carregar os dados do funcionario selecionado
 function carregarDadosFuncionario(posicao){
 
-    document.getElementById('id').value = VETORDEFUNCIONARIOCLASSEFUNCIONARIO[posicao].id;
-    document.getElementById('nome').value = VETORDEFUNCIONARIOCLASSEFUNCIONARIO[posicao].nome;
-    document.getElementById('login').value = VETORDEFUNCIONARIOCLASSEFUNCIONARIO[posicao].login;
-    document.getElementById('senha').value = VETORDEFUNCIONARIOCLASSEFUNCIONARIO[posicao].senha;
-    document.getElementById('tipoFun').value = VETORDEFUNCIONARIOCLASSEFUNCIONARIO[posicao].tipofun;
-    document.getElementById('email').value = VETORDEFUNCIONARIOCLASSEFUNCIONARIO[posicao].email;
+    document.getElementById('id').value = VETORDEFUNCIONARIOCLASSEFUNCIONARIO[posicao]._id;
+    document.getElementById('login').value = VETORDEFUNCIONARIOCLASSEFUNCIONARIO[posicao].name;
+    document.getElementById('question').value = VETORDEFUNCIONARIOCLASSEFUNCIONARIO[posicao].question;
+    document.getElementById('tipoFun').value = VETORDEFUNCIONARIOCLASSEFUNCIONARIO[posicao].admin;
 
 }
 
@@ -189,33 +198,39 @@ function carregarDadosFuncionario(posicao){
 
 
 //funcao responsavel por buscar os funcionarios
-function buscarFuncionario(tipo){
+async function buscarFuncionario(tipo,busca){
 
     VETORDEFUNCIONARIOCLASSEFUNCIONARIO=[];
 
     if(tipo=='Administrador'){
 
-        var json = '[{"id":"1a2","nome":"Funcionario 1","login":"fun 1","senha":"123","tipofun":"Administrador","email":"fun1@gmail.com"},{"id":"2b3","nome":"Funcionario 2","login":"fun 2","senha":"123","tipofun":"Comum","email":"fun2@gmail.com"}]', cont=0;
-
-        json = JSON.parse(json);
+        var cont=0;
+        
+        if(busca == 'nome'){
+            var user = JSON.parse(sessionStorage.getItem('login')),
+            json = await requisicaoGET('users_by_name?name='+document.getElementById('buscaFuncionarioByName').value, {headers:{Authorization:`Bearer ${user.token}`}});
+        }else if(busca == 'todos'){
+            var user = JSON.parse(sessionStorage.getItem('login')),
+            json = await requisicaoGET('users', {headers:{Authorization:`Bearer ${user.token}`}});
+        }
 
         document.getElementById('listaFuncionarios').innerHTML='';
 
-        while(json[0]){
-            VETORDEFUNCIONARIOCLASSEFUNCIONARIO.push(json[cont]);
-            $('#listaFuncionarios').append(carregarListaFuncionario(json[cont],cont));
+        while(json.data[cont]){
+            VETORDEFUNCIONARIOCLASSEFUNCIONARIO.push(json.data[cont]);
+            $('#listaFuncionarios').append(carregarListaFuncionario(json.data[cont],cont));
             cont++;
         }
 
     }else if(tipo=='Comum'){
         
-        var json = '{"id":"3c4","nome":"Funcionario 3","login":"fun 3","senha":"123","tipofun":"Comum","email":"fun3@gmail.com"}'
+        var user = JSON.parse(sessionStorage.getItem('login')),
+        json = '{"_id":"'+user._id+'","name":"'+user.nome+'","question":"'+user.question+'","admin":false}'
 
         json = JSON.parse(json);
 
         VETORDEFUNCIONARIOCLASSEFUNCIONARIO.push(json);
         carregarDadosFuncionario(0);
-
     }
 }
 
@@ -229,18 +244,25 @@ function buscarFuncionario(tipo){
 
 
 //funcao responsavel por cadastrar funcionario
-function cadastrarFuncionario(){
+async function cadastrarFuncionario(){
 
-    if(validaDadosCampo(['#nome','#login','#senha','#tipofun','#email'])){
+    if(validaDadosCampo(['#login','#senha','#response'])){
         
-        var json='{"nome":"'+$('#nome').val()+'",'
-                json+='"login":"'+$('#login').val()+'",'
-                json+='"senha":"'+$('#senha').val()+'",'
-                json+='"tipofun":"'+$('#tipoFun').val()+'",'
-                json+='"email":"'+$('#email').val()+'"}'
+        var json='{"name":"'+$('#login').val()+'",'
+                json+='"password":"'+$('#senha').val()+'",'
+                json+='"question":"'+$('#question').val()+'",'
+                json+='"response":"'+$('#response').val()+'",'
+                json+='"admin":'+$('#tipoFun').val()+'}'
         
-        document.getElementById('janela2').innerHTML = json;
-
+        try {
+            var user = JSON.parse(sessionStorage.getItem('login'));
+            await requisicaoPOST('users', JSON.parse(json), {headers:{Authorization:`Bearer ${user.token}`}});
+            mensagemDeAviso("Cadastrado com sucesso!");
+            autenticacaoFuncionarioFacede();
+        } catch (error) {
+            mensagemDeErro("Não foi possível efetuar o cadastro! Erro: "+error);
+        }
+        
     }else{
         mensagemDeErro('Preencha todos os campos!');
     }
@@ -257,18 +279,24 @@ function cadastrarFuncionario(){
 
 
 //funcao responsavel por atualizar funcionario
-function atualizarFuncionario(){
+async function atualizarFuncionario(){
     
-    if(validaDadosCampo(['#id','#nome','#login','#senha','#tipofun','#email'])){
+    if(validaDadosCampo(['#id','#login','#senha','#response'])){
         
-        var json='{"id":"'+$('#id').val()+'",'
-                json+='"nome":"'+$('#nome').val()+'",'
-                json+='"login":"'+$('#login').val()+'",'
-                json+='"senha":"'+$('#senha').val()+'",'
-                json+='"tipofun":"'+$('#tipoFun').val()+'",'
-                json+='"email":"'+$('#email').val()+'"}'
+        var json='{"name":"'+$('#login').val()+'",'
+                json+='"password":"'+$('#senha').val()+'",'
+                json+='"question":"'+$('#question').val()+'",'
+                json+='"response":"'+$('#response').val()+'",'
+                json+='"admin":'+$('#tipoFun').val()+'}'
         
-        document.getElementById('janela2').innerHTML = json;
+        try {
+            var user = JSON.parse(sessionStorage.getItem('login'));
+            await requisicaoPUT('users?id='+document.getElementById('id').value, JSON.parse(json), {headers:{Authorization:`Bearer ${user.token}`}});
+            mensagemDeAviso('Atualizado com sucesso!');
+            autenticacaoFuncionarioFacede();
+        } catch (error) {
+            mensagemDeErro('Não foi possível atualizar! Erro: '+error);
+        }
 
     }else{
         mensagemDeErro('Preencha todos os campos!');
@@ -286,15 +314,21 @@ function atualizarFuncionario(){
 
 
 //funcao responsavel por excluir o funcionario
-function excluirFuncionario(){
+async function excluirFuncionario(){
     
     if(validaDadosCampo(['#id'])){
-        
-        var json = '{"id":"'+$('#id').val()+'"}'
-        document.getElementById('janela2').innerHTML = json;
+
+        try {
+            var user = JSON.parse(sessionStorage.getItem('login'));
+            await requisicaoDELETE('users/'+$('#id').val(), '', {headers:{Authorization:`Bearer ${user.token}`}})
+            mensagemDeAviso('Excluido com sucesso!');
+            autenticacaoFuncionarioFacede();
+        } catch (error) {
+            mensagemDeErro('Não foi possível excluir! Erro: '+error);   
+        }
 
     }else{
-        mensagemDeErro('Não foi possivel, falta de ID!');
+        mensagemDeErro('Não foi possível excluir, falta de ID!');
     }
 
 }
