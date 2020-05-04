@@ -28,6 +28,21 @@ module.exports = {
 
     return res.json(products);
   },
+  async showByCreated(req, res) {
+    const { date } = req.query;
+
+    const initial = startOfMonth(parseISO(date));
+    const final = endOfMonth(initial);
+
+    if (!isValid(initial)) {
+      return res.status(400).json({ message: 'invalid date' });
+    }
+    const products = await Product.find({
+      createdAt: { $gte: initial, $lte: final },
+    });
+
+    return res.json(products);
+  },
   async index(req, res) {
     const { name } = req.query;
 
