@@ -108,7 +108,6 @@ module.exports = {
       newProduct.soldout = ((product.soldout / totalProducts) * 100).toFixed(2);
       return newProduct;
     });
-    console.log(productsPecent);
 
     return res.json(productsPecent);
   },
