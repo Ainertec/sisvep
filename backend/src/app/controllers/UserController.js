@@ -93,22 +93,27 @@ module.exports = {
 
     const authenticatedUser = await User.findOne({ _id: userId });
 
-    const existUser = await User.findOne({ name });
-
-    if (existUser) {
-      return res.status(400).json({ message: 'User aready exist' });
-    }
     const user = await User.findOneAndUpdate(
       { _id: id },
       {
-        name,
         question,
         response,
       },
       { new: true }
     );
 
-    user.password = password;
+    if (name) {
+      const existUser = await User.findOne({ name });
+
+      if (existUser) {
+        return res.status(400).json({ message: 'User aready exist' });
+      }
+      user.name = name;
+    }
+
+    if (password) {
+      user.password = password;
+    }
 
     if (authenticatedUser.admin) {
       user.admin = admin;
