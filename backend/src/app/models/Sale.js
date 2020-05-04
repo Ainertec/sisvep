@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
 const mongoose = require('mongoose');
 const Product = require('./Product');
@@ -38,13 +37,13 @@ const SaleSchema = new mongoose.Schema(
 );
 
 SaleSchema.post('save', async (document) => {
-  for (const iterator of document.itens) {
-    const product = await Product.findOne({ _id: iterator.product._id });
-
-    product.stock -= iterator.quantity;
-
-    await product.save();
-  }
+  await Promise.all(
+    document.itens.map(async (item) => {
+      const product = await Product.findOne({ _id: item.product._id });
+      product.stock -= item.quantity;
+      await product.save();
+    })
+  );
 });
 
 module.exports = mongoose.model('Sale', SaleSchema);
