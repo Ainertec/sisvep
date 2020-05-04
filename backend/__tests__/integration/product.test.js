@@ -168,7 +168,7 @@ describe('teste Product', () => {
   });
   it('shuld delete a product', async () => {
     const product = await factory.create('Product');
-    const provider = await factory.create('Provider', {
+    await factory.create('Provider', {
       products: product._id,
     });
     const user = await factory.create('User');
@@ -293,5 +293,47 @@ describe('teste Product', () => {
         name: 'Pão',
       })
     );
+  });
+
+  it('shuld list products by createdAt ', async () => {
+    const user = await factory.create('User');
+    await factory.create('Product', {
+      name: 'Pão',
+      validity: new Date(2020, 2, 8),
+    });
+
+    const response = await request(app)
+      .get('/products_created_date')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        date: '2020-05',
+      });
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'Pão',
+        }),
+      ])
+    );
+  });
+  it('shuld not list products by created with month not existent ', async () => {
+    const user = await factory.create('User');
+    const response = await request(app)
+      .get('/products_created_date')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        date: '2020-13',
+      });
+    expect(response.status).toBe(400);
+  });
+  it('shuld not list products by created with date unformatad ', async () => {
+    const user = await factory.create('User');
+    const response = await request(app)
+      .get('/products_created_date')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        date: '13-02',
+      });
+    expect(response.status).toBe(400);
   });
 });
