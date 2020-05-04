@@ -1,4 +1,6 @@
 const request = require('supertest');
+const sub = require('date-fns/sub');
+
 const factory = require('../factories');
 const app = require('../../src/app');
 const Product = require('../../src/app/models/Product');
@@ -38,7 +40,7 @@ describe('Provider', () => {
       .post('/sales')
       .set('Authorization', `Bearer ${user.generateToken()}`)
       .send({
-        itens: itens,
+        itens,
         payment: 'Dinheiro',
         total: 200,
       });
@@ -76,7 +78,7 @@ describe('Provider', () => {
       .post('/sales')
       .set('Authorization', `Bearer ${user.generateToken()}`)
       .send({
-        itens: itens,
+        itens,
         payment: 'Dinheiro',
         total: 200,
       });
@@ -121,7 +123,7 @@ describe('Provider', () => {
       .post('/sales')
       .set('Authorization', `Bearer ${user.generateToken()}`)
       .send({
-        itens: itens,
+        itens,
         payment: 'Dinheiro',
         total: 200,
       });
@@ -228,5 +230,22 @@ describe('Provider', () => {
       });
 
     expect(response.status).toBe(400);
+  });
+
+  it('should delete all sales with more then 6 years old', async () => {
+    const user = await factory.create('User');
+    await factory.createMany('Sale', 3, {
+      createdAt: sub(new Date(), { years: 7 }),
+    });
+    await factory.create('Sale');
+
+    const response = await request(app)
+      .delete('/sales')
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    const sales = await Sale.find().count();
+
+    expect(response.status).toBe(200);
+    expect(sales).toBe(1);
   });
 });
