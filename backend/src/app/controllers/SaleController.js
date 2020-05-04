@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const sub = require('date-fns/sub');
 const Sale = require('../models/Sale');
 
 module.exports = {
@@ -50,5 +51,14 @@ module.exports = {
       sale,
       alerts: alerts.length === 0 ? false : alerts,
     });
+  },
+  async delete(req, res) {
+    const date = sub(new Date(), { years: 7 });
+
+    await Sale.deleteMany({
+      createdAt: { $lte: date },
+    });
+
+    return res.status(200).send();
   },
 };
