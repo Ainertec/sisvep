@@ -243,7 +243,7 @@ describe('Provider', () => {
       .delete('/sales')
       .set('Authorization', `Bearer ${user.generateToken()}`);
 
-    const sales = await Sale.find().count();
+    const sales = await Sale.find().countDocuments();
 
     expect(response.status).toBe(200);
     expect(sales).toBe(1);
