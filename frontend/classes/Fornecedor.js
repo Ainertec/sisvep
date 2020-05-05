@@ -139,7 +139,7 @@ function carregarTelaDadosFornecedor(tipo){
             codigoHTML+='<input type="Text" class="form-control" id="nomeFornecedor" placeholder="Nome">'
         codigoHTML+='</div>'
         codigoHTML+='<div class="form-group col-md-6">'
-            codigoHTML+='<label for="cpf-cnpjFornecedor">CPF/CNPJ:</label>'
+            codigoHTML+='<label for="cpfCnpjFornecedor">CPF/CNPJ:</label>'
             codigoHTML+='<input type="text" class="form-control" id="cpfCnpjFornecedor" placeholder="CPF ou CNPJ">'
         codigoHTML+='</div>'
     codigoHTML+='</div>'
