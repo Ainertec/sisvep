@@ -46,9 +46,10 @@ Object.assign(UserSchema.statics, {
 UserSchema.virtual('password', { type: String, require: true });
 
 UserSchema.pre('save', async function (next) {
-  const hash = await bcrypt.hash(this.password, 8);
-  this.password_hash = hash;
-
+  if (this.password) {
+    const hash = await bcrypt.hash(this.password, 8);
+    this.password_hash = hash;
+  }
   next();
 });
 

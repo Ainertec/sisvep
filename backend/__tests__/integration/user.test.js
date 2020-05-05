@@ -91,6 +91,84 @@ describe('User', () => {
 
     expect(response.status).toBe(400);
   });
+  it('should update an user with password not provider', async () => {
+    const user = await factory.create('User', {
+      admin: true,
+    });
+    const response = await request(app)
+      .put('/users')
+      .query({
+        id: String(user._id),
+      })
+      .send({
+        name: 'Cleiton',
+        question: Questions.primeira,
+        response: 'Falei',
+        admin: true,
+      })
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        name: 'Cleiton',
+        admin: true,
+      })
+    );
+
+    expect(response.status).toBe(200);
+  });
+  it('should update an user with name and password not providers', async () => {
+    const user = await factory.create('User', {
+      admin: true,
+      name: 'Jão',
+    });
+    const response = await request(app)
+      .put('/users')
+      .query({
+        id: String(user._id),
+      })
+      .send({
+        question: Questions.primeira,
+        response: 'Falei',
+        admin: true,
+      })
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        name: 'Jão',
+        admin: true,
+      })
+    );
+
+    expect(response.status).toBe(200);
+  });
+  it('should update an user with name not provider', async () => {
+    const user = await factory.create('User', {
+      admin: true,
+      name: 'Jão',
+    });
+    const response = await request(app)
+      .put('/users')
+      .query({
+        id: String(user._id),
+      })
+      .send({
+        password: '1234',
+        question: Questions.primeira,
+        response: 'Falei',
+        admin: true,
+      })
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        name: 'Jão',
+        admin: true,
+      })
+    );
+
+    expect(response.status).toBe(200);
+  });
   it('should update an user', async () => {
     const user = await factory.create('User', {
       admin: true,
@@ -108,12 +186,14 @@ describe('User', () => {
         admin: true,
       })
       .set('Authorization', `Bearer ${user.generateToken()}`);
+
     expect(response.body).toEqual(
       expect.objectContaining({
         name: 'Cleiton',
         admin: true,
       })
     );
+
     expect(response.status).toBe(200);
   });
   it('should not update an user with invalid id', async () => {
@@ -210,7 +290,7 @@ describe('User', () => {
     expect(response.status).toBe(400);
   });
 
-  //list//
+  // list//
 
   it('should list all users', async () => {
     const user = await factory.create('User', {
@@ -300,7 +380,7 @@ describe('User', () => {
     expect(response.status).toBe(400);
   });
 
-  //Question//
+  // Question//
 
   it('should list the questions', async () => {
     const response = await request(app).get('/users_questions');

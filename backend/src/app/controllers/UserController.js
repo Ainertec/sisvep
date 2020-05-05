@@ -80,6 +80,7 @@ module.exports = {
       admin,
     });
     user.password_hash = undefined;
+    user.response = undefined;
     return res.json(user);
   },
   async update(req, res) {
@@ -91,16 +92,7 @@ module.exports = {
       return res.status(400).json({ message: `invalid user id` });
     }
 
-    const authenticatedUser = await User.findOne({ _id: userId });
-
-    const user = await User.findOneAndUpdate(
-      { _id: id },
-      {
-        question,
-        response,
-      },
-      { new: true }
-    );
+    const user = await User.findOne({ _id: id });
 
     if (name) {
       const existUser = await User.findOne({ name });
@@ -115,11 +107,17 @@ module.exports = {
       user.password = password;
     }
 
+    const authenticatedUser = await User.findOne({ _id: userId });
+
     if (authenticatedUser.admin) {
       user.admin = admin;
     }
 
+    user.question = question;
+    user.response = response;
+
     await user.save();
+
     user.password_hash = undefined;
     user.response = undefined;
 
