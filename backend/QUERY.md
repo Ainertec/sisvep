@@ -1,4 +1,7 @@
 ## Query para inserção do usuário admin no banco de dados
+
+use sisvep
+
 db.users.insert(
   {
     "admin":true,
