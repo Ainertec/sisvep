@@ -6,10 +6,44 @@ const startOfMonth = require('date-fns/startOfMonth');
 const Product = require('../models/Product');
 const Provider = require('../models/Provider');
 
+const informationsProdutsProviders = () => {
+  return {
+    _id: '$products_all._id',
+    name: '$products_all.name',
+    price: '$products_all.price',
+    cost: '$products_all.cost',
+    barcode: '$products_all.barcode',
+    validity: '$products_all.validity',
+    stock: '$products_all.stock',
+    description: '$products_all.description',
+    createdAt: '$products_all.createdAt',
+    updatedAt: '$products_all.updatedAt',
+    provider: {
+      _id: '$_id',
+      name: '$name',
+      identification: '$identification',
+      phone: '$phone',
+      email: '$email',
+    },
+  };
+};
+
 module.exports = {
   async showByBarcode(req, res) {
     const { barcode } = req.query;
-    const product = await Product.findOne({ barcode });
+
+    const product = await Product.findOne({ barcode }).lean();
+
+    const provider = await Provider.findOne({ products: [product._id] }).lean();
+
+    product.provider = {
+      _id: provider._id,
+      name: provider.name,
+      identificarion: provider.identification,
+      phone: provider.phone,
+      emial: provider.email,
+    };
+
     return res.json(product);
   },
   async show(req, res) {
@@ -22,9 +56,19 @@ module.exports = {
       return res.status(400).json({ message: 'invalid date' });
     }
 
-    const products = await Product.find({
-      validity: { $gte: initial, $lte: final },
-    });
+    const products = await Provider.aggregate()
+      .unwind('products')
+      .lookup({
+        from: 'products',
+        localField: 'products',
+        foreignField: '_id',
+        as: 'products_all',
+      })
+      .unwind('products_all')
+      .match({
+        'products_all.validity': { $gte: initial, $lte: final },
+      })
+      .project(informationsProdutsProviders());
 
     return res.json(products);
   },
@@ -37,22 +81,38 @@ module.exports = {
     if (!isValid(initial)) {
       return res.status(400).json({ message: 'invalid date' });
     }
-    const products = await Product.find({
-      createdAt: { $gte: initial, $lte: final },
-    });
+    const products = await Provider.aggregate()
+      .unwind('products')
+      .lookup({
+        from: 'products',
+        localField: 'products',
+        foreignField: '_id',
+        as: 'products_all',
+      })
+      .unwind('products_all')
+      .match({
+        'products_all.createdAt': { $gte: initial, $lte: final },
+      })
+      .project(informationsProdutsProviders());
 
     return res.json(products);
   },
   async index(req, res) {
     const { name } = req.query;
 
-    if (!name) {
-      const products = await Product.find({});
-      return res.json(products);
-    }
-    const products = await Product.find({
-      name: { $regex: new RegExp(name), $options: 'i' },
-    });
+    const products = await Provider.aggregate()
+      .unwind('products')
+      .lookup({
+        from: 'products',
+        localField: 'products',
+        foreignField: '_id',
+        as: 'products_all',
+      })
+      .unwind('products_all')
+      .match({
+        'products_all.name': { $regex: new RegExp(name), $options: 'i' },
+      })
+      .project(informationsProdutsProviders());
 
     return res.json(products);
   },

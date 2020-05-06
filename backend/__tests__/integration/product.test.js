@@ -191,15 +191,26 @@ describe('teste Product', () => {
 
   it('shuld list products by name ', async () => {
     const user = await factory.create('User');
-    await factory.create('Product', {
+    const product = await factory.create('Product', {
       name: 'Chocolate',
       description: 'Bão de mais',
     });
 
+    const product2 = await factory.create('Product', {
+      name: 'Chamito',
+      description: 'Bão de mais',
+    });
+    await factory.create('Provider', {
+      products: [product._id, product2._id],
+    });
+
+    await factory.createMany('Provider', 2);
+
     const response = await request(app)
       .get('/products')
       .set('Authorization', `Bearer ${user.generateToken()}`)
-      .query({ name: 'Chocolate' });
+      .query({ name: 'Choc' });
+
     expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -210,19 +221,23 @@ describe('teste Product', () => {
   });
   it('shuld list all products ', async () => {
     const user = await factory.create('User');
-    await factory.create('Product', {
+    const product1 = await factory.create('Product', {
       name: 'Pão',
       description: 'Bão de mais',
     });
-    await factory.create('Product', {
+    const product2 = await factory.create('Product', {
       name: 'Ovo',
       description: 'Bão de mais',
+    });
+    await factory.create('Provider', {
+      products: [product1._id, product2._id],
     });
 
     const response = await request(app)
       .get('/products')
       .set('Authorization', `Bearer ${user.generateToken()}`)
       .query();
+
     expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -236,10 +251,15 @@ describe('teste Product', () => {
   });
   it('shuld list products by validity ', async () => {
     const user = await factory.create('User');
-    await factory.create('Product', {
-      name: 'Pão',
+    const product = await factory.create('Product', {
+      name: 'Agrião',
       validity: new Date(2020, 2, 8),
     });
+
+    await factory.create('Provider', {
+      products: [product._id],
+    });
+    await factory.createMany('Provider', 2);
 
     const response = await request(app)
       .get('/products_validity')
@@ -247,10 +267,11 @@ describe('teste Product', () => {
       .query({
         date: '2020-03',
       });
+    console.log(response.body);
     expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          name: 'Pão',
+          name: 'Agrião',
         }),
       ])
     );
@@ -277,9 +298,12 @@ describe('teste Product', () => {
   });
   it('shuld list products by barcode ', async () => {
     const user = await factory.create('User');
-    await factory.create('Product', {
+    const product = await factory.create('Product', {
       name: 'Pão',
       barcode: 12345,
+    });
+    await factory.create('Provider', {
+      products: [product._id],
     });
     const response = await request(app)
       .get('/products_barcode')
@@ -297,21 +321,26 @@ describe('teste Product', () => {
 
   it('shuld list products by createdAt ', async () => {
     const user = await factory.create('User');
-    await factory.create('Product', {
-      name: 'Pão',
-      validity: new Date(2020, 2, 8),
+    const product = await factory.create('Product', {
+      name: 'Tomate',
+      createdAt: new Date(2020, 2, 8),
     });
+    await factory.create('Provider', {
+      products: [product._id],
+    });
+    await factory.createMany('Provider', 2);
 
     const response = await request(app)
       .get('/products_created_date')
       .set('Authorization', `Bearer ${user.generateToken()}`)
       .query({
-        date: '2020-05',
+        date: '2020-03',
       });
+    console.log(response.body);
     expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          name: 'Pão',
+          name: 'Tomate',
         }),
       ])
     );
