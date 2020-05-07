@@ -171,12 +171,14 @@ describe('teste Product', () => {
     await factory.create('Provider', {
       products: product._id,
     });
+
     const user = await factory.create('User');
     const response = await request(app)
       .delete(`/products/${product._id}`)
       .set('Authorization', `Bearer ${user.generateToken()}`);
 
     const providers = await Provider.findOne().lean();
+
     expect(response.status).toBe(200);
     expect(providers.products).toEqual([]);
   });
@@ -267,7 +269,7 @@ describe('teste Product', () => {
       .query({
         date: '2020-03',
       });
-    console.log(response.body);
+
     expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -336,7 +338,6 @@ describe('teste Product', () => {
       .query({
         date: '2020-03',
       });
-    console.log(response.body);
     expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({

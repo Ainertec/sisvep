@@ -183,7 +183,9 @@ module.exports = {
       return res.status(400).json({ message: `invalid product id` });
     }
 
-    await Product.findOneAndRemove({ _id: id });
+    const product = await Product.findOne({ _id: id });
+
+    if (product) await Product.findOneAndRemove({ _id: id });
     return res.json('Product deleted.');
   },
 };

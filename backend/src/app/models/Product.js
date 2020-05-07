@@ -41,7 +41,11 @@ ProductSchema.post('findOneAndRemove', (document) => {
   Provider.find({ products: { $in: [productId] } }).then((providers) => {
     Promise.all(
       providers.map((provider) =>
-        Provider.findOneAndUpdate(provider._id, { $pull: { products: productId } }, { new: true })
+        Provider.findOneAndUpdate(
+          { _id: provider._id },
+          { $pull: { products: productId } },
+          { new: true }
+        )
       )
     );
   });
