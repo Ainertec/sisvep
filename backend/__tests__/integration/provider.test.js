@@ -65,7 +65,7 @@ describe('Provider', () => {
     const product = await factory.create('Product');
     const provider = await factory.create('Provider');
 
-    let productsArray = provider.products;
+    const productsArray = provider.products;
     productsArray.push(product._id);
 
     const response = await request(app)
@@ -136,6 +136,20 @@ describe('Provider', () => {
     });
     const provider = await factory.create('Provider', {
       products: product._id,
+    });
+
+    const response = await request(app)
+      .delete(`/providers/${provider._id}`)
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    const deletedProvider = await Provider.findOne({});
+    expect(deletedProvider).toBe(null);
+    expect(response.status).toBe(200);
+  });
+  it('should delete a provider without products', async () => {
+    const user = await factory.create('User');
+    const provider = await factory.create('Provider', {
+      products: [],
     });
 
     const response = await request(app)

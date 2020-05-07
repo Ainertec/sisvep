@@ -204,7 +204,9 @@ routes.put(
   }),
   ProductController.update
 );
-
+// const hasId = async (id) => {
+//   return id;
+// };
 routes.delete(
   '/products/:id',
   celebrate({

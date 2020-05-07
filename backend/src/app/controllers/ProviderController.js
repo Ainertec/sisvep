@@ -84,13 +84,16 @@ module.exports = {
 
     await provider.populate('products').execPopulate();
 
-    const hasProductInStock = provider.products.every((product) => {
-      return product.stock !== 0;
-    });
+    if (provider.products.length > 0) {
+      const hasProductInStock = provider.products.every((product) => {
+        return product.stock !== 0;
+      });
 
-    if (hasProductInStock) {
-      return res.status(401).json({ message: `You have producs in stock for ${provider.name} ` });
+      if (hasProductInStock) {
+        return res.status(401).json({ message: `You have producs in stock for ${provider.name} ` });
+      }
     }
+
     await Provider.deleteOne({ _id: provider._id });
 
     return res.status(200).send();
