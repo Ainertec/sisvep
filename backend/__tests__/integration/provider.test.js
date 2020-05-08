@@ -35,7 +35,6 @@ describe('Provider', () => {
         identification: '176.963.917-98',
         products: [product._id, product2._id],
       });
-    // console.log(response.body);
     expect(response.body).toEqual(
       expect.objectContaining({
         name: 'José Aldo',
@@ -58,6 +57,7 @@ describe('Provider', () => {
         identification: '176.963.917-98',
         products: ['qwertsd1234', product._id],
       });
+
     expect(response.status).toBe(400);
   });
   it('should update a provider', async () => {

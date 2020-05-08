@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-const mongoose = require('mongoose');
 const User = require('../models/User');
 const { Questions } = require('../models/User');
 
@@ -84,10 +83,6 @@ module.exports = {
     const { id } = req.query;
     const { userId } = req;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: `invalid user id` });
-    }
-
     const user = await User.findOne({ _id: id });
     if (!user) return res.status(400).json('user does not exist');
 
@@ -123,10 +118,6 @@ module.exports = {
   async delete(req, res) {
     const { id } = req.params;
     const { userId } = req;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: `invalid user id` });
-    }
 
     if (userId === id) {
       await User.deleteOne({ _id: id });

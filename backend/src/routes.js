@@ -1,4 +1,5 @@
 const routes = require('express').Router();
+const mongoose = require('mongoose');
 
 const { celebrate, Joi, Segments } = require('celebrate');
 
@@ -12,6 +13,14 @@ const ReportController = require('./app/controllers/ReportController');
 
 const authMiddleware = require('./app/middleware/auth');
 const authorizationMiddleware = require('./app/middleware/authorization');
+
+// custom validation
+const validObjectId = (value, helpers) => {
+  if (!mongoose.Types.ObjectId.isValid(value)) {
+    return helpers.message('Invalid id');
+  }
+  return value;
+};
 
 // session
 
@@ -50,23 +59,6 @@ routes.post(
 );
 
 routes.get('/users_questions', UserController.getQuestion);
-// /////////////// Somente para testes  ////////////////////
-// routes.post(
-//   '/users_test',
-//   celebrate({
-//     [Segments.QUERY]: {
-//       teste: Joi.boolean(),
-//     },
-//     [Segments.BODY]: Joi.object().keys({
-//       name: Joi.string().required(),
-//       password: Joi.string().required(),
-//       question: Joi.string().required(),
-//       response: Joi.string().required(),
-//       admin: Joi.boolean(),
-//     }),
-//   }),
-//   UserController.store
-// );
 
 // Only autenticated users
 routes.use(authMiddleware);
@@ -102,7 +94,7 @@ routes.put(
   '/users',
   celebrate({
     [Segments.QUERY]: {
-      id: Joi.string().required(),
+      id: Joi.custom(validObjectId, 'valid id').required(),
     },
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string(),
@@ -118,7 +110,7 @@ routes.delete(
   '/users/:id',
   celebrate({
     [Segments.PARAMS]: {
-      id: Joi.string().required(),
+      id: Joi.custom(validObjectId, 'valid id').required(),
     },
   }),
   UserController.delete
@@ -189,8 +181,8 @@ routes.put(
   '/products',
   celebrate({
     [Segments.QUERY]: {
-      id: Joi.string().required(),
-      providerId: Joi.string().required(),
+      id: Joi.custom(validObjectId, 'valid id').required(),
+      providerId: Joi.custom(validObjectId, 'valid id').required(),
     },
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string().required(),
@@ -204,14 +196,12 @@ routes.put(
   }),
   ProductController.update
 );
-// const hasId = async (id) => {
-//   return id;
-// };
+
 routes.delete(
   '/products/:id',
   celebrate({
     [Segments.PARAMS]: {
-      id: Joi.string().required(),
+      id: Joi.custom(validObjectId, 'valid id').required(),
     },
   }),
   ProductController.delete
@@ -249,7 +239,7 @@ routes.put(
   '/providers',
   celebrate({
     [Segments.QUERY]: {
-      id: Joi.string().required(),
+      id: Joi.custom(validObjectId, 'valid id').required(),
     },
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string().required(),
@@ -266,7 +256,7 @@ routes.delete(
   '/providers/:id',
   celebrate({
     [Segments.PARAMS]: {
-      id: Joi.required(),
+      id: Joi.custom(validObjectId, 'valid id').required(),
     },
   }),
   ProviderController.delete
@@ -296,7 +286,7 @@ routes.get(
   '/sales_by_id',
   celebrate({
     [Segments.QUERY]: {
-      id: Joi.string().required(),
+      id: Joi.custom(validObjectId, 'valid id').required(),
     },
   }),
   SaleController.show

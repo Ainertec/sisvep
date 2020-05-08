@@ -1,14 +1,9 @@
-const mongoose = require('mongoose');
 const sub = require('date-fns/sub');
 const Sale = require('../models/Sale');
 
 module.exports = {
   async show(req, res) {
     const { id } = req.query;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: `invalid provider id` });
-    }
 
     const sale = await Sale.findOne({ _id: id })
       .populate('itens.product')

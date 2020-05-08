@@ -257,7 +257,6 @@ describe('User', () => {
         admin: false,
       })
       .set('Authorization', `Bearer ${user.generateToken()}`);
-
     expect(response.status).toBe(400);
   });
   it('should not update an user admin type without privileges of admin', async () => {

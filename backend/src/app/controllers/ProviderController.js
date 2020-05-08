@@ -48,10 +48,6 @@ module.exports = {
       return res.status(400).json({ message: `invalid product id` });
     }
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: `invalid provider id` });
-    }
-
     const provider = await Provider.findOneAndUpdate(
       { _id: id },
       {
@@ -71,10 +67,6 @@ module.exports = {
   },
   async delete(req, res) {
     const { id } = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: `invalid provider id` });
-    }
 
     const provider = await Provider.findOne({ _id: id });
 

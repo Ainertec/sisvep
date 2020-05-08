@@ -145,14 +145,6 @@ module.exports = {
     const { name, description, barcode, price, cost, validity, stock } = req.body;
     const { id, providerId } = req.query;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: `invalid product id` });
-    }
-
-    if (!mongoose.Types.ObjectId.isValid(providerId)) {
-      return res.status(400).json({ message: `invalid provider id` });
-    }
-
     const product = await Product.findOneAndUpdate(
       { _id: id },
       {
@@ -174,10 +166,6 @@ module.exports = {
   },
   async delete(req, res) {
     const { id } = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: `invalid product id` });
-    }
 
     const product = await Product.findOne({ _id: id });
 
