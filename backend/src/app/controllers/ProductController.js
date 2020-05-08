@@ -163,18 +163,14 @@ module.exports = {
         cost,
         validity,
         stock,
-      }
+      },
+      { new: true }
     );
     if (!product) return res.status(400).json('product does not exist');
 
-    const productUpdated = await Product.findOne({ _id: id });
+    await Provider.findOneAndUpdate({ _id: providerId }, { $addToSet: { products: product._id } });
 
-    await Provider.findOneAndUpdate(
-      { _id: providerId },
-      { $addToSet: { products: productUpdated._id } }
-    );
-
-    return res.json(productUpdated);
+    return res.json(product);
   },
   async delete(req, res) {
     const { id } = req.params;
@@ -186,6 +182,6 @@ module.exports = {
     const product = await Product.findOne({ _id: id });
 
     if (product) await Product.findOneAndRemove({ _id: id });
-    return res.json('Product deleted.');
+    return res.status(200).json('Product deleted.');
   },
 };

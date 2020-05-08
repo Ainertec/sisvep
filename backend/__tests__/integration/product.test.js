@@ -43,6 +43,51 @@ describe('teste Product', () => {
 
     expect(response.status).toBe(200);
   });
+  it('shuld create a Product without providerId', async () => {
+    const product = await factory.build('Product', {
+      name: 'Chocolate',
+      description: 'Bão de mais',
+    });
+    const user = await factory.create('User');
+    const response = await request(app)
+      .post('/products')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .send({
+        name: 'Muzarela',
+        description: product.description,
+        price: product.price,
+        cost: product.cost,
+        barcode: product.barcode,
+        validity: product.validity,
+        stock: product.stock,
+      });
+
+    expect(response.status).toBe(200);
+  });
+  it('shuld create a Product', async () => {
+    const provider = await factory.create('Provider');
+
+    const product = await factory.build('Product', {
+      name: 'Chocolate',
+      description: 'Bão de mais',
+    });
+    const user = await factory.create('User');
+    const response = await request(app)
+      .post('/products')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .send({
+        providerId: provider._id,
+        name: 'Muzarela',
+        description: product.description,
+        price: product.price,
+        cost: product.cost,
+        barcode: product.barcode,
+        validity: product.validity,
+        stock: product.stock,
+      });
+
+    expect(response.status).toBe(200);
+  });
   it('shuld not create a Product with invalid provider id', async () => {
     const product = await factory.build('Product', {
       name: 'Chocolate',
@@ -119,6 +164,32 @@ describe('teste Product', () => {
       })
     );
   });
+  it('shuld not update a product unixestent', async () => {
+    const product = await factory.create('Product');
+    const provider = await factory.create('Provider', {
+      products: [product._id],
+    });
+
+    const user = await factory.create('User');
+
+    const response = await request(app)
+      .put('/products')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .send({
+        name: 'Tortugita',
+        description: 'Chocolate com Morango',
+        price: product.price,
+        cost: product.cost,
+        barcode: product.barcode,
+        validity: product.validity,
+        stock: product.stock,
+      })
+      .query({
+        id: String(provider._id),
+        providerId: String(product._id),
+      });
+    expect(response.status).toBe(400);
+  });
   it('shuld not update a product with a invalid id', async () => {
     const product = await factory.create('Product');
     const user = await factory.create('User');
@@ -182,6 +253,22 @@ describe('teste Product', () => {
     expect(response.status).toBe(200);
     expect(providers.products).toEqual([]);
   });
+  it('shuld not delete an unexistent product', async () => {
+    const product = await factory.create('Product');
+    const provider = await factory.create('Provider', {
+      products: product._id,
+    });
+
+    const user = await factory.create('User');
+    const response = await request(app)
+      .delete(`/products/${provider._id}`)
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    const providers = await Provider.findOne().lean();
+
+    expect(response.status).toBe(200);
+    expect(providers.products).toEqual([product._id]);
+  });
   it('shuld not delete a product whit invalid id', async () => {
     const user = await factory.create('User');
     const response = await request(app)
@@ -221,36 +308,36 @@ describe('teste Product', () => {
       ])
     );
   });
-  it('shuld list all products ', async () => {
-    const user = await factory.create('User');
-    const product1 = await factory.create('Product', {
-      name: 'Pão',
-      description: 'Bão de mais',
-    });
-    const product2 = await factory.create('Product', {
-      name: 'Ovo',
-      description: 'Bão de mais',
-    });
-    await factory.create('Provider', {
-      products: [product1._id, product2._id],
-    });
+  // it('shuld list all products ', async () => {
+  //   const user = await factory.create('User');
+  //   const product1 = await factory.create('Product', {
+  //     name: 'Pão',
+  //     description: 'Bão de mais',
+  //   });
+  //   const product2 = await factory.create('Product', {
+  //     name: 'Ovo',
+  //     description: 'Bão de mais',
+  //   });
+  //   await factory.create('Provider', {
+  //     products: [product1._id, product2._id],
+  //   });
 
-    const response = await request(app)
-      .get('/products')
-      .set('Authorization', `Bearer ${user.generateToken()}`)
-      .query();
+  //   const response = await request(app)
+  //     .get('/products')
+  //     .set('Authorization', `Bearer ${user.generateToken()}`)
+  //     .query();
 
-    expect(response.body).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          name: 'Pão',
-        }),
-        expect.objectContaining({
-          name: 'Ovo',
-        }),
-      ])
-    );
-  });
+  //   expect(response.body).toEqual(
+  //     expect.arrayContaining([
+  //       expect.objectContaining({
+  //         name: 'Pão',
+  //       }),
+  //       expect.objectContaining({
+  //         name: 'Ovo',
+  //       }),
+  //     ])
+  //   );
+  // });
   it('shuld list products by validity ', async () => {
     const user = await factory.create('User');
     const product = await factory.create('Product', {

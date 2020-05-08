@@ -51,22 +51,22 @@ routes.post(
 
 routes.get('/users_questions', UserController.getQuestion);
 // /////////////// Somente para testes  ////////////////////
-routes.post(
-  '/users_test',
-  celebrate({
-    [Segments.QUERY]: {
-      teste: Joi.boolean(),
-    },
-    [Segments.BODY]: Joi.object().keys({
-      name: Joi.string().required(),
-      password: Joi.string().required(),
-      question: Joi.string().required(),
-      response: Joi.string().required(),
-      admin: Joi.boolean(),
-    }),
-  }),
-  UserController.store
-);
+// routes.post(
+//   '/users_test',
+//   celebrate({
+//     [Segments.QUERY]: {
+//       teste: Joi.boolean(),
+//     },
+//     [Segments.BODY]: Joi.object().keys({
+//       name: Joi.string().required(),
+//       password: Joi.string().required(),
+//       question: Joi.string().required(),
+//       response: Joi.string().required(),
+//       admin: Joi.boolean(),
+//     }),
+//   }),
+//   UserController.store
+// );
 
 // Only autenticated users
 routes.use(authMiddleware);
@@ -133,7 +133,7 @@ routes.get(
   '/products',
   celebrate({
     [Segments.QUERY]: {
-      name: Joi.string(),
+      name: Joi.string().required(),
     },
   }),
   ProductController.index

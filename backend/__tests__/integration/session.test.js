@@ -41,7 +41,7 @@ describe('Login', () => {
     expect(response.status).toBe(401);
   });
   it('should not authenticate with invalid credentials(name)', async () => {
-    const user = await factory.create('User', {
+    await factory.create('User', {
       name: 'Cleiton',
       password: '1234',
     });
@@ -80,7 +80,7 @@ describe('Login', () => {
     expect(response.status).toBe(401);
   });
 
-  it('should be able acess private routes', async () => {
+  it('should be able access private routes', async () => {
     const user = await factory.create('User', {
       name: 'Cleiton',
       password: '1234',
@@ -88,6 +88,7 @@ describe('Login', () => {
 
     const response = await request(app)
       .get('/products')
+      .query({ name: 'Choc' })
       .set('Authorization', `Bearer ${user.generateToken()}`);
 
     expect(response.status).toBe(200);

@@ -2,6 +2,7 @@ const request = require('supertest');
 const factory = require('../factories');
 const app = require('../../src/app');
 const User = require('../../src/app/models/User');
+const Product = require('../../src/app/models/User');
 const { Questions } = require('../../src/app/models/User');
 const connectionManager = require('../utils/connectionManager');
 
@@ -17,6 +18,7 @@ describe('User', () => {
   });
   afterEach(async () => {
     await User.deleteMany({});
+    await Product.deleteMany({});
   });
 
   it('should create a user', async () => {
@@ -142,6 +144,26 @@ describe('User', () => {
 
     expect(response.status).toBe(200);
   });
+  it('should not update a user with name aready existent', async () => {
+    const user = await factory.create('User', {
+      admin: true,
+      name: 'Jão',
+    });
+    const response = await request(app)
+      .put('/users')
+      .query({
+        id: String(user._id),
+      })
+      .send({
+        name: 'Jão',
+        question: Questions.primeira,
+        response: 'Falei',
+        admin: true,
+      })
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.status).toBe(400);
+  });
   it('should update an user with name not provider', async () => {
     const user = await factory.create('User', {
       admin: true,
@@ -168,6 +190,28 @@ describe('User', () => {
     );
 
     expect(response.status).toBe(200);
+  });
+  it('should not update an unexistent user', async () => {
+    const user = await factory.create('User', {
+      admin: true,
+    });
+    const product = await factory.create('Product');
+
+    const response = await request(app)
+      .put('/users')
+      .query({
+        id: String(product._id),
+      })
+      .send({
+        name: 'Cleiton',
+        password: '123123',
+        question: Questions.primeira,
+        response: 'Falei',
+        admin: true,
+      })
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.status).toBe(400);
   });
   it('should update an user', async () => {
     const user = await factory.create('User', {

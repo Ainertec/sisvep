@@ -49,7 +49,6 @@ module.exports = {
   async store(req, res) {
     const { name, password, question, response, admin } = req.body;
     const { userId } = req;
-    const { teste } = req.query;
 
     const questions = Questions.getQuestions();
 
@@ -64,12 +63,9 @@ module.exports = {
     }
 
     const althenticatedUser = await User.findOne({ _id: userId });
-    if (!teste) {
-      if (!althenticatedUser.admin) {
-        return res
-          .status(400)
-          .json({ message: 'You cannot create a user without admin privileges' });
-      }
+
+    if (!althenticatedUser.admin) {
+      return res.status(400).json({ message: 'You cannot create a user without admin privileges' });
     }
 
     const user = await User.create({
@@ -93,6 +89,7 @@ module.exports = {
     }
 
     const user = await User.findOne({ _id: id });
+    if (!user) return res.status(400).json('user does not exist');
 
     if (name) {
       const existUser = await User.findOne({ name });
