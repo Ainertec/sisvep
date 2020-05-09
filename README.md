@@ -62,7 +62,7 @@ Node JS<br/>
 - Font end<br/>
 Electron<br/>
 - Percistencia<br/>
-não definido ainda<br/><br/>
+MongoDB<br/><br/>
 
 Data de inicio do projeto 24-03-2020 como consta na busca da marca no INPI<br/>
 Inicio do projeto em 04-04-2020<br/><br/>
