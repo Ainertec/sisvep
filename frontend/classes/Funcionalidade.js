@@ -52,3 +52,22 @@ function validaDadosCampo(campo){
 
     return validacao;
 }
+
+
+
+
+
+
+
+
+
+//funcao responsavel por validar valores invalidos nos campos(valores negativos e zerados)
+function validaValoresCampo(campo){
+    var validacao = true;
+    campo.forEach(function (item) {
+        if(parseFloat($(item).val()) < 0.0 || parseFloat($(item).val()) == 0.0)
+            validacao = false;    
+    });
+
+    return validacao;
+}
