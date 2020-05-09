@@ -10,10 +10,21 @@
 
 
 
+//vetor responsavel por guardar em tempo de execução os produtos da busca
+var VETORPRODUTOCLASSESTOQUE=[];
+
+
+
+
+
+
+
+
 
 //funcao responsavel pela autenticacao no setor estoque
 function autenticacaoEstoqueFacede(){
     
+    VETORPRODUTOCLASSESTOQUE=[];
     var situacao = autenticacaoLogin();
     
     if(JSON.parse(situacao).tipo == 'Administrador' || JSON.parse(situacao).tipo == 'Comum'){
@@ -50,9 +61,9 @@ function telaEstoque(){
             codigoHTML+='<input id="buscaProdutoQuantidade" type="Number" class="form-control" placeholder="Quantidade">'
         codigoHTML+='</div>'
         codigoHTML+='<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
-            codigoHTML+='<button onclick="buscarProdutoEstoque();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
-            codigoHTML+='<button onclick="buscarProdutoEstoque();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Quantidade</button>'
-            codigoHTML+='<button onclick="buscarProdutoEstoque();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Exibir todos</button>'
+            codigoHTML+='<button onclick="buscarProdutoEstoque(\'nome\');" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
+            codigoHTML+='<button onclick="buscarProdutoEstoque(\'quantidade\');" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Quantidade</button>'
+            codigoHTML+='<button onclick="buscarProdutoEstoque(\'todos\');" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Exibir todos</button>'
         codigoHTML+='</div>'
     codigoHTML+='</div>'
 
@@ -74,36 +85,17 @@ function telaEstoque(){
 
 
 //funcao responsavel por carregar os dados dos produtos para estoque
-function carregarProdutosEstoque(json){
+function carregarProdutosEstoque(json, posicao){
     
-    var codigoHTML='', cont=0;
+    var codigoHTML='';
 
-    codigoHTML+='<thead>'
-        codigoHTML+='<tr>'
-            codigoHTML+='<th scope="col">Código</th>'
-            codigoHTML+='<th scope="col">Nome</th>'
-            codigoHTML+='<th scope="col">Quantidade</th>'
-            codigoHTML+='<th scope="col">Adicionar</th>'
-            codigoHTML+='<th scope="col">#</th>'
-        codigoHTML+='</tr>'
-    codigoHTML+='</thead>'
-    codigoHTML+='<tbody>'
-
-    while(json[cont]){
-
-        codigoHTML+='<tr>'
-            codigoHTML+='<td>'+json[cont].codigo+'</td>'
-            codigoHTML+='<td>'+json[cont].nome+'</td>'
-            codigoHTML+='<td id="quantidadeAtual'+json[cont].id+'">'+json[cont].quantidade+'</td>'
-            codigoHTML+='<td><input id="quantidadeItem'+json[cont].id+'" type="Number" class="form-control" placeholder="Adicionar quantidade"></td>'
-            codigoHTML+='<td><button onclick="atualizarEstoqueDeProduto(\''+json[cont].id+'\')" type="button" class="btn btn-primary"><span class="fas fa-sync-alt"></span> Atualizar</button></td>'
-        codigoHTML+='</tr>'
-
-        cont++;
-    }
-
-    codigoHTML+='</tbody>'
-
+    codigoHTML+='<tr>'
+        codigoHTML+='<td>'+json.barcode+'</td>'
+        codigoHTML+='<td>'+json.name+'</td>'
+        codigoHTML+='<td>'+json.stock+'</td>'
+        codigoHTML+='<td><input id="quantidadeItem'+posicao+'" type="Number" class="form-control" placeholder="Adicionar quantidade"></td>'
+        codigoHTML+='<td><button onclick="atualizarEstoqueDeProduto('+posicao+')" type="button" class="btn btn-primary"><span class="fas fa-sync-alt"></span> Atualizar</button></td>'
+    codigoHTML+='</tr>'
 
     return codigoHTML;
 
@@ -119,13 +111,83 @@ function carregarProdutosEstoque(json){
 
 
 //funcao responsavel por buscar e listar os produtos da busca
-function buscarProdutoEstoque(){
+async function buscarProdutoEstoque(tipo){
 
-    var json = '[{"id":"1a2", "codigo":123, "nome":"Produto 1", "quantidade":300},{"id":"2b3", "codigo":345, "nome":"Produto 2", "quantidade":200},{"id":"3c4", "codigo":567, "nome":"Produto 3", "quantidade":150}]'
+    VETORPRODUTOCLASSESTOQUE=[];
+    document.getElementById('tabelaDeProdutosEstoque').innerHTML = '';
+    var user = JSON.parse(sessionStorage.getItem('login')), cont=0;
 
-    json=JSON.parse(json);
+    var codigoHTML='';
+    codigoHTML+='<thead>'
+        codigoHTML+='<tr>'
+            codigoHTML+='<th scope="col">Código</th>'
+            codigoHTML+='<th scope="col">Nome</th>'
+            codigoHTML+='<th scope="col">Quantidade</th>'
+            codigoHTML+='<th scope="col">Adicionar</th>'
+            codigoHTML+='<th scope="col">#</th>'
+        codigoHTML+='</tr>'
+    codigoHTML+='</thead>'
+    codigoHTML+='<tbody>'
 
-    document.getElementById('tabelaDeProdutosEstoque').innerHTML = carregarProdutosEstoque(json);
+
+    if(tipo=='nome'){
+        if(validaDadosCampo(['#buscaProduto'])){
+            var json = await requisicaoGET('products?name='+document.getElementById('buscaProduto').value, {headers:{Authorization:`Bearer ${user.token}`}});
+            while(json.data[cont]){
+                VETORPRODUTOCLASSESTOQUE.push(json.data[cont]);
+                codigoHTML+=carregarProdutosEstoque(json.data[cont], cont);
+                cont++;
+            }
+        }else{
+            mensagemDeErro('Preencha o campo nome!');
+        }
+        
+    }else if(tipo=='quantidade'){
+        if(validaDadosCampo(['#buscaProdutoQuantidade'])){
+            var json = await requisicaoGET('products', {headers:{Authorization:`Bearer ${user.token}`}}), cont2=0;
+            while(json.data[cont]){
+                if(json.data[cont].stock<=parseInt($('#buscaProdutoQuantidade').val())){
+                    VETORPRODUTOCLASSESTOQUE.push(json.data[cont]);
+                    codigoHTML+=carregarProdutosEstoque(json.data[cont], cont2);
+                    cont2++;
+                }
+                cont++;
+            }
+        }else{
+            mensagemDeErro('Preencha o campo quantidade!')
+        }
+
+    }else if(tipo=='todos'){
+        var json = await requisicaoGET('providers', {headers:{Authorization:`Bearer ${user.token}`}}), cont2=0;
+        json.data.forEach(function (item) {
+            while(item.products[cont]){
+
+                var json2 = '{"_id": "'+item.products[cont]._id+'",'
+                    json2+='"name": "'+item.products[cont].name+'",'
+                    json2+='"description": "'+item.products[cont].description+'",'
+                    json2+='"barcode": '+item.products[cont].barcode+','
+                    json2+='"price": '+item.products[cont].price+','
+                    json2+='"cost": '+item.products[cont].cost+','
+                    json2+='"validity": "'+item.products[cont].validity+'",'
+                    json2+='"stock": '+item.products[cont].stock+','
+                    json2+='"createdAt": "'+item.products[cont].createdAt+'",'
+                    json2+='"updatedAt": "'+item.products[cont].updatedAt+'",'
+                    json2+='"provider":{"_id":"'+item._id+'"}}'
+
+                VETORPRODUTOCLASSESTOQUE.push(JSON.parse(json2));
+                codigoHTML+=carregarProdutosEstoque(JSON.parse(json2), cont2);
+                cont2++;
+                cont++;
+            }
+            cont=0;     
+        });
+    }
+
+
+    setTimeout(function(){
+        codigoHTML+='</tbody>'
+        document.getElementById('tabelaDeProdutosEstoque').innerHTML = codigoHTML;
+    },1000);
 
 }
 
@@ -138,9 +200,32 @@ function buscarProdutoEstoque(){
 
 
 //funcao rsponsavel por atualizar a quantidade de um determinado produto
-function atualizarEstoqueDeProduto(id){
+async function atualizarEstoqueDeProduto(id){
 
-    var json = '{"quantidade":'+(parseInt($('#quantidadeAtual'+id).text())+parseInt($('#quantidadeItem'+id).val()))+'}'
+    if(validaValoresCampo(['#quantidadeItem'+id])){
+        try {
 
-    document.getElementById('janela2').innerHTML = json;
+            var json = '{"barcode": '+VETORPRODUTOCLASSESTOQUE[id].barcode+','
+                    json+='"cost": '+VETORPRODUTOCLASSESTOQUE[id].cost+','
+                    json+='"description": "'+VETORPRODUTOCLASSESTOQUE[id].description+'",'
+                    json+='"name": "'+VETORPRODUTOCLASSESTOQUE[id].name+'",'
+                    json+='"price": '+VETORPRODUTOCLASSESTOQUE[id].price+','
+                    json+='"stock": '+(VETORPRODUTOCLASSESTOQUE[id].stock + parseInt(document.getElementById("quantidadeItem"+id).value))+','
+                    json+='"validity": "'+VETORPRODUTOCLASSESTOQUE[id].validity+'"}'
+
+            var user = JSON.parse(sessionStorage.getItem('login'))
+            await requisicaoPUT('products?id='+VETORPRODUTOCLASSESTOQUE[id]._id+'&providerId='+VETORPRODUTOCLASSESTOQUE[id].provider._id, JSON.parse(json), {headers:{Authorization:`Bearer ${user.token}`}})
+            mensagemDeAviso('Estoque atualizado com sucesso!');
+            setTimeout(function(){
+                autenticacaoEstoqueFacede();
+            },1000)
+
+        } catch (error) {
+            mensagemDeErro('Não foi possível atualizar!');
+        }
+
+    }else{
+        mensagemDeErro('Quantidade para adicionar inválida!')
+    }
+    
 }
