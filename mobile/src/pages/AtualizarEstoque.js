@@ -1,40 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Text, View, ScrollView, Picker } from 'react-native'
-import { BarCodeScanner } from 'expo-barcode-scanner'
 import { ActionButton, Icon } from 'react-native-material-ui'
 import { Button, Input, Tooltip } from 'react-native-elements'
 
+import QrReader from '../components/QrReader'
+
 export default function LeituraQrCode({ navigation }) {
-  const [hasPermission, setHasPermission] = useState(null)
-  const [scanned, setScanned] = useState(false)
-  var [ladoCamera, setLadoCamera] = useState(true)
-  var [codigoLido, setCodigoLido] = useState(true)
-
-  useEffect(() => {
-    ;(async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync()
-      setHasPermission(status === 'granted')
-    })()
-  }, [])
-
-  const handleBarCodeScanned = async ({ type, data }) => {
-    setScanned(true)
-    /////////////////////////////////////////////////// aqui pega o código ohhhhhh //////////////////////////////////////////////////////////
-    //await AsyncStorage.setItem('id',data);
-    //navigation.navigate('Home');
-    setCodigoLido(data)
-    alert('Codigo de barras n: ' + data)
-    setTimeout(() => {
-      setScanned(false)
-    }, 3000)
-  }
-
-  if (hasPermission === null) {
-    return <Text>É necessario permissão para acessar a camera!</Text>
-  }
-  if (hasPermission === false) {
-    return <Text>Não é possivel acessar a camera!</Text>
-  }
+  var [cameraSide, setCameraSide] = useState(true)
+  var [readedCode, setReadedCode] = useState('')
 
   return (
     <View style={{ flex: 1, backgroundColor: '#222' }}>
@@ -63,18 +36,7 @@ export default function LeituraQrCode({ navigation }) {
         >
           Estoque de Produto
         </Text>
-
-        <BarCodeScanner
-          barCodeTypes={[
-            BarCodeScanner.Constants.BarCodeType.ean13,
-            BarCodeScanner.Constants.BarCodeType.ean8,
-            BarCodeScanner.Constants.BarCodeType.code39,
-          ]}
-          type={'back'}
-          type={ladoCamera ? 'back' : 'front'}
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={{ height: 250, position: 'relative', marginTop: 20 }}
-        />
+        <QrReader cameraSide={cameraSide} setReadedCode={setReadedCode} />
 
         <Text style={{ color: '#fff', marginTop: 35 }}>Código de Barras:</Text>
         <Input
@@ -90,7 +52,7 @@ export default function LeituraQrCode({ navigation }) {
               style={{ marginRight: 20 }}
             />
           }
-          value={codigoLido}
+          value={readedCode}
         />
 
         <Text style={{ color: '#fff', marginTop: 35 }}>Nome:</Text>
@@ -168,7 +130,7 @@ export default function LeituraQrCode({ navigation }) {
         }}
         icon='camera-front'
         onPress={() => {
-          ladoCamera ? setLadoCamera(false) : setLadoCamera(true)
+          cameraSide ? setCameraSide(false) : setCameraSide(true)
         }}
       />
     </View>
