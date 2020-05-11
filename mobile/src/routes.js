@@ -8,7 +8,7 @@ import RestScren from './pages/RestScreen/index'
 import LeitorCodBarras from './pages/LeitorCodBarras'
 import CadastroDeProduto from './pages/CadastroDeProdutos'
 import BuscarProduto from './pages/BuscarProduto'
-import AtualizarEstoque from './pages/AtualizarEstoque'
+import UpdateStock from './pages/UpdateStock/index'
 import Configuracao from './pages/Configuracao'
 
 const Drawer = createDrawerNavigator()
@@ -94,7 +94,7 @@ function TabProdutoBusca({ navigation }) {
   )
 }
 
-function TabAtualizarEstoque({ navigation }) {
+function TabUpdateStock({ navigation }) {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -109,7 +109,7 @@ function TabAtualizarEstoque({ navigation }) {
         ),
       }}
     >
-      <Stack.Screen name='Sisvep' component={AtualizarEstoque} />
+      <Stack.Screen name='Sisvep' component={UpdateStock} />
     </Stack.Navigator>
   )
 }
@@ -152,7 +152,7 @@ const Routes = (
       <Drawer.Screen name='Venda' component={TabVenda} />
       <Drawer.Screen name='Cadastrar produto' component={TabProdutoCadastro} />
       <Drawer.Screen name='Buscar produto' component={TabProdutoBusca} />
-      <Drawer.Screen name='Estoque' component={TabAtualizarEstoque} />
+      <Drawer.Screen name='Estoque' component={TabUpdateStock} />
       <Drawer.Screen name='Configuração' component={TabConfiguracao} />
     </Drawer.Navigator>
   </NavigationContainer>

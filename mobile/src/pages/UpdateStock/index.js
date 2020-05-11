@@ -1,14 +1,17 @@
 import React, { useState, useRef } from 'react'
-import { Text, View, ScrollView, Picker } from 'react-native'
+import { Text } from 'react-native'
 import { ActionButton, Icon } from 'react-native-material-ui'
 import { Button, Tooltip } from 'react-native-elements'
 import { Form } from '@unform/mobile'
 
-import QrReader from '../components/QrReader'
-import Input from '../components/Form/Input'
-import Label from '../components/Form/Label'
+import QrReader from '../../components/QrReader'
+import Input from '../../components/Form/Input'
+import Label from '../../components/Form/Label'
+import DatePicker from '../../components/Form/DatePicker'
 
-export default function LeituraQrCode({ navigation }) {
+import { Container, Content, MainScroll, Title } from './styles'
+
+export default function UpdateStock({ navigation }) {
   const [cameraSide, setCameraSide] = useState(true)
   const [readedCode, setReadedCode] = useState('')
   const formRef = useRef(null)
@@ -17,40 +20,26 @@ export default function LeituraQrCode({ navigation }) {
     console.log(data)
 
     reset()
-    formRef.current.setFieldValue('barcode', `${readedCode}`)
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#222' }}>
-      <View
-        style={{
-          backgroundColor: '#202026',
-          height: '100%',
-          width: 20,
-          justifyContent: 'center',
-          position: 'absolute',
-        }}
-      >
+    <Container>
+      <Content>
         <Tooltip popover={<Text>Puxe para a direita para abrir o menu!</Text>}>
           <Icon name='last-page' size={20} color='#fff' />
         </Tooltip>
-      </View>
+      </Content>
 
-      <ScrollView style={{ flex: 3, marginLeft: 20, marginBottom: 10 }}>
-        <Text
-          style={{
-            color: '#fff',
-            fontSize: 20,
-            marginTop: 20,
-            textAlign: 'center',
-          }}
-        >
-          Estoque de Produto
-        </Text>
-        <QrReader cameraSide={cameraSide} setReadedCode={setReadedCode} />
+      <MainScroll>
+        <Title>Estoque de Produto</Title>
+        <QrReader
+          formRef={formRef}
+          cameraSide={cameraSide}
+          setReadedCode={setReadedCode}
+        />
 
         <Form
-          initialData={{ barcode: readedCode }}
+          initialData={{ teste: new Date() }}
           ref={formRef}
           onSubmit={handleSubmit}
         >
@@ -95,6 +84,8 @@ export default function LeituraQrCode({ navigation }) {
               />
             }
           />
+          <Label>Validade:</Label>
+          <DatePicker name='teste' />
           <Button
             title='Atualizar'
             color='#fff'
@@ -126,7 +117,7 @@ export default function LeituraQrCode({ navigation }) {
             onPress={() => {}}
           />
         </Form>
-      </ScrollView>
+      </MainScroll>
 
       <ActionButton
         style={{
@@ -138,6 +129,6 @@ export default function LeituraQrCode({ navigation }) {
           cameraSide ? setCameraSide(false) : setCameraSide(true)
         }}
       />
-    </View>
+    </Container>
   )
 }
