@@ -1,13 +1,24 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { Text, View, ScrollView, Picker } from 'react-native'
 import { ActionButton, Icon } from 'react-native-material-ui'
-import { Button, Input, Tooltip } from 'react-native-elements'
+import { Button, Tooltip } from 'react-native-elements'
+import { Form } from '@unform/mobile'
 
 import QrReader from '../components/QrReader'
+import Input from '../components/Form/Input'
+import Label from '../components/Form/Label'
 
 export default function LeituraQrCode({ navigation }) {
-  var [cameraSide, setCameraSide] = useState(true)
-  var [readedCode, setReadedCode] = useState('')
+  const [cameraSide, setCameraSide] = useState(true)
+  const [readedCode, setReadedCode] = useState('')
+  const formRef = useRef(null)
+
+  function handleSubmit(data, { reset }) {
+    console.log(data)
+
+    reset()
+    formRef.current.setFieldValue('barcode', `${readedCode}`)
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: '#222' }}>
@@ -38,91 +49,85 @@ export default function LeituraQrCode({ navigation }) {
         </Text>
         <QrReader cameraSide={cameraSide} setReadedCode={setReadedCode} />
 
-        <Text style={{ color: '#fff', marginTop: 35 }}>Código de Barras:</Text>
-        <Input
-          placeholder='Código de Barras'
-          inputStyle={{ color: '#fff' }}
-          containerStyle={{ backgroundColor: '#222' }}
-          keyboardType='numeric'
-          leftIcon={
-            <Icon
-              name='local-offer'
-              size={24}
-              color='#fff'
-              style={{ marginRight: 20 }}
-            />
-          }
-          value={readedCode}
-        />
-
-        <Text style={{ color: '#fff', marginTop: 35 }}>Nome:</Text>
-        <Input
-          placeholder='Nome'
-          inputStyle={{ color: '#fff' }}
-          containerStyle={{ backgroundColor: '#222' }}
-          disabled={true}
-          leftIcon={
-            <Icon
-              name='shopping-cart'
-              size={24}
-              color='#fff'
-              style={{ marginRight: 20 }}
-            />
-          }
-        />
-
-        <Text style={{ color: '#fff', marginTop: 35 }}>Estoque:</Text>
-        <Input
-          placeholder='Estoque'
-          inputStyle={{ color: '#fff' }}
-          containerStyle={{ backgroundColor: '#222' }}
-          keyboardType='numeric'
-          leftIcon={
-            <Icon
-              name='storage'
-              size={24}
-              color='#fff'
-              style={{ marginRight: 20 }}
-            />
-          }
-        />
-
-        <Button
-          title='Atualizar'
-          color='#fff'
-          titleStyle={{ color: '#fff' }}
-          buttonStyle={{ marginTop: 20, backgroundColor: 'green' }}
-          icon={
-            <Icon
-              name='save'
-              size={15}
-              color='white'
-              style={{ color: '#fff', marginRight: 10 }}
-            />
-          }
-          onPress={() => {
-            alert('ola')
-          }}
-        />
-
-        <Button
-          title='Limpar'
-          color='#fff'
-          titleStyle={{ color: '#fff' }}
-          buttonStyle={{ marginTop: 10, backgroundColor: 'red' }}
-          icon={
-            <Icon
-              name='close'
-              size={15}
-              color='white'
-              style={{ color: '#fff', marginRight: 10 }}
-            />
-          }
-          onPress={() => {
-            setCodigoLido(true)
-          }}
-        />
+        <Form
+          initialData={{ barcode: readedCode }}
+          ref={formRef}
+          onSubmit={handleSubmit}
+        >
+          <Label>Código de Barras:</Label>
+          <Input
+            name='barcode'
+            keyboardType='numeric'
+            placeholder='Digite o código de barras'
+            leftIcon={
+              <Icon
+                name='local-offer'
+                size={24}
+                color='#fff'
+                style={{ marginRight: 20 }}
+              />
+            }
+          />
+          <Label>Nome:</Label>
+          <Input
+            name='name'
+            placeholder='Digite o nome do produto'
+            leftIcon={
+              <Icon
+                name='shopping-cart'
+                size={24}
+                color='#fff'
+                style={{ marginRight: 20 }}
+              />
+            }
+          />
+          <Label>Estoque:</Label>
+          <Input
+            name='stock'
+            keyboardType='numeric'
+            placeholder='Digite o estoque'
+            leftIcon={
+              <Icon
+                name='storage'
+                size={24}
+                color='#fff'
+                style={{ marginRight: 20 }}
+              />
+            }
+          />
+          <Button
+            title='Atualizar'
+            color='#fff'
+            titleStyle={{ color: '#fff' }}
+            buttonStyle={{ marginTop: 20, backgroundColor: 'green' }}
+            icon={
+              <Icon
+                name='save'
+                size={15}
+                color='white'
+                style={{ color: '#fff', marginRight: 10 }}
+              />
+            }
+            onPress={() => formRef.current.submitForm()}
+          />
+          <Button
+            title='Limpar'
+            color='#fff'
+            titleStyle={{ color: '#fff' }}
+            buttonStyle={{ marginTop: 10, backgroundColor: 'red' }}
+            icon={
+              <Icon
+                name='close'
+                size={15}
+                color='white'
+                style={{ color: '#fff', marginRight: 10 }}
+              />
+            }
+            onPress={() => {}}
+          />
+        </Form>
       </ScrollView>
+
       <ActionButton
         style={{
           container: { backgroundColor: 'blue' },
