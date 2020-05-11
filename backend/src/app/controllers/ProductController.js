@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const parseISO = require('date-fns/parseISO');
 const isValid = require('date-fns/isValid');
 const endOfMonth = require('date-fns/endOfMonth');
@@ -130,9 +129,6 @@ module.exports = {
       stock,
     });
     if (providerId) {
-      if (!mongoose.Types.ObjectId.isValid(providerId)) {
-        return res.status(400).json({ message: `invalid provider id` });
-      }
       await Provider.findOneAndUpdate(
         { _id: providerId },
         { $addToSet: { products: product._id } }
@@ -159,6 +155,8 @@ module.exports = {
       { new: true }
     );
     if (!product) return res.status(400).json('product does not exist');
+
+    await Provider.findOneAndUpdate({ products: { $in: [id] } }, { $pull: { products: id } });
 
     await Provider.findOneAndUpdate({ _id: providerId }, { $addToSet: { products: product._id } });
 

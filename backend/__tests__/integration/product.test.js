@@ -136,6 +136,7 @@ describe('teste Product', () => {
     const provider = await factory.create('Provider', {
       products: [product._id],
     });
+    const provider2 = await factory.create('Provider');
 
     const user = await factory.create('User');
 
@@ -153,9 +154,11 @@ describe('teste Product', () => {
       })
       .query({
         id: String(product._id),
-        providerId: String(provider._id),
+        providerId: String(provider2._id),
       });
-
+    const providerWithoutProduct = await Provider.findOne({ _id: provider._id });
+    const providerProductsSize = providerWithoutProduct.products.length;
+    expect(providerProductsSize).toBe(0);
     expect(response.status).toBe(200);
     expect(response.body).toEqual(
       expect.objectContaining({
@@ -308,36 +311,6 @@ describe('teste Product', () => {
       ])
     );
   });
-  // it('shuld list all products ', async () => {
-  //   const user = await factory.create('User');
-  //   const product1 = await factory.create('Product', {
-  //     name: 'Pão',
-  //     description: 'Bão de mais',
-  //   });
-  //   const product2 = await factory.create('Product', {
-  //     name: 'Ovo',
-  //     description: 'Bão de mais',
-  //   });
-  //   await factory.create('Provider', {
-  //     products: [product1._id, product2._id],
-  //   });
-
-  //   const response = await request(app)
-  //     .get('/products')
-  //     .set('Authorization', `Bearer ${user.generateToken()}`)
-  //     .query();
-
-  //   expect(response.body).toEqual(
-  //     expect.arrayContaining([
-  //       expect.objectContaining({
-  //         name: 'Pão',
-  //       }),
-  //       expect.objectContaining({
-  //         name: 'Ovo',
-  //       }),
-  //     ])
-  //   );
-  // });
   it('shuld list products by validity ', async () => {
     const user = await factory.create('User');
     const product = await factory.create('Product', {

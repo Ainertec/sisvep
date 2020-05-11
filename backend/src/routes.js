@@ -165,7 +165,7 @@ routes.post(
   '/products',
   celebrate({
     [Segments.BODY]: Joi.object().keys({
-      providerId: Joi.string(),
+      providerId: Joi.custom(validObjectId, 'valid id'),
       name: Joi.string().required(),
       description: Joi.string(),
       price: Joi.number().required(),
