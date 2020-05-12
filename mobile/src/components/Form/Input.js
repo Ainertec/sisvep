@@ -1,10 +1,9 @@
 import React, { useRef, useEffect } from 'react'
 import { useField } from '@unform/core'
 import { Input as ElementsInput } from 'react-native-elements'
+import { Icon } from 'react-native-material-ui'
 
-// import { Container } from './styles';
-
-const Input = ({ name, ...rest }) => {
+const Input = ({ name, iconName, ...rest }) => {
   const inputRef = useRef(null)
   const { fieldName, defaultValue, registerField, error } = useField(name)
 
@@ -41,6 +40,14 @@ const Input = ({ name, ...rest }) => {
       }}
       inputStyle={{ color: '#fff' }}
       containerStyle={{ backgroundColor: '#222' }}
+      leftIcon={
+        <Icon
+          name={iconName}
+          size={24}
+          color='#fff'
+          style={{ marginRight: 20 }}
+        />
+      }
       {...rest}
     />
   )

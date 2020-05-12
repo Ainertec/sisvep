@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { Text, View, ScrollView, Picker, Switch } from 'react-native'
-import { BarCodeScanner } from 'expo-barcode-scanner'
 import { ActionButton, Icon } from 'react-native-material-ui'
-import { Button, Input, Tooltip } from 'react-native-elements'
-import DatePicker from 'react-native-datepicker'
+import { Tooltip } from 'react-native-elements'
+
+import { Form } from '@unform/mobile'
+import { Scope } from '@unform/core'
 
 import QrReader from '../components/QrReader'
+
+import PrincipalForm from '../components/PrincipalForms/ProductForm'
+import ProviderForm from '../components/PrincipalForms/ProviderForm'
+import { Button as Btn } from '../components/Form'
 
 export default function LeituraQrCode({ navigation }) {
   const [cameraSide, setCameraSide] = useState(true)
@@ -14,6 +19,11 @@ export default function LeituraQrCode({ navigation }) {
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState)
 
   const [selectedValue, setSelectedValue] = useState('Fornecedor 1')
+
+  const formRef = useRef(null)
+  function handleSubmit(data) {
+    console.log(data)
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: '#222' }}>
@@ -44,161 +54,29 @@ export default function LeituraQrCode({ navigation }) {
         </Text>
 
         <QrReader cameraSide={cameraSide} setReadedCode={setReadedCode} />
-
-        <Text style={{ color: '#fff', marginTop: 35 }}>Código de Barras:</Text>
-        <Input
-          placeholder='Código de Barras'
-          inputStyle={{ color: '#fff' }}
-          containerStyle={{ backgroundColor: '#222' }}
-          keyboardType='numeric'
-          leftIcon={
-            <Icon
-              name='local-offer'
-              size={24}
-              color='#fff'
-              style={{ marginRight: 20 }}
+        <Form
+          initialData={{ validity: new Date() }}
+          ref={formRef}
+          onSubmit={handleSubmit}
+        >
+          <PrincipalForm />
+          <View style={{ alignItems: 'center', marginTop: 10 }}>
+            <Switch
+              trackColor={{ false: '#767577', true: '#81b0ff' }}
+              thumbColor={isEnabled ? 'blue' : '#f4f3f4'}
+              ios_backgroundColor='#3e3e3e'
+              onValueChange={toggleSwitch}
+              value={isEnabled}
             />
-          }
-          value={readedCode}
-        />
+          </View>
+          <Scope path='provider'>
+            <ProviderForm isEnabled={isEnabled} />
+          </Scope>
 
-        <Text style={{ color: '#fff', marginTop: 35 }}>Nome:</Text>
-        <Input
-          placeholder='Nome'
-          inputStyle={{ color: '#fff' }}
-          containerStyle={{ backgroundColor: '#222' }}
-          leftIcon={
-            <Icon
-              name='shopping-cart'
-              size={24}
-              color='#fff'
-              style={{ marginRight: 20 }}
-            />
-          }
-        />
+          <Btn onPress={() => formRef.current.submitForm()} />
+        </Form>
 
-        <Text style={{ color: '#fff', marginTop: 35 }}>Descrição:</Text>
-        <Input
-          multiline={true}
-          placeholder='Descrição'
-          inputStyle={{ color: '#fff' }}
-          numberOfLines={3}
-          editable={true}
-          containerStyle={{ backgroundColor: '#222' }}
-          leftIcon={
-            <Icon
-              name='description'
-              size={24}
-              color='#fff'
-              style={{ marginRight: 20 }}
-            />
-          }
-        />
-
-        <Text style={{ color: '#fff', marginTop: 35 }}>
-          Preço venda unidade:
-        </Text>
-        <Input
-          placeholder='Preço de venda'
-          inputStyle={{ color: '#fff' }}
-          containerStyle={{ backgroundColor: '#222' }}
-          keyboardType='numeric'
-          leftIcon={
-            <Icon
-              name='attach-money'
-              size={24}
-              color='#fff'
-              style={{ marginRight: 20 }}
-            />
-          }
-        />
-
-        <Text style={{ color: '#fff', marginTop: 35 }}>Preço de custo:</Text>
-        <Input
-          placeholder='Preço de custo'
-          inputStyle={{ color: '#fff' }}
-          containerStyle={{ backgroundColor: '#222' }}
-          keyboardType='numeric'
-          leftIcon={
-            <Icon
-              name='attach-money'
-              size={24}
-              color='#fff'
-              style={{ marginRight: 20 }}
-            />
-          }
-        />
-
-        <Text style={{ color: '#fff', marginTop: 35 }}>Estoque:</Text>
-        <Input
-          placeholder='Estoque'
-          inputStyle={{ color: '#fff' }}
-          containerStyle={{ backgroundColor: '#222' }}
-          keyboardType='numeric'
-          leftIcon={
-            <Icon
-              name='storage'
-              size={24}
-              color='#fff'
-              style={{ marginRight: 20 }}
-            />
-          }
-        />
-
-        <Text style={{ color: '#fff', marginTop: 35 }}>Data de chegada: </Text>
-        <DatePicker
-          style={{ width: '100%', backgroundColor: '#222' }}
-          date={new Date()}
-          mode='date'
-          placeholder='select date'
-          format='YYYY-MM-DD'
-          maxDate={new Date()}
-          confirmBtnText='Confirm'
-          cancelBtnText='Cancel'
-          customStyles={{
-            dateIcon: {
-              position: 'absolute',
-              left: 0,
-              top: 4,
-              marginLeft: 0,
-            },
-            dateInput: {
-              marginLeft: 36,
-              backgroundColor: '#fff',
-            },
-          }}
-          onDateChange={(date) => {
-            this.setState({ date: date })
-          }}
-        />
-
-        <Text style={{ color: '#fff', marginTop: 35 }}>Data de validade: </Text>
-        <DatePicker
-          style={{ width: '100%', backgroundColor: '#222' }}
-          date={new Date()}
-          mode='date'
-          placeholder='select date'
-          format='YYYY-MM-DD'
-          confirmBtnText='Confirm'
-          cancelBtnText='Cancel'
-          customStyles={{
-            dateIcon: {
-              position: 'absolute',
-              left: 0,
-              top: 4,
-              marginLeft: 0,
-            },
-            dateInput: {
-              marginLeft: 36,
-              backgroundColor: '#fff',
-            },
-          }}
-          onDateChange={(date) => {
-            this.setState({ date: date })
-          }}
-        />
-
-        <View style={{ backgroundColor: '#333', marginTop: 35 }}>
+        {/* <View style={{ backgroundColor: '#333', marginTop: 35 }}>
           <Text
             style={{
               color: '#fff',
@@ -235,9 +113,9 @@ export default function LeituraQrCode({ navigation }) {
             <Picker.Item label='Fornecedor 18' value='Fornecedor 18' />
             <Picker.Item label='Fornecedor 19' value='Fornecedor 19' />
             <Picker.Item label='Fornecedor 20' value='Fornecedor 20' />
-          </Picker>
+          </Picker> */}
 
-          <Text
+        {/* <Text
             style={{
               color: '#fff',
               marginTop: 35,
@@ -257,122 +135,7 @@ export default function LeituraQrCode({ navigation }) {
             />
           </View>
 
-          <Text style={{ color: '#fff', marginTop: 35 }}>Nome fornecedor:</Text>
-          <Input
-            placeholder='Nome'
-            inputStyle={{ color: '#fff' }}
-            containerStyle={{ backgroundColor: '#333' }}
-            disabled={!isEnabled}
-            leftIcon={
-              <Icon
-                name='group'
-                size={24}
-                color='#fff'
-                style={{ marginRight: 20 }}
-              />
-            }
-          />
-
-          <Text style={{ color: '#fff', marginTop: 35 }}>Descrição:</Text>
-          <Input
-            placeholder='Descrição'
-            inputStyle={{ color: '#fff' }}
-            containerStyle={{ backgroundColor: '#333' }}
-            disabled={!isEnabled}
-            leftIcon={
-              <Icon
-                name='description'
-                size={24}
-                color='#fff'
-                style={{ marginRight: 20 }}
-              />
-            }
-          />
-
-          <Text style={{ color: '#fff', marginTop: 35 }}>Telefone:</Text>
-          <Input
-            placeholder='Telefone'
-            inputStyle={{ color: '#fff' }}
-            containerStyle={{ backgroundColor: '#333' }}
-            disabled={!isEnabled}
-            leftIcon={
-              <Icon
-                name='phone'
-                size={24}
-                color='#fff'
-                style={{ marginRight: 20 }}
-              />
-            }
-          />
-
-          <Text style={{ color: '#fff', marginTop: 35 }}>Email:</Text>
-          <Input
-            placeholder='Email'
-            inputStyle={{ color: '#fff' }}
-            containerStyle={{ backgroundColor: '#333' }}
-            disabled={!isEnabled}
-            leftIcon={
-              <Icon
-                name='email'
-                size={24}
-                color='#fff'
-                style={{ marginRight: 20 }}
-              />
-            }
-          />
-
-          <Text style={{ color: '#fff', marginTop: 35 }}>CPF ou CNPJ:</Text>
-          <Input
-            placeholder='CPF ou CNPJ'
-            inputStyle={{ color: '#fff' }}
-            containerStyle={{ backgroundColor: '#333' }}
-            disabled={!isEnabled}
-            leftIcon={
-              <Icon
-                name='assignment-ind'
-                size={24}
-                color='#fff'
-                style={{ marginRight: 20 }}
-              />
-            }
-          />
-        </View>
-
-        <Button
-          title='Atualizar'
-          color='#fff'
-          titleStyle={{ color: '#fff' }}
-          buttonStyle={{ marginTop: 20, backgroundColor: 'green' }}
-          icon={
-            <Icon
-              name='save'
-              size={15}
-              color='white'
-              style={{ color: '#fff', marginRight: 10 }}
-            />
-          }
-          onPress={() => {
-            alert('ola')
-          }}
-        />
-
-        <Button
-          title='Limpar'
-          color='#fff'
-          titleStyle={{ color: '#fff' }}
-          buttonStyle={{ marginTop: 10, backgroundColor: 'red' }}
-          icon={
-            <Icon
-              name='close'
-              size={15}
-              color='white'
-              style={{ color: '#fff', marginRight: 10 }}
-            />
-          }
-          onPress={() => {
-            setReadedCode('')
-          }}
-        />
+          */}
       </ScrollView>
       <ActionButton
         style={{

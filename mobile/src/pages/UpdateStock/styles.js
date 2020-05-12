@@ -13,9 +13,9 @@ export const Content = styled.View`
   position: absolute;
 `
 export const MainScroll = styled.ScrollView`
-  flex: 3;
-  margin-left: 20px;
-  margin-bottom: 10px;
+  flex: 1;
+
+  padding: 0 8px;
 `
 export const Title = styled.Text`
   color: #fff;

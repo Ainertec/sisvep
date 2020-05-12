@@ -1,13 +1,12 @@
 import React, { useState, useRef } from 'react'
 import { Text } from 'react-native'
 import { ActionButton, Icon } from 'react-native-material-ui'
-import { Button, Tooltip } from 'react-native-elements'
+import { Tooltip } from 'react-native-elements'
 import { Form } from '@unform/mobile'
 
 import QrReader from '../../components/QrReader'
-import Input from '../../components/Form/Input'
-import Label from '../../components/Form/Label'
-import DatePicker from '../../components/Form/DatePicker'
+
+import { DatePicker, Input, Label, Button } from '../../components/Form'
 
 import { Container, Content, MainScroll, Title } from './styles'
 
@@ -48,45 +47,24 @@ export default function UpdateStock({ navigation }) {
             name='barcode'
             keyboardType='numeric'
             placeholder='Digite o código de barras'
-            leftIcon={
-              <Icon
-                name='local-offer'
-                size={24}
-                color='#fff'
-                style={{ marginRight: 20 }}
-              />
-            }
+            iconName='local-offer'
           />
           <Label>Nome:</Label>
           <Input
             name='name'
             placeholder='Digite o nome do produto'
-            leftIcon={
-              <Icon
-                name='shopping-cart'
-                size={24}
-                color='#fff'
-                style={{ marginRight: 20 }}
-              />
-            }
+            iconName='shopping-cart'
           />
           <Label>Estoque:</Label>
           <Input
             name='stock'
             keyboardType='numeric'
             placeholder='Digite o estoque'
-            leftIcon={
-              <Icon
-                name='storage'
-                size={24}
-                color='#fff'
-                style={{ marginRight: 20 }}
-              />
-            }
+            iconName='storage'
           />
           <Label>Validade:</Label>
           <DatePicker name='teste' />
-          <Button
+          {/* <Button
             title='Atualizar'
             color='#fff'
             titleStyle={{ color: '#fff' }}
@@ -100,8 +78,10 @@ export default function UpdateStock({ navigation }) {
               />
             }
             onPress={() => formRef.current.submitForm()}
-          />
-          <Button
+          /> */}
+
+          <Button onPress={() => formRef.current.submitForm()} />
+          {/* <Button
             title='Limpar'
             color='#fff'
             titleStyle={{ color: '#fff' }}
@@ -115,7 +95,7 @@ export default function UpdateStock({ navigation }) {
               />
             }
             onPress={() => {}}
-          />
+          /> */}
         </Form>
       </MainScroll>
 
