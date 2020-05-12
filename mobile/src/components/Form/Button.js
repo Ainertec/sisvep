@@ -2,10 +2,10 @@ import React from 'react'
 
 import { Touchable, TouchableText } from './styles'
 
-const Button = ({ ...rest }) => {
+const Button = ({ title, ...rest }) => {
   return (
     <Touchable {...rest}>
-      <TouchableText>Enviar</TouchableText>
+      <TouchableText>{title ? title : 'Enviar'}</TouchableText>
     </Touchable>
   )
 }

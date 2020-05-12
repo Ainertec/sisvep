@@ -13,7 +13,7 @@ export const Touchable = styled.TouchableOpacity`
   width: 100%;
   height: 40px;
   border-radius: 20px;
-  background: green;
+  background: darkred;
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;

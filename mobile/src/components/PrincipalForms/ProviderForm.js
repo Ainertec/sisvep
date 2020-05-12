@@ -1,7 +1,5 @@
 import React from 'react'
 
-// import { Form } from './styles'
-
 import { Input, Label } from '../Form'
 
 const ProviderForm = ({ isEnabled }) => {
@@ -11,8 +9,7 @@ const ProviderForm = ({ isEnabled }) => {
       <Input
         disabled={!isEnabled}
         disabled={!isEnabled}
-        name='
-        name'
+        name='name'
         iconName='group'
         placeholder='Digite o Nome do produto'
       />
@@ -40,7 +37,6 @@ const ProviderForm = ({ isEnabled }) => {
         name='email'
         iconName='email'
         placeholder='Digite o email'
-        keyboardType='email'
       />
       <Label>CPF/CNPJ:</Label>
       <Input
