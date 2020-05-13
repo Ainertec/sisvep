@@ -7,6 +7,7 @@ import { Form } from '@unform/mobile'
 import QrReader from '../../components/QrReader'
 
 import { DatePicker, Input, Label, Button } from '../../components/Form'
+import Picker from '../../components/Form/Picker'
 
 import { Container, Content, MainScroll, Title } from './styles'
 
@@ -38,7 +39,7 @@ export default function UpdateStock({ navigation }) {
         />
 
         <Form
-          initialData={{ teste: new Date() }}
+          initialData={{ validity: new Date() }}
           ref={formRef}
           onSubmit={handleSubmit}
         >
@@ -63,39 +64,10 @@ export default function UpdateStock({ navigation }) {
             iconName='storage'
           />
           <Label>Validade:</Label>
-          <DatePicker name='teste' />
-          {/* <Button
-            title='Atualizar'
-            color='#fff'
-            titleStyle={{ color: '#fff' }}
-            buttonStyle={{ marginTop: 20, backgroundColor: 'green' }}
-            icon={
-              <Icon
-                name='save'
-                size={15}
-                color='white'
-                style={{ color: '#fff', marginRight: 10 }}
-              />
-            }
-            onPress={() => formRef.current.submitForm()}
-          /> */}
+          <DatePicker name='validity' />
+          <Picker name='testePiker' providers={providers} />
 
           <Button onPress={() => formRef.current.submitForm()} />
-          {/* <Button
-            title='Limpar'
-            color='#fff'
-            titleStyle={{ color: '#fff' }}
-            buttonStyle={{ marginTop: 10, backgroundColor: 'red' }}
-            icon={
-              <Icon
-                name='close'
-                size={15}
-                color='white'
-                style={{ color: '#fff', marginRight: 10 }}
-              />
-            }
-            onPress={() => {}}
-          /> */}
         </Form>
       </MainScroll>
 
@@ -112,3 +84,8 @@ export default function UpdateStock({ navigation }) {
     </Container>
   )
 }
+
+const providers = [
+  { name: 'Julio', _id: 123 },
+  { name: 'Jão', _id: 789 },
+]

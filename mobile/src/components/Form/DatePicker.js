@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { useField } from '@unform/core'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import formatISO from 'date-fns/formatISO'
 
 import { Input } from 'react-native-elements'
 import { Icon } from 'react-native-material-ui'
@@ -8,7 +9,6 @@ import Button from './Button'
 
 const DatePickerT = ({ name, ...rest }) => {
   const { fieldName, defaultValue, registerField, error } = useField(name)
-
   const inputRef = useRef(null)
   const [date, setDate] = useState(defaultValue)
   const [show, setShow] = useState(false)
@@ -40,15 +40,15 @@ const DatePickerT = ({ name, ...rest }) => {
     })
   }, [fieldName, registerField])
   useEffect(() => {
-    inputRef.current.value = String(date)
+    inputRef.current.value = formatISO(date)
   }, [date])
 
   return (
     <>
       <Input
         ref={inputRef}
-        value={String(date)}
-        defaultValue={defaultValue}
+        value={formatISO(date)}
+        defaultValue={formatISO(defaultValue)}
         disabled={true}
         inputStyle={{ color: '#fff' }}
         containerStyle={{ backgroundColor: '#222' }}

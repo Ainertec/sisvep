@@ -20,8 +20,18 @@ export default function LeituraQrCode({ navigation }) {
 
   const [selectedValue, setSelectedValue] = useState('Fornecedor 1')
 
-  const formRef = useRef(null)
+  const productFormRef = useRef(null)
+  const providerFormRef = useRef(null)
+
   function handleSubmit(data) {
+    console.log(data)
+    if (isEnabled) {
+      const providerData = providerFormRef.current.getData()
+      providerData.products = [1234]
+      console.log(providerData)
+    }
+  }
+  function handleSubmitProvider(data) {
     console.log(data)
   }
 
@@ -56,64 +66,29 @@ export default function LeituraQrCode({ navigation }) {
         <QrReader cameraSide={cameraSide} setReadedCode={setReadedCode} />
         <Form
           initialData={{ validity: new Date() }}
-          ref={formRef}
+          ref={productFormRef}
           onSubmit={handleSubmit}
         >
           <PrincipalForm />
-          <View style={{ alignItems: 'center', marginTop: 10 }}>
-            <Switch
-              trackColor={{ false: '#767577', true: '#81b0ff' }}
-              thumbColor={isEnabled ? 'blue' : '#f4f3f4'}
-              ios_backgroundColor='#3e3e3e'
-              onValueChange={toggleSwitch}
-              value={isEnabled}
-            />
-          </View>
-          <Scope path='provider'>
-            <ProviderForm isEnabled={isEnabled} />
-          </Scope>
+        </Form>
 
-          <Btn onPress={() => formRef.current.submitForm()} />
+        <View style={{ alignItems: 'center', marginTop: 10 }}>
+          <Switch
+            trackColor={{ false: '#767577', true: '#81b0ff' }}
+            thumbColor={isEnabled ? 'blue' : '#f4f3f4'}
+            ios_backgroundColor='#3e3e3e'
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+          />
+        </View>
+
+        <Form ref={providerFormRef}>
+          <ProviderForm isEnabled={isEnabled} />
+          <Btn onPress={() => productFormRef.current.submitForm()} />
         </Form>
 
         {/* <View style={{ backgroundColor: '#333', marginTop: 35 }}>
-          <Text
-            style={{
-              color: '#fff',
-              textAlign: 'center',
-              fontSize: 20,
-              marginTop: 10,
-            }}
-          >
-            Lista de Fornecedores:{' '}
-          </Text>
-          <Picker
-            selectedValue={selectedValue}
-            style={{ backgroundColor: '#555', color: '#fff', marginTop: 20 }}
-            enabled={!isEnabled}
-            onValueChange={(itemValue) => setSelectedValue(itemValue)}
-          >
-            <Picker.Item label='Fornecedor 1' value='Fornecedor 1' />
-            <Picker.Item label='Fornecedor 2' value='Fornecedor 2' />
-            <Picker.Item label='Fornecedor 3' value='Fornecedor 3' />
-            <Picker.Item label='Fornecedor 4' value='Fornecedor 4' />
-            <Picker.Item label='Fornecedor 5' value='Fornecedor 5' />
-            <Picker.Item label='Fornecedor 6' value='Fornecedor 6' />
-            <Picker.Item label='Fornecedor 7' value='Fornecedor 7' />
-            <Picker.Item label='Fornecedor 8' value='Fornecedor 8' />
-            <Picker.Item label='Fornecedor 9' value='Fornecedor 9' />
-            <Picker.Item label='Fornecedor 10' value='Fornecedor 10' />
-            <Picker.Item label='Fornecedor 11' value='Fornecedor 11' />
-            <Picker.Item label='Fornecedor 12' value='Fornecedor 12' />
-            <Picker.Item label='Fornecedor 13' value='Fornecedor 13' />
-            <Picker.Item label='Fornecedor 14' value='Fornecedor 14' />
-            <Picker.Item label='Fornecedor 15' value='Fornecedor 15' />
-            <Picker.Item label='Fornecedor 16' value='Fornecedor 16' />
-            <Picker.Item label='Fornecedor 17' value='Fornecedor 17' />
-            <Picker.Item label='Fornecedor 18' value='Fornecedor 18' />
-            <Picker.Item label='Fornecedor 19' value='Fornecedor 19' />
-            <Picker.Item label='Fornecedor 20' value='Fornecedor 20' />
-          </Picker> */}
+          
 
         {/* <Text
             style={{

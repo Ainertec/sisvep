@@ -3,7 +3,8 @@ import { Text, View, ScrollView, Picker, Switch } from 'react-native'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { ActionButton, Icon } from 'react-native-material-ui'
 import { Button, Input, Tooltip } from 'react-native-elements'
-import DatePicker from 'react-native-datepicker'
+
+import { DatePicker } from '../components/Form'
 
 import QrReader from '../components/QrReader'
 
@@ -146,7 +147,7 @@ export default function LeituraQrCode({ navigation }) {
         />
 
         <Text style={{ color: '#fff', marginTop: 35 }}>Data de chegada: </Text>
-        <DatePicker
+        {/* <DatePicker
           style={{ width: '100%', backgroundColor: '#222' }}
           date={new Date()}
           mode='date'
@@ -197,7 +198,7 @@ export default function LeituraQrCode({ navigation }) {
           onDateChange={(date) => {
             this.setState({ date: date })
           }}
-        />
+        /> */}
 
         <View style={{ backgroundColor: '#333', marginTop: 35 }}>
           <Text
