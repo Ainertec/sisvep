@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Text, Dimensions, Switch } from 'react-native'
+import { Text, Dimensions, Switch, Animated, Easing } from 'react-native'
 import { BarCodeScanner } from 'expo-barcode-scanner'
-
-import * as Animatable from 'react-native-animatable'
 
 import { Container } from './styles'
 
@@ -12,7 +10,10 @@ const QrReader = ({ cameraSide, setReadedCode, formRef }) => {
   const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
   const [isEnabled, setIsEnabled] = useState(false)
-  const scannerRef = useRef(null)
+
+  const AnimatableScanner = Animated.createAnimatedComponent(BarCodeScanner)
+  const scannerHeigth = new Animated.Value(0)
+  const scannerHeigthRef = useRef(scannerHeigth)
 
   useEffect(() => {
     async function getPermission() {
@@ -22,16 +23,16 @@ const QrReader = ({ cameraSide, setReadedCode, formRef }) => {
     getPermission()
   }, [])
 
-  const handleBarCodeScanned = async ({ type, data }) => {
+  const handleBarCodeScanned = async ({ data }) => {
     setScanned(true)
-    setReadedCode(data)
+    formRef.current.setFieldValue('barcode', `${data}`)
+    // setReadedCode(data)
 
-    alert('Codigo de barras n: ' + data)
+    // alert(`Código de barra: ${data}`)
 
     setTimeout(() => {
       setScanned(false)
-    }, 3000)
-    formRef.current.setFieldValue('barcode', `${data}`)
+    }, 1000)
   }
 
   if (hasPermission === null) {
@@ -41,41 +42,53 @@ const QrReader = ({ cameraSide, setReadedCode, formRef }) => {
     return <Text>Não é possivel acessar a camera!</Text>
   }
 
-  const toggleSwitch = () => {
-    setIsEnabled((previousState) => !previousState)
+  const showAnimation = async () => {
+    if (!isEnabled) {
+      setIsEnabled((previousState) => !previousState)
+
+      Animated.timing(scannerHeigthRef.current, {
+        toValue: windownHeader * 0.4,
+        duration: 1200,
+        delay: 100,
+        easing: Easing.in(Easing.elastic(1)),
+      }).start()
+    } else {
+      Animated.timing(scannerHeigthRef.current, {
+        toValue: 100,
+        duration: 700,
+        // delay: 100,
+        // easing: Easing.out(Easing.exp),
+      }).start(() => {
+        setIsEnabled((previousState) => !previousState)
+      })
+    }
   }
-
-  const AnimatableScanner = Animatable.createAnimatableComponent(BarCodeScanner)
-
   return (
     <Container>
+      <Switch
+        trackColor={{ false: '#767577', true: '#81b0ff' }}
+        thumbColor={isEnabled ? 'blue' : '#f4f3f4'}
+        ios_backgroundColor='#3e3e3e'
+        onValueChange={() => {
+          showAnimation()
+        }}
+        value={isEnabled}
+      />
       {isEnabled && (
         <AnimatableScanner
-          ref={scannerRef}
-          delay={250}
-          animation={isEnabled ? 'fadeIn' : 'fadeOut'}
-          useNativeDriver
           barCodeTypes={[
             BarCodeScanner.Constants.BarCodeType.ean13,
             BarCodeScanner.Constants.BarCodeType.ean8,
             BarCodeScanner.Constants.BarCodeType.code39,
           ]}
-          type={'back'}
           type={cameraSide ? 'back' : 'front'}
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           style={{
-            height: windownHeader * 0.4,
+            height: scannerHeigthRef.current,
             marginTop: windownHeader * 0.04,
           }}
         />
       )}
-      <Switch
-        trackColor={{ false: '#767577', true: '#81b0ff' }}
-        thumbColor={isEnabled ? 'blue' : '#f4f3f4'}
-        ios_backgroundColor='#3e3e3e'
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-      />
     </Container>
   )
 }
