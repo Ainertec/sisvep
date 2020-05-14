@@ -380,6 +380,25 @@ describe('teste Product', () => {
       })
     );
   });
+  it('shuld list products without provider by barcode ', async () => {
+    const user = await factory.create('User');
+    await factory.create('Product', {
+      name: 'Pão',
+      barcode: 12345,
+    });
+    const response = await request(app)
+      .get('/products_barcode')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        barcode: 12345,
+      });
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        name: 'Pão',
+      })
+    );
+  });
 
   it('shuld list products by createdAt ', async () => {
     const user = await factory.create('User');

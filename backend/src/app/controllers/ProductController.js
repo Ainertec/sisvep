@@ -35,13 +35,16 @@ module.exports = {
 
     const provider = await Provider.findOne({ products: [product._id] }).lean();
 
-    product.provider = {
-      _id: provider._id,
-      name: provider.name,
-      identificarion: provider.identification,
-      phone: provider.phone,
-      emial: provider.email,
-    };
+    if(provider){
+        product.provider = {
+        _id: provider._id,
+        name: provider.name,
+        identificarion: provider.identification,
+        phone: provider.phone,
+        emial: provider.email,
+      };
+    }
+    
 
     return res.json(product);
   },
