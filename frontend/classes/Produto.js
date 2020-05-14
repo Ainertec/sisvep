@@ -30,6 +30,7 @@ function autenticacaoProduto(tipo){
     if(JSON.parse(situacao).tipo == 'Administrador' || JSON.parse(situacao).tipo == 'Comum'){
         if(tipo=='Cadastrar'){
             document.getElementById('janela2').innerHTML = telaProduto(tipo);
+            carregarListaDeFornecedoresEmProduto();
         }else if(tipo=='Atualizar'){
             document.getElementById('janela2').innerHTML = telaBuscarProduto();
         }
@@ -102,9 +103,6 @@ function telaProduto(tipo){
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="listaFornecedor">Lista de fornecedores:</label>'
                     codigoHTML+='<select class="custom-select mr-sm-6" id="listaFornecedor">'
-                        codigoHTML+='<option value="1">Fornecedor 1</option>'
-                        codigoHTML+='<option value="2">Fornecedor 2</option>'
-                        codigoHTML+='<option value="3">Fornecedor 3</option>'
                     codigoHTML+='</select>'
                 codigoHTML+='</div>'
             codigoHTML+='</div>'
@@ -120,12 +118,12 @@ function telaProduto(tipo){
             codigoHTML+='</div>'
             
             codigoHTML+='<div class="form-row">'
-                codigoHTML+='<button onclick="document.getElementById(\'dadosDoFornecedor\').innerHTML = carregarTelaDadosFornecedor(\'Cadastrar\'); " type="button" class="btn btn-warning" style="margin: 5px;"><span class="fas fa-people-carry"></span> Cadastrar Fornecedor</button>'    
-                
+                    
                 if(tipo=='Atualizar'){
                     codigoHTML+='<button onclick="atualizarProduto();" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-edit"></span> Salvar</button>'
                     codigoHTML+='<button onclick="excluirProduto();" type="button" class="btn btn-danger" style="margin: 5px;"><span class="fas fa-trash-alt"></span> Excluir</button>'
                 }else if(tipo=='Cadastrar'){
+                    codigoHTML+='<button onclick="document.getElementById(\'dadosDoFornecedor\').innerHTML = carregarTelaDadosFornecedor(\'Cadastrar\'); " type="button" class="btn btn-warning" style="margin: 5px;"><span class="fas fa-people-carry"></span> Cadastrar Fornecedor</button>'
                     codigoHTML+='<button onclick="cadastrarProduto();" type="button" class="btn btn-primary" style="margin: 5px;"><span class="fas fa-save"></span> Salvar</button>'
                 }
 
@@ -229,6 +227,7 @@ function carregarListaProdutos(json, posicao){
 function carregarCamposComDadosProduto(posicao){
 
     document.getElementById('dadosDoProduto').innerHTML = telaProduto('Atualizar');
+    carregarListaDeFornecedoresEmProduto();
 
     setTimeout(function(){
         document.getElementById('id').value = JSONPRODUTOCLASSEPRODUTO[posicao]._id;
@@ -240,12 +239,34 @@ function carregarCamposComDadosProduto(posicao){
         document.getElementById('dataValidade').value = data[0];
         //document.getElementById('dataChegada').value = JSONPRODUTOCLASSEPRODUTO[posicao].
         document.getElementById('qtdEstoque').value = JSONPRODUTOCLASSEPRODUTO[posicao].stock;
-        //document.getElementById('listaFornecedor').value = JSONPRODUTOCLASSEPRODUTO[posicao].
+        document.getElementById('listaFornecedor').value = JSONPRODUTOCLASSEPRODUTO[posicao].provider._id;
         document.getElementById('descricao').value = JSONPRODUTOCLASSEPRODUTO[posicao].description;
     },1000);
 
 }
 
+
+
+
+
+
+
+
+
+
+//funcao responsavel por carregar a lista de fornecedores na categoria produto
+async function carregarListaDeFornecedoresEmProduto(){
+
+    var user = JSON.parse(sessionStorage.getItem('login'));
+    var codigoHTML='', cont=0, json = await requisicaoGET('providers', {headers:{Authorization:`Bearer ${user.token}`}});
+    
+    while(json.data[cont]){
+        codigoHTML+='<option value="'+json.data[cont]._id+'">'+json.data[cont].name+' - '+json.data[cont].identification+'</option>'
+        cont++;
+    }
+
+    document.getElementById('listaFornecedor').innerHTML = codigoHTML;
+}
 
 
 
@@ -307,7 +328,7 @@ async function cadastrarProduto(){
 
     }else{
 
-        if(validaDadosCampo(['#barcode','#nome','#valorUni','#valorCus','#dataValidade','#qtdEstoque','#listaFornecedor'])){
+        if(validaDadosCampo(['#barcode','#nome','#valorUni','#valorCus','#dataValidade','#qtdEstoque'])){
 
             try {
                 var json = '{"barcode":"'+$('#barcode').val()+'",'  
@@ -320,9 +341,9 @@ async function cadastrarProduto(){
                         json +='"description":"'+$('#descricao').val()+'",'
                         json +='"providerId":"'+$('#listaFornecedor').val()+'"}'
 
-                    await requisicaoPOST('providers', JSON.parse(json), {headers:{Authorization:`Bearer ${user.token}`}})
+                    await requisicaoPOST('products', JSON.parse(json), {headers:{Authorization:`Bearer ${user.token}`}})
 
-                mensagemDeAviso('Cadastrado com sucesso!');   
+                mensagemDeAviso('Cadastrado com sucesso! teste');   
     
             } catch (error) {
                 mensagemDeErro('Não foi possível cadastrar o produto! Erro: '+error);
@@ -373,13 +394,31 @@ async function buscarProduto(tipo){
 
     }else if(tipo=='todos'){
         
-        var json = await requisicaoGET('products', {headers:{Authorization:`Bearer ${user.token}`}})
+        var json = await requisicaoGET('providers', {headers:{Authorization:`Bearer ${user.token}`}}), cont2=0;
         JSONPRODUTOCLASSEPRODUTO=[];
-        while(json.data[cont]){    
-            JSONPRODUTOCLASSEPRODUTO.push(json.data[cont]);
-            $('#listaDeProdutos').append(carregarListaProdutos(json.data[cont], cont));
-            cont++;
-        }
+        
+        json.data.forEach(function (item) {
+            while(item.products[cont]){
+
+                var json2 = '{"_id": "'+item.products[cont]._id+'",'
+                    json2+='"name": "'+item.products[cont].name+'",'
+                    json2+='"description": "'+item.products[cont].description+'",'
+                    json2+='"barcode": '+item.products[cont].barcode+','
+                    json2+='"price": '+item.products[cont].price+','
+                    json2+='"cost": '+item.products[cont].cost+','
+                    json2+='"validity": "'+item.products[cont].validity+'",'
+                    json2+='"stock": '+item.products[cont].stock+','
+                    json2+='"createdAt": "'+item.products[cont].createdAt+'",'
+                    json2+='"updatedAt": "'+item.products[cont].updatedAt+'",'
+                    json2+='"provider":{"_id":"'+item._id+'"}}'    
+                
+                JSONPRODUTOCLASSEPRODUTO.push(JSON.parse(json2));
+                $('#listaDeProdutos').append(carregarListaProdutos(JSON.parse(json2), cont2));
+                cont2++;
+                cont++;
+            }
+            cont=0;  
+        })
 
     }else if(tipo=='dataValidade'){
         
@@ -407,75 +446,33 @@ async function buscarProduto(tipo){
 
 
 //funcao responsavel por atualizar produto
-function atualizarProduto(){
+async function atualizarProduto(){
     
-    if(document.getElementById('nomeFornecedor') != null && validaDadosCampo(['#nomeFornecedor'])){
+    var user = JSON.parse(sessionStorage.getItem('login'));
 
-        if(validaDadosCampo(['#id','#barcode','#nome','#valorUni','#valorCus','#dataValidade','#qtdEstoque','#nomeFornecedor','#cpfCnpjFornecedor','#telefoneFornecedor','#emailFornecedor'])){
+    if(validaDadosCampo(['#id','#barcode','#nome','#valorUni','#valorCus','#dataValidade','#qtdEstoque'])){
 
-            var json = '{"codigo":"'+$('#barcode').val()+'",'
-                    json +='"nome":"'+$('#nome').val()+'",'
-                    json +='"valorUnit":'+$('#valorUni').val()+','
-                    json +='"valorCust":'+$('#valorCus').val()+','
-                    json +='"dataValidade":"'+$('#dataValidade').val()+'",'
-                    json +='"quantidadeEstoque":'+$('#qtdEstoque').val()+','
-                    if(validaDadosCampo(['#descricao'])){
-                        json +='"descricao":"'+$('#descricao').val()+'",'
-                    }else{
-                        json +='"descricao":"" ,'
-                    }
-                    json +='"nomeFornecedor":"'+$('#nomeFornecedor').val()+'",'
-                    json +='"cpfCnpjFornecedor":"'+$('#cpfCnpjFornecedor').val()+'",'
-                    json +='"telefoneFornecedor":"'+$('#telefoneFornecedor').val()+'",'
-                    if(validaDadosCampo(['#descricaoFornecedor'])){
-                        json +='"descricaoFornecedor":"'+$('#descricaoFornecedor').val()+'",'
-                    }else{
-                        json +='"descricaoFornecedor":" ",'
-                    }
-                    json +='"emailFornecedor":"'+$('#emailFornecedor').val()+'"}'
+        try {
+                
+            var jsonProduto = '{"barcode":"'+$('#barcode').val()+'",'
+                    jsonProduto +='"name":"'+$('#nome').val()+'",'
+                    jsonProduto +='"price":'+$('#valorUni').val()+','
+                    jsonProduto +='"cost":'+$('#valorCus').val()+','
+                    var data = (document.getElementById('dataValidade').value).split("-");
+                    jsonProduto +='"validity":"'+new Date(data[0],data[1]-1,data[2]).toISOString()+'",'
+                    jsonProduto +='"stock":'+$('#qtdEstoque').val()+','
+                    jsonProduto +='"description":"'+$('#descricao').val()+'"}'
+                    
+                    await requisicaoPUT('products?id='+$('#id').val()+'&providerId='+$('#listaFornecedor').val(), JSON.parse(jsonProduto), {headers:{Authorization:`Bearer ${user.token}`}});
+                    mensagemDeAviso('Atualizado com sucesso!');
 
-            document.getElementById('janela2').innerHTML = 'Atualizacao id: '+$('#id').val()+' - json: '+json;
-
-            json = JSON.parse(json);
-
-            mensagemDeAviso('Atualizado com sucesso!');
-        
-        }else{
-            mensagemDeErro('Preencha todos os campos!');
+        } catch (error) {
+            mensagemDeErro('Não foi possível atualizar o produto! Erro: '+error);
         }
-
+            
     }else{
-
-        if(validaDadosCampo(['#id','#barcode','#nome','#valorUni','#valorCus','#dataValidade','#qtdEstoque','#listaFornecedor'])){
-
-            var json = '{"codigo":"'+$('#barcode').val()+'",'
-                    json +='"nome":"'+$('#nome').val()+'",'
-                    json +='"valorUnit":'+$('#valorUni').val()+','
-                    json +='"valorCust":'+$('#valorCus').val()+','
-                    json +='"dataValidade":"'+$('#dataValidade').val()+'",'
-                    json +='"quantidadeEstoque":'+$('#qtdEstoque').val()+','
-                    if(validaDadosCampo(['#descricao'])){
-                        json +='"descricao":"'+$('#descricao').val()+'",'
-                    }else{
-                        json +='"descricao":"" ,'
-                    }
-                    json +='"fornecedor":"'+$('#listaFornecedor').val()+'"}'
-
-            
-            document.getElementById('janela2').innerHTML = 'Atualizacao id: '+$('#id').val()+' - json: '+json;
-            
-            json = JSON.parse(json);
-
-            mensagemDeAviso('Atualizado com sucesso!');
-        
-        }else{
-            mensagemDeErro('Preencha todos os campos!');
-        }
-
+        mensagemDeErro('Preencha todos os campos!');
     }
-
-
-    setTimeout(function(){autenticacaoProduto('Atualizar')},1000);
 }
 
 
