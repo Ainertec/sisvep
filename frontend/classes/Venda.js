@@ -32,6 +32,8 @@ function autenticacaoVendaFacede(){
     if(JSON.parse(situacao).tipo == 'Administrador' || JSON.parse(situacao).tipo == 'Comum'){
         document.getElementById('janela2').innerHTML = telaVenda();
         atalhosTeclaVenda();
+        $('#submenu').hide();
+        document.getElementById('mensagemSubMenu').innerHTML = '<p>Para liberar o menu pressione a tecla "B"!</p>'
     }else{
         mensagemDeErro("Usuário não autorizado!");
     }
@@ -140,9 +142,9 @@ function carregarDadosItensVenda(json){
     codigoHTML2+='<table class="table table-danger">'
         codigoHTML2+='<tbody>'
             codigoHTML2+='<tr>'
-                codigoHTML2+='<th>Código: '+json.codigo+'</th>'
-                codigoHTML2+='<th>Nome: '+json.nome+'</th>'
-                codigoHTML2+='<th>Preço Uni.: R$ '+(json.preco).toFixed(2)+'</th>'
+                codigoHTML2+='<th>Código: '+json.data.barcode+'</th>'
+                codigoHTML2+='<th>Nome: '+json.data.name+'</th>'
+                codigoHTML2+='<th>Preço Uni.: R$ '+(json.data.price).toFixed(2)+'</th>'
                 codigoHTML2+='<th>Quantidade: '+$('#qtdItemDaVenda').val()+'</th>'
             codigoHTML2+='</tr>'
         codigoHTML2+='</tbody>'
@@ -151,20 +153,20 @@ function carregarDadosItensVenda(json){
     document.getElementById('dadosItemVenda').innerHTML = codigoHTML2;
 
     
-    if(document.getElementById('codigoProduto'+json.codigo) != null){
+    if(document.getElementById('codigoProduto'+json.data.barcode) != null){
 
-        document.getElementById('quantidadeProduto'+json.codigo).innerHTML=parseInt($('#quantidadeProduto'+json.codigo).text()) + parseInt($('#qtdItemDaVenda').val());
-        document.getElementById('valorProduto'+json.codigo).innerHTML=(parseFloat($('#valorProduto'+json.codigo).text()) + parseFloat((json.preco * $('#qtdItemDaVenda').val()))).toFixed(2);
+        document.getElementById('quantidadeProduto'+json.data.barcode).innerHTML=parseInt($('#quantidadeProduto'+json.data.barcode).text()) + parseInt($('#qtdItemDaVenda').val());
+        document.getElementById('valorProduto'+json.data.barcode).innerHTML=(parseFloat($('#valorProduto'+json.data.barcode).text()) + parseFloat((json.data.price * $('#qtdItemDaVenda').val()))).toFixed(2);
     
     }else{
 
-        VETORCODIGOITENSVENDA.push(json.codigo);
+        VETORCODIGOITENSVENDA.push(json.data);
 
-        codigoHTML+='<tr id="produto-'+json.codigo+'">'
-            codigoHTML+='<td id="codigoProduto'+json.codigo+'">'+json.codigo+'</td>'
-            codigoHTML+='<td id="nomeProduto'+json.codigo+'">'+json.nome+'</td>'
-            codigoHTML+='<td id="valorProduto'+json.codigo+'">'+(json.preco*$('#qtdItemDaVenda').val()).toFixed(2)+'</td>'
-            codigoHTML+='<td id="quantidadeProduto'+json.codigo+'">'+$('#qtdItemDaVenda').val()+'</td>'
+        codigoHTML+='<tr id="produto-'+json.data.barcode+'">'
+            codigoHTML+='<td id="codigoProduto'+json.data.barcode+'">'+json.data.barcode+'</td>'
+            codigoHTML+='<td id="nomeProduto'+json.data.barcode+'">'+json.data.name+'</td>'
+            codigoHTML+='<td id="valorProduto'+json.data.barcode+'">'+(json.data.price*$('#qtdItemDaVenda').val()).toFixed(2)+'</td>'
+            codigoHTML+='<td id="quantidadeProduto'+json.data.barcode+'">'+$('#qtdItemDaVenda').val()+'</td>'
         codigoHTML+='</tr>'
 
         $('#tabelaCarregarItensParaVenda').append(codigoHTML);
@@ -223,9 +225,9 @@ function modalPagamento(tipo){
                     codigoHTML+='<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>'
                     
                     if(tipo=='dinheiro'){
-                        codigoHTML+='<button onclick="cadastrarVenda(\'Dinheiro\'); modalImpressaoNota();" type="button" class="btn btn-primary" data-dismiss="modal">Efetuar Pagamento</button>'
+                        codigoHTML+='<button onclick="cadastrarVenda(\'Dinheiro\','+$('#valorPago').val()+');" type="button" class="btn btn-primary" data-dismiss="modal">Efetuar Pagamento</button>'
                     }else if(tipo=='cartao'){
-                        codigoHTML+='<button onclick="cadastrarVenda(\'Cartão\'); modalImpressaoNota();" type="button" class="btn btn-primary" data-dismiss="modal">Efetuar Pagamento</button>'
+                        codigoHTML+='<button onclick="cadastrarVenda(\'Cartão\',null);" type="button" class="btn btn-primary" data-dismiss="modal">Efetuar Pagamento</button>'
                     }
 
                 codigoHTML+='</div>'
@@ -274,8 +276,8 @@ function removerProdutoDaLista(codigoProduto){
         }else if(parseInt($('#quantidadeProduto'+codigoProduto).text())-$('#qtdItemDaVenda').val() == 0){
         
             VETORCODIGOITENSVENDA.forEach(function (item, indice, array) {
-                if(codigoProduto==item){
-                    VETORCODIGOITENSVENDA[indice]=-1;
+                if(codigoProduto==item.barcode){
+                    VETORCODIGOITENSVENDA[indice].barcode=-1;
                 }
               });
             document.getElementById('produto-'+codigoProduto).innerHTML='';
@@ -307,8 +309,8 @@ function gerarValorTotal(){
     var cont=0, valorTotal=0;
 
     while(VETORCODIGOITENSVENDA[cont]){
-        if(document.getElementById('valorProduto'+VETORCODIGOITENSVENDA[cont]) != null){
-            valorTotal+=parseFloat($('#valorProduto'+VETORCODIGOITENSVENDA[cont]).text());
+        if(document.getElementById('valorProduto'+VETORCODIGOITENSVENDA[cont].barcode) != null){
+            valorTotal+=parseFloat($('#valorProduto'+VETORCODIGOITENSVENDA[cont].barcode).text());
         }
         cont++;
     }
@@ -326,14 +328,21 @@ function gerarValorTotal(){
 
 
 //funcao responsavel por buscar e enviar os itens para a lista
-function buscarProdutoVenda(codigo){
-    
-    if(codigo != ''){
-        var json = JSON.parse('{"codigo":'+codigo+', "nome":"produto1", "preco":23.30}');
-    
-        carregarDadosItensVenda(json);
+async function buscarProdutoVenda(codigo){
 
-        beepAlerta();
+    if(codigo != ''){
+        try {
+
+            var user = JSON.parse(sessionStorage.getItem('login'));
+            var json = await requisicaoGET('products_barcode?barcode='+codigo, {headers:{Authorization:`Bearer ${user.token}`}});
+        
+            carregarDadosItensVenda(json);
+    
+            beepAlerta();
+
+        } catch (error) {
+            mensagemDeErro('Não foi possível encontrar o produto! Erro: '+error);
+        }
     }else{
 
         mensagemDeErro('Código de barras inválido!');
@@ -413,33 +422,30 @@ function socketCodigoBarrasRealTime(){
 
 
 //funcao responsavel por cadastrar a venda após concluida
-function cadastrarVenda(formaPagamento){
+async function cadastrarVenda(formaPagamento, valorPago){
     
-    var datad = new Date();
-    var json = '{"dataHora":"'+datad.getFullYear()+'-'+(datad.getMonth()+1)+'-'+datad.getDate()+' '+datad.getHours()+':'+(datad.getMinutes()+1)+':'+(datad.getSeconds()+1)+'", "formaPagamento":"'+formaPagamento+'", "valorTotal":'+$('#exibirValorTotalAtualizado').text()+', "listaItens":[';
+    var json = '{"payment":"'+formaPagamento+'","total":'+parseFloat($('#exibirValorTotalAtualizado').text())+',"itens":[';
+    var user = JSON.parse(sessionStorage.getItem('login'));
     var aux=true;
 
-
     VETORCODIGOITENSVENDA.forEach(function (item) {
-        if(document.getElementById('codigoProduto'+item) != null){
+        if(document.getElementById('codigoProduto'+item.barcode) != null){
             if(aux){
-                json+='{"nome":"'+$('#nomeProduto'+item).text()+'" , "quantidade":'+parseInt($('#quantidadeProduto'+item).text())+' , "precoUni":'+ (parseFloat($('#valorProduto'+item).text()) / parseInt($('#quantidadeProduto'+item).text())).toFixed(2) +'}'
+                json+='{"product":"'+item.barcode+'","quantity":'+parseInt($('#quantidadeProduto'+item.barcode).text())+'}'
                 aux=false;
             }else{
-                json+=',{"nome":"'+$('#nomeProduto'+item).text()+'" , "quantidade":'+parseInt($('#quantidadeProduto'+item).text())+' , "precoUni":'+ (parseFloat($('#valorProduto'+item).text()) / parseInt($('#quantidadeProduto'+item).text())).toFixed(2) +'}'
+                json+=',{"product":"'+item.barcode+'","quantity":'+parseInt($('#quantidadeProduto'+item.barcode).text())+'}'
             }
         }
     });
 
     json+=']}'
     
-    //alert(json);
+    var result = await requisicaoPOST('sales', JSON.parse(json), {headers:{Authorization:`Bearer ${user.token}`}});
 
-    json = JSON.parse(json);
+    modalImpressaoNota(result,valorPago);
 
-    //alert('Cadastrado com sucesso!');
-
-    setTimeout(function(){autenticacaoVendaFacede();},1000);
+    setTimeout(function(){autenticacaoVendaFacede();},2000);
 
 }
 
@@ -462,6 +468,7 @@ function atalhosTeclaVenda(){
     Mousetrap.bind('q', function() { document.getElementById('qtdItemDaVenda').focus(); });
     Mousetrap.bind('e', function() { document.getElementById('campocodigodeleteitemvenda').focus(); });
     Mousetrap.bind('a', function() { document.getElementById('campocodigoadicionaritemvenda').focus(); });
+    Mousetrap.bind('b', function() { liberarSubMenu(); });
 }
 
 
@@ -475,7 +482,7 @@ function atalhosTeclaVenda(){
 
 
 //funcao responsavel por gerar o modal de impressao e enviar a nota para a impressao
-function modalImpressaoNota(){
+function modalImpressaoNota(json, valorPago){
     
     var codigoHTML='';
 
@@ -526,10 +533,14 @@ function modalImpressaoNota(){
                     codigoHTML+='Produto X (quantidade)<br/>'
                     codigoHTML+='Preco Uni.: x.xx</p>'
                     codigoHTML+='<p>=======================</p>'
-                    codigoHTML+='<p>Valor total: x.xx<br/>'
-                    codigoHTML+='Valor pago: x.xx</p>'
+                    codigoHTML+='<p>Valor total: '+(json.data.total).toFixed(2)+'<br/>'
+                    if(valorPago != null){
+                        codigoHTML+='Valor pago: '+(valorPago).toFixed(2)+'</p>'
+                    }else{
+                        codigoHTML+='Valor pago: '+(json.data.total).toFixed(2)+'</p>'
+                    }
                     codigoHTML+='<p>=======================</p>'
-                    codigoHTML+='<p>ID venda: 5626sd5452s5s</p>'
+                    codigoHTML+='<p>ID venda: '+json.data._id+'</p>'
 
 
                 codigoHTML+='</div>'
@@ -563,4 +574,36 @@ function modalImpressaoNota(){
         afterPrint: null            // function called before iframe is removed
     });
 
+}
+
+
+
+
+
+
+
+
+
+
+//funcao responsavel por liberar o menu lateral
+function liberarSubMenu(){
+    var codigoHTML='';
+        codigoHTML+='<div class="modal fade" id="modalDesbloquearSubMenu" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">'
+            codigoHTML+='<div class="modal-dialog" role="document">'
+                codigoHTML+='<div class="modal-content">'
+                    codigoHTML+='<div class="modal-header">'
+                        codigoHTML+='<h5 class="modal-title">Atenção</h5>'
+                    codigoHTML+='</div>'
+                    codigoHTML+='<div class="modal-body">'
+                        codigoHTML+='<p>Ao sair da tela você perderá todos os dados da venda sendo necessário reefetuar toda a venda! Deseja continuar ?</p>'
+                    codigoHTML+='</div>'
+                    codigoHTML+='<div class="modal-footer">'
+                        codigoHTML+='<button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>'
+                        codigoHTML+='<button onclick="$(\'#submenu\').show(); document.getElementById(\'mensagemSubMenu\').innerHTML = \'\';" type="button" class="btn btn-primary" data-dismiss="modal">Sim</button>'
+                    codigoHTML+='</div>'
+                codigoHTML+='</div>'
+            codigoHTML+='</div>'
+        codigoHTML+='</div>'
+        document.getElementById('modal').innerHTML = codigoHTML;
+        $('#modalDesbloquearSubMenu').modal('show');
 }
