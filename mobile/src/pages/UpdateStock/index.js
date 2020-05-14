@@ -1,13 +1,13 @@
 import React, { useState, useRef } from 'react'
 import { Text } from 'react-native'
-import { ActionButton, Icon } from 'react-native-material-ui'
+import { Icon } from 'react-native-material-ui'
 import { Tooltip } from 'react-native-elements'
 import { Form } from '@unform/mobile'
 
 import QrReader from '../../components/QrReader'
+import ActionButton from '../../components/ActionButton'
 
-import { DatePicker, Input, Label, Button } from '../../components/Form'
-import Picker from '../../components/Form/Picker'
+import { Input, Label, Button } from '../../components/Form'
 
 import { Container, Content, MainScroll, Title } from './styles'
 
@@ -63,29 +63,15 @@ export default function UpdateStock({ navigation }) {
             placeholder='Digite o estoque'
             iconName='storage'
           />
-          <Label>Validade:</Label>
-          <DatePicker name='validity' />
-          <Picker name='testePiker' providers={providers} />
-
           <Button onPress={() => formRef.current.submitForm()} />
         </Form>
       </MainScroll>
-
-      <ActionButton
-        style={{
-          container: { backgroundColor: 'blue' },
-          icon: { color: '#fff' },
-        }}
-        icon='camera-front'
-        onPress={() => {
-          cameraSide ? setCameraSide(false) : setCameraSide(true)
-        }}
-      />
+      <ActionButton setCameraSide={setCameraSide} />
     </Container>
   )
 }
 
-const providers = [
-  { name: 'Julio', _id: 123 },
-  { name: 'Jão', _id: 789 },
-]
+// const providers = [
+//   { name: 'Julio', _id: 123 },
+//   { name: 'Jão', _id: 789 },
+// ]

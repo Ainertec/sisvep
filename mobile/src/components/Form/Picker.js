@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useRef, useEffect, useState } from 'react'
 import { View, Text, Picker } from 'react-native'
 
@@ -5,9 +6,9 @@ import { useField } from '@unform/core'
 
 // import { Container } from './styles';
 
-const PickerUnform = ({ name, providers, ...rest }) => {
+const PickerUnform = ({ name, providers, enabled, ...rest }) => {
   const pickerRef = useRef(null)
-  const { fieldName, defaultValue, registerField, error } = useField(name)
+  const { fieldName, registerField, error } = useField(name)
 
   const [selectedValue, setSelectedValue] = useState(providers[0]._id)
 
@@ -16,9 +17,10 @@ const PickerUnform = ({ name, providers, ...rest }) => {
       name: fieldName,
       ref: pickerRef.current,
       path: 'props.selectedValue',
-      clearValue(ref) {},
+      clearValue() {},
     })
-  }, [registerField, fieldName])
+    console.log(pickerRef.current.props.enabled)
+  }, [registerField, fieldName, pickerRef])
 
   return (
     <View style={{ backgroundColor: '#333', marginTop: 35 }}>
@@ -34,9 +36,10 @@ const PickerUnform = ({ name, providers, ...rest }) => {
       </Text>
       <Picker
         ref={pickerRef}
-        selectedValue={selectedValue}
+        selectedValue={enabled ? selectedValue : undefined}
         style={{ backgroundColor: '#555', color: '#fff', marginTop: 20 }}
         onValueChange={(itemValue) => setSelectedValue(itemValue)}
+        enabled={enabled}
         {...rest}
       >
         {providers.map((provider) => (

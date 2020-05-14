@@ -6,8 +6,8 @@ import { Icon } from 'react-native-elements'
 
 import RestScren from './pages/RestScreen/index'
 import LeitorCodBarras from './pages/LeitorCodBarras'
-import CadastroDeProduto from './pages/CadastroDeProdutos'
-import BuscarProduto from './pages/BuscarProduto'
+import CreateProduct from './pages/CreateProduct'
+import Search from './pages/Search'
 import UpdateStock from './pages/UpdateStock/index'
 import Configuracao from './pages/Configuracao'
 
@@ -25,7 +25,7 @@ function TabAguardo({ navigation }) {
             name='more-vert'
             color='#fff'
             onPress={() => navigation.openDrawer()}
-          ></Icon>
+          />
         ),
       }}
     >
@@ -45,7 +45,7 @@ function TabVenda({ navigation }) {
             name='more-vert'
             color='#fff'
             onPress={() => navigation.openDrawer()}
-          ></Icon>
+          />
         ),
       }}
     >
@@ -54,7 +54,7 @@ function TabVenda({ navigation }) {
   )
 }
 
-function TabProdutoCadastro({ navigation }) {
+function TabCreateProduct({ navigation }) {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -65,16 +65,16 @@ function TabProdutoCadastro({ navigation }) {
             name='more-vert'
             color='#fff'
             onPress={() => navigation.openDrawer()}
-          ></Icon>
+          />
         ),
       }}
     >
-      <Stack.Screen name='Sisvep' component={CadastroDeProduto} />
+      <Stack.Screen name='Sisvep' component={CreateProduct} />
     </Stack.Navigator>
   )
 }
 
-function TabProdutoBusca({ navigation }) {
+function TabSearch({ navigation }) {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -85,11 +85,11 @@ function TabProdutoBusca({ navigation }) {
             name='more-vert'
             color='#fff'
             onPress={() => navigation.openDrawer()}
-          ></Icon>
+          />
         ),
       }}
     >
-      <Stack.Screen name='Sisvep' component={BuscarProduto} />
+      <Stack.Screen name='Sisvep' component={Search} />
     </Stack.Navigator>
   )
 }
@@ -105,7 +105,7 @@ function TabUpdateStock({ navigation }) {
             name='more-vert'
             color='#fff'
             onPress={() => navigation.openDrawer()}
-          ></Icon>
+          />
         ),
       }}
     >
@@ -125,7 +125,7 @@ function TabConfiguracao({ navigation }) {
             name='more-vert'
             color='#fff'
             onPress={() => navigation.openDrawer()}
-          ></Icon>
+          />
         ),
       }}
     >
@@ -150,8 +150,8 @@ const Routes = (
     >
       <Drawer.Screen name='Tela de Descanso' component={TabAguardo} />
       <Drawer.Screen name='Venda' component={TabVenda} />
-      <Drawer.Screen name='Cadastrar produto' component={TabProdutoCadastro} />
-      <Drawer.Screen name='Buscar produto' component={TabProdutoBusca} />
+      <Drawer.Screen name='Cadastrar produto' component={TabCreateProduct} />
+      <Drawer.Screen name='Buscar produto' component={TabSearch} />
       <Drawer.Screen name='Estoque' component={TabUpdateStock} />
       <Drawer.Screen name='Configuração' component={TabConfiguracao} />
     </Drawer.Navigator>
