@@ -21,7 +21,7 @@ module.exports = {
         createdAt: { $gte: initial, $lte: final },
       })
       .group({
-        _id: { month: { $month: '$createdAt' } },
+        _id: { month: { $month: '$createdAt' }, year: { $year: '$createdAt' } },
         amount: { $sum: '$total' },
       })
       .sort({ amount: -1 });
@@ -69,7 +69,7 @@ module.exports = {
         createdAt: { $gte: initial, $lte: final },
       })
       .group({
-        _id: { month: { $month: '$createdAt' } },
+        _id: { month: { $month: '$createdAt' }, year: { $year: '$createdAt' } },
         total: { $sum: 1 },
       })
       .sort({ total: -1 });
