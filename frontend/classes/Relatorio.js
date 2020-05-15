@@ -18,12 +18,6 @@ function autenticacaoRelatorioFacede(){
     
     if(JSON.parse(situacao).tipo == 'Administrador'){
         document.getElementById('janela2').innerHTML = telaGeralRelatorio();
-        graficoLucroMensal();
-        graficoProdutosVendidos();
-        graficoQuantidadeVendasMensal();
-        graficoRepresentacaoDeProdutoSobreVendas();
-        graficoRepresentacaoDeProdutoSobreLucro();
-        graficoQuantidadeProdutosporFornecedor();
     }else{
         mensagemDeErro("Usuário não autorizado!");
     }
@@ -43,7 +37,24 @@ function autenticacaoRelatorioFacede(){
 function telaGeralRelatorio(){
     var codigoHTML='';
 
-    codigoHTML+='<div id="grafico1"></div>'
+    codigoHTML+='<h3 class="text-center">Relatórios</h3>'
+    
+    codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
+        codigoHTML+='<h5 class="text-center">Data inicial</h5>'
+        codigoHTML+='<div class="input-group mb-3">'
+            codigoHTML+='<input id="dataInicio" type="date" class="form-control" aria-label="Recipients username" aria-describedby="botaoBuscar">'
+        codigoHTML+='</div>'
+        codigoHTML+='<h5 class="text-center">Data final</h5>'
+        codigoHTML+='<div class="input-group mb-3">'
+            codigoHTML+='<input id="dataFim" type="date" class="form-control" aria-label="Recipients username" aria-describedby="botaoBuscar">'
+        codigoHTML+='</div>'
+        codigoHTML+='<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
+            codigoHTML+='<button onclick="graficoLucroMensal(); graficoQuantidadeVendasMensal();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Relatórios periódicos</button>'
+            codigoHTML+='<button onclick="graficoProdutosVendidos(); graficoRepresentacaoDeProdutoSobreVendas(); graficoRepresentacaoDeProdutoSobreLucro(); graficoQuantidadeProdutosporFornecedor();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Relatórios completos</button>'
+        codigoHTML+='</div>'
+    codigoHTML+='</div>'
+
+    codigoHTML+='<div id="grafico1" style="margin-top:10px;"></div>'
     codigoHTML+='<div id="grafico2" style="margin-top:10px;"></div>'
     codigoHTML+='<div id="grafico3" style="margin-top:10px;"></div>'
     codigoHTML+='<div id="grafico4" style="margin-top:10px;"></div>'
@@ -63,38 +74,52 @@ function telaGeralRelatorio(){
 
 
 //funcao responsavel por gerar a tela de relatorio de lucro mensal
-function graficoLucroMensal(){
+async function graficoLucroMensal(){
 
-    Highcharts.chart('grafico1', {
-        chart: {
-            type: 'line'
-        },
-        title: {
-            text: 'Gráfico de Lucro Mensal'
-        },subtitle: {
-            text: 'Este gráfico demostra o lucro total de cada mês.'
-        },
-        xAxis: {
-            categories: ['5-2020','6-2020','7-2020','9-2020','11-2020']
-        },
-        yAxis: {
+    if(validaDadosCampo(['#dataInicio','#dataFim'])){
+
+        var json = await requisicaoGET('report?initialDate='+$('#dataInicio').val()+'&finalDate='+$('#dataFim').val(), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}}), cont=0;
+        var vetor1=[], vetor2=[];
+
+        while(json.data[cont]){
+            vetor1.push('Data: '+json.data[cont]._id.month);
+            vetor2.push(json.data[cont].amount);
+            cont++
+        }
+
+        Highcharts.chart('grafico1', {
+            chart: {
+                type: 'line'
+            },
             title: {
-                text: 'Valor (R$)'
-            }
-        },
-        plotOptions: {
-            line: {
-                dataLabels: {
-                    enabled: true
-                },
-                enableMouseTracking: true
-            }
-        },
-        series: [{
-            name: 'Reais',
-            data: [10000.00, 20000.00, 30000.00, 40000.00, 50000.00]
-        }]
-    });
+                text: 'Gráfico de Lucro Mensal'
+            },subtitle: {
+                text: 'Este gráfico demostra o lucro total de cada mês.'
+            },
+            xAxis: {
+                categories: vetor1
+            },
+            yAxis: {
+                title: {
+                    text: 'Valor (R$)'
+                }
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: true
+                }
+            },
+            series: [{
+                name: 'Reais',
+                data: vetor2
+            }]
+        });
+    }else{
+        mensagemDeErro('Preencha os campos de data inicial e data final!');
+    }
 }
 
 
@@ -107,7 +132,16 @@ function graficoLucroMensal(){
 
 
 //funcao responsavel por gerar a tela de relatorio de produtos vendidos
-function graficoProdutosVendidos(){
+async function graficoProdutosVendidos(){
+
+    var json = await requisicaoGET('report_soldouts', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}}), cont=0;
+    var vetor1=[], vetor2=[];
+
+    while(json.data[cont]){
+        vetor1.push(json.data[cont]._id.name);
+        vetor2.push(json.data[cont].soldout);
+        cont++
+    }
 
     Highcharts.chart('grafico2', {
         chart: {
@@ -120,7 +154,7 @@ function graficoProdutosVendidos(){
             text: 'Este gráfico desmostra a venda de cada produto.'
         },
         xAxis: {
-            categories: ['Produto 1','Produto 2','Produto 3','Produto 4','Produto 5'],
+            categories: vetor1,
             crosshair: true
         },
         yAxis: {
@@ -145,7 +179,7 @@ function graficoProdutosVendidos(){
         },
         series: [{
             name: 'Quantidade',
-            data: [49, 60, 70, 56, 32]
+            data: vetor2
         }]
     });
 
@@ -161,38 +195,53 @@ function graficoProdutosVendidos(){
 
 
 //funcao responsavel por gerar a tela de quantidade de vendas por mes
-function graficoQuantidadeVendasMensal(){
+async function graficoQuantidadeVendasMensal(){
 
-    Highcharts.chart('grafico3', {
-        chart: {
-            type: 'line'
-        },
-        title: {
-            text: 'Gráfico de Quantidade de Vendas Mensal'
-        },subtitle: {
-            text: 'Este gráfico demostra a quantidade vendas por mês.'
-        },
-        xAxis: {
-            categories: ['5-2020','6-2020','7-2020','9-2020','11-2020']
-        },
-        yAxis: {
+    if(validaDadosCampo(['#dataInicio','#dataFim'])){
+
+        var json = await requisicaoGET('report_solds_by_month?initialDate='+$('#dataInicio').val()+'&finalDate='+$('#dataFim').val(), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}}), cont=0;
+        var vetor1=[], vetor2=[];
+
+        while(json.data[cont]){
+            vetor1.push('Data: '+json.data[cont]._id.month);
+            vetor2.push(json.data[cont].total);
+            cont++
+        }
+
+        Highcharts.chart('grafico3', {
+            chart: {
+                type: 'line'
+            },
             title: {
-                text: 'Quantidade (Unidade)'
-            }
-        },
-        plotOptions: {
-            line: {
-                dataLabels: {
-                    enabled: true
-                },
-                enableMouseTracking: true
-            }
-        },
-        series: [{
-            name: 'Quantidade',
-            data: [1000, 2000, 3000, 4000, 5000]
-        }]
-    });
+                text: 'Gráfico de Quantidade de Vendas Mensal'
+            },subtitle: {
+                text: 'Este gráfico demostra a quantidade vendas por mês.'
+            },
+            xAxis: {
+                categories: vetor1
+            },
+            yAxis: {
+                title: {
+                    text: 'Quantidade (Unidade)'
+                }
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: true
+                }
+            },
+            series: [{
+                name: 'Quantidade',
+                data: vetor2
+            }]
+        });
+
+    }else{
+        mensagemDeErro('Preencha os campos de data inicial e data final!');
+    }
 }
 
 
@@ -205,7 +254,14 @@ function graficoQuantidadeVendasMensal(){
 
 
 //funcao responsavel por gerar a tela de representacao dos produtos sobre as vendas
-function graficoRepresentacaoDeProdutoSobreVendas(){
+async function graficoRepresentacaoDeProdutoSobreVendas(){
+
+    var json = await requisicaoGET('report_products_total_percent', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}}), cont=0;
+
+    while(json.data[cont]){
+        json.data[cont] = JSON.parse('{"name": "'+json.data[cont]._id.name+'","y": '+json.data[cont].soldout+'}')
+        cont++
+    }
 
     Highcharts.chart('grafico4', {
         chart: {
@@ -240,22 +296,7 @@ function graficoRepresentacaoDeProdutoSobreVendas(){
         series: [{
             name: 'Representa',
             colorByPoint: true,
-            data: [{
-                name: 'Produto 1',
-                y: 10.00,
-            },{
-                name: 'Produto 2',
-                y: 20.00,
-            },{
-                name: 'Produto 3',
-                y: 30.00,
-            },{
-                name: 'Produto 4',
-                y: 15.00,
-            },{
-                name: 'Produto 5',
-                y: 25.00,
-            }]
+            data: json.data
         }]
     });
 
@@ -271,7 +312,16 @@ function graficoRepresentacaoDeProdutoSobreVendas(){
 
 
 //funcao responsavel por gerar a tela de quantidade de produtos fornecidos por cada fornecedor
-function graficoQuantidadeProdutosporFornecedor(){
+async function graficoQuantidadeProdutosporFornecedor(){
+
+    var json = await requisicaoGET('report_providers_products', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}}), cont=0;
+    var vetor1=[], vetor2=[];
+
+    while(json.data[cont]){
+        vetor1.push(json.data[cont].name);
+        vetor2.push(json.data[cont].totalProducts);
+        cont++
+    }
 
     Highcharts.chart('grafico5', {
         chart: {
@@ -284,7 +334,7 @@ function graficoQuantidadeProdutosporFornecedor(){
             text: 'Este gráfico desmostra a quantidade total de produtos fornecidos por cada fornecedor.'
         },
         xAxis: {
-            categories: ['Fornecedor 1','Fornecedor 2','Fornecedor 3','Fornecedor 4','Fornecedor 5'],
+            categories: vetor1,
             crosshair: true
         },
         yAxis: {
@@ -309,7 +359,7 @@ function graficoQuantidadeProdutosporFornecedor(){
         },
         series: [{
             name: 'Quantidade',
-            data: [49, 60, 70, 56, 32]
+            data: vetor2
         }]
     });
 
@@ -325,8 +375,16 @@ function graficoQuantidadeProdutosporFornecedor(){
 
 
 //funcao responsavel por gerar a tela de representacao dos produtos sobre o lucro
-function graficoRepresentacaoDeProdutoSobreLucro(){
+async function graficoRepresentacaoDeProdutoSobreLucro(){
 
+    var json = await requisicaoGET('report_products_amount_percent', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}}), cont=0;
+
+    while(json.data[cont]){
+        json.data[cont] = JSON.parse('{"name": "'+json.data[cont]._id.name+'","y": '+json.data[cont].soldout+'}')
+        cont++
+    }
+
+    
     Highcharts.chart('grafico6', {
         chart: {
             plotBackgroundColor: null,
@@ -360,22 +418,7 @@ function graficoRepresentacaoDeProdutoSobreLucro(){
         series: [{
             name: 'Representa',
             colorByPoint: true,
-            data: [{
-                name: 'Produto 1',
-                y: 10.00,
-            },{
-                name: 'Produto 2',
-                y: 20.00,
-            },{
-                name: 'Produto 3',
-                y: 30.00,
-            },{
-                name: 'Produto 4',
-                y: 15.00,
-            },{
-                name: 'Produto 5',
-                y: 25.00,
-            }]
+            data: json.data
         }]
     });
 

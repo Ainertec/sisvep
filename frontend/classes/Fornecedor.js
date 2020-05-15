@@ -56,12 +56,11 @@ function telaFornecedor(){
     codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
         codigoHTML+='<h5 class="text-center">Buscar Fornecedor</h5>'
         codigoHTML+='<div class="input-group mb-3">'
-            codigoHTML+='<input id="buscaFornecedor" type="text" class="form-control" placeholder="Nome ou CPF/CNPJ" aria-label="Recipients username" aria-describedby="botaoBuscar">'
+            codigoHTML+='<input id="buscaFornecedor" type="text" class="form-control" placeholder="Nome" aria-label="Recipients username" aria-describedby="botaoBuscar">'
         codigoHTML+='</div>'
         codigoHTML+='<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
-            codigoHTML+='<button onclick="buscarFornecedor();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por CPF/CNPJ</button>'
-            codigoHTML+='<button onclick="buscarFornecedor();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
-            codigoHTML+='<button onclick="buscarFornecedor();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Exibir todos</button>'
+            codigoHTML+='<button onclick="buscarFornecedor(\'nome\');" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
+            codigoHTML+='<button onclick="buscarFornecedor(\'todos\');" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Exibir todos</button>'
         codigoHTML+='</div>'
     codigoHTML+='</div>'
 
@@ -102,14 +101,14 @@ function telaFornecedor(){
 //funcao responsavel pela lista de fornecedores
 function carregarListaFornecedor(json, posicao){
 
-    var codigoHTML='', cont=0;
+    var codigoHTML='';
 
     codigoHTML+='<a onclick="carregarDadosFornecedorSelecionado('+posicao+');" href="#" class="list-group-item list-group-item-action">'
         codigoHTML+='<div class="d-flex w-100 justify-content-between">'
-            codigoHTML+='<h5 class="mb-1">Nome: '+json.nome+'</h5>'
-            codigoHTML+='<small>CPF/CNPJ: '+json.cpfCnpj+'</small>'
+            codigoHTML+='<h5 class="mb-1">Nome: '+json.name+'</h5>'
+            codigoHTML+='<small>CPF/CNPJ: '+json.identification+'</small>'
         codigoHTML+='</div>'
-        codigoHTML+='<small>Descrição: '+json.descricao+'</small>'
+        codigoHTML+='<small>Descrição: '+json.description+'</small>'
     codigoHTML+='</a>'
 
     return codigoHTML;
@@ -183,20 +182,22 @@ function carregarTelaDadosFornecedor(tipo){
 
 
 //funcao responsavel por buscar os fornecedoes da consulta
-function buscarFornecedor(){
+async function buscarFornecedor(tipo){
 
     VETORFORNECEDORCLASSEFORNECEDOR=[];
-
-    var cont=0;
-    var json = '[{"id":"1a2","nome":"fornecedor 1","cpfCnpj":"123.154.364-23","telefone":"(33)52423-1342","email":"fornecedor1@gmail.com","descricao":"hfhasjdhfjsadhfsjahd sdhfjsahdf"}]'
-
-    json = JSON.parse(json);
-
     document.getElementById('listaDeFornecedores').innerHTML='';
+    var user = JSON.parse(sessionStorage.getItem('login'));
+    var cont=0;
+
+    if(tipo=='nome'){
+        var json = await requisicaoGET('providers_by_name?name='+document.getElementById('buscaFornecedor').value, {headers:{Authorization:`Bearer ${user.token}`}});
+    }else if(tipo=='todos'){
+        var json = await requisicaoGET('providers', {headers:{Authorization:`Bearer ${user.token}`}});
+    }
     
-    while(json[cont]){
-        VETORFORNECEDORCLASSEFORNECEDOR.push(json[cont]);
-        $('#listaDeFornecedores').append(carregarListaFornecedor(json[cont], cont));
+    while(json.data[cont]){
+        VETORFORNECEDORCLASSEFORNECEDOR.push(json.data[cont]);
+        $('#listaDeFornecedores').append(carregarListaFornecedor(json.data[cont], cont));
         cont++;
     }
 
@@ -214,12 +215,12 @@ function buscarFornecedor(){
 //funcao responsavel por carregar na tela os dados de um fornecedor selecionado
 function carregarDadosFornecedorSelecionado(posicao){
 
-    document.getElementById('idFornecedor').value = VETORFORNECEDORCLASSEFORNECEDOR[posicao].id;
-    document.getElementById('nomeFornecedor').value = VETORFORNECEDORCLASSEFORNECEDOR[posicao].nome;
-    document.getElementById('cpfCnpjFornecedor').value = VETORFORNECEDORCLASSEFORNECEDOR[posicao].cpfCnpj;
-    document.getElementById('telefoneFornecedor').value = VETORFORNECEDORCLASSEFORNECEDOR[posicao].telefone;
+    document.getElementById('idFornecedor').value = VETORFORNECEDORCLASSEFORNECEDOR[posicao]._id;
+    document.getElementById('nomeFornecedor').value = VETORFORNECEDORCLASSEFORNECEDOR[posicao].name;
+    document.getElementById('cpfCnpjFornecedor').value = VETORFORNECEDORCLASSEFORNECEDOR[posicao].identification;
+    document.getElementById('telefoneFornecedor').value = VETORFORNECEDORCLASSEFORNECEDOR[posicao].phone;
     document.getElementById('emailFornecedor').value = VETORFORNECEDORCLASSEFORNECEDOR[posicao].email;
-    document.getElementById('descricaoFornecedor').value = VETORFORNECEDORCLASSEFORNECEDOR[posicao].descricao;
+    document.getElementById('descricaoFornecedor').value = VETORFORNECEDORCLASSEFORNECEDOR[posicao].description;
 
 }
 
@@ -232,17 +233,26 @@ function carregarDadosFornecedorSelecionado(posicao){
 
 
 //funcao responsavel por atualizar o fornecedor
-function atualizarFornecedor(){
+async function atualizarFornecedor(posicao){
+
+    var user = JSON.parse(sessionStorage.getItem('login'));
 
     if(validaDadosCampo(['#idFornecedor','#nomeFornecedor','#cpfCnpjFornecedor','#telefoneFornecedor','#emailFornecedor','#descricaoFornecedor'])){
-        var json ='{"id":"'+$('#idFornecedor').val()+'",'
-            json+='"nome":"'+$('#nomeFornecedor').val()+'",'
-            json+='"cpfCnpj":"'+$('#cpfCnpjFornecedor').val()+'",'
-            json+='"telefone":"'+$('#telefoneFornecedor').val()+'",'
-            json+='"email":"'+$('#emailFornecedor').val()+'",'
-            json+='"descricao":"'+$('#descricaoFornecedor').val()+'"}'
-    
-        document.getElementById('janela2').innerHTML = json;
+       
+        try {
+            VETORFORNECEDORCLASSEFORNECEDOR[posicao].name = ($('#nomeFornecedor').val()).toString();
+            VETORFORNECEDORCLASSEFORNECEDOR[posicao].description = ($('#descricaoFornecedor').val()).toString();
+            VETORFORNECEDORCLASSEFORNECEDOR[posicao].identification = ($('#cpfCnpjFornecedor').val()).toString();
+            VETORFORNECEDORCLASSEFORNECEDOR[posicao].phone = ($('#telefoneFornecedor').val()).toString();
+            VETORFORNECEDORCLASSEFORNECEDOR[posicao].email = ($('#emailFornecedor').val()).toString();
+
+            await requisicaoPUT('providers?id='+$('#idFornecedor').val(), VETORFORNECEDORCLASSEFORNECEDOR[posicao], {headers:{Authorization:`Bearer ${user.token}`}})
+            mensagemDeAviso('Atualizado com sucesso!');
+
+        } catch (error) {
+            mensagemDeErro('Não foi possível atualizar! Erro: '+error);
+        }
+        
     }else{
         mensagemDeErro('Preencha todos os campos!');
     }
@@ -257,7 +267,7 @@ function atualizarFornecedor(){
 
 
 //funcao responsavel por excluir o fornecedor
-function excluirFornecedor(){
+async function excluirFornecedor(){
 
     if(validaDadosCampo(['#idFornecedor'])){
         var json = '{"id":"'+$('#idFornecedor').val()+'"}'

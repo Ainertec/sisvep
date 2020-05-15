@@ -29,7 +29,8 @@
       
         <section class="col-2 bg.bg-transparent" style="height: 630px;">
             <h5 class="text-center" style="margin-top: 15px;">Menu</h5>
-            <ul class="list-group list-group-flush">
+            <div id="mensagemSubMenu"></div>
+            <ul id="submenu" class="list-group list-group-flush">
                 <a onclick="autenticacaoVendaFacede();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-shopping-cart iconsTam"></span> Venda</a>
                 <a onclick="subMenuProduto();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-box-open iconsTam"></span> Produto</a>
                 <a onclick="autenticacaoFornecedorFacede();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-people-carry iconsTam"></span> Fornecedor</a>
@@ -38,6 +39,7 @@
                 <a onclick="autenticacaoRelatorioFacede();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-chart-line iconsTam"></span> Relatórios</a>
                 <a onclick="subMenuImpressao();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-print iconsTam"></span> Impressão</a>
                 <a onclick="autenticacaoLoja();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-store-alt iconsTam"></span> Loja</a>
+                <a onclick="ajudaInformacoes();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-question-circle iconsTam"></span> Ajuda</a>
             </ul>
         </section>
       
@@ -85,6 +87,7 @@
     <script src="./classes/Relatorio.js"></script>
     <script src="./classes/SubMenu.js"></script>
     <script src="./classes/AtalhosTeclas.js"></script>
+    <script src="./classes/Ajuda.js"></script>
     
     
 
