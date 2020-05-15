@@ -71,3 +71,15 @@ function validaValoresCampo(campo){
 
     return validacao;
 }
+
+
+
+
+
+
+
+
+//funcao responsavel por buscar a sessao do usuario
+function buscarSessionUser(){
+    return JSON.parse(sessionStorage.getItem('login'));
+}
