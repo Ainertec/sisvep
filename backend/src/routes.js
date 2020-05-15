@@ -10,6 +10,7 @@ const ForgotPasswordController = require('./app/controllers/ForgotPasswordContro
 const UserController = require('./app/controllers/UserController');
 const SaleController = require('./app/controllers/SaleController');
 const ReportController = require('./app/controllers/ReportController');
+const ShopController = require('./app/controllers/ShopController');
 
 const authMiddleware = require('./app/middleware/auth');
 const authorizationMiddleware = require('./app/middleware/authorization');
@@ -260,6 +261,48 @@ routes.delete(
     },
   }),
   ProviderController.delete
+);
+// SHOP ///
+routes.get('/shops', ShopController.index);
+
+routes.post(
+  '/shops',
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      name: Joi.string().required(),
+      identification: Joi.string().required(),
+      phone: Joi.string().required(),
+      email: Joi.string().required(),
+      address: Joi.object().keys({
+        number: Joi.number().required(),
+        street: Joi.string().required(),
+        city: Joi.string().required(),
+        district: Joi.string().required(),
+      }),
+    }),
+  }),
+  ShopController.store
+);
+routes.put(
+  '/shops',
+  celebrate({
+    [Segments.QUERY]: {
+      id: Joi.custom(validObjectId, 'valid id').required(),
+    },
+    [Segments.BODY]: Joi.object().keys({
+      name: Joi.string().required(),
+      identification: Joi.string().required(),
+      phone: Joi.string().required(),
+      email: Joi.string().required(),
+      address: Joi.object().keys({
+        number: Joi.number().required(),
+        street: Joi.string().required(),
+        city: Joi.string().required(),
+        district: Joi.string().required(),
+      }),
+    }),
+  }),
+  ShopController.update
 );
 
 // SALE //
