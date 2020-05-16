@@ -33,19 +33,19 @@ module.exports = {
 
     const product = await Product.findOne({ barcode }).lean();
 
-    const provider = await Provider.findOne({ products: [product._id] }).lean();
-
-    if(provider){
-        product.provider = {
-        _id: provider._id,
-        name: provider.name,
-        identificarion: provider.identification,
-        phone: provider.phone,
-        emial: provider.email,
-      };
+    if(product){
+       const provider = await Provider.findOne({ products: [product._id] }).lean();
+      if(provider){
+              product.provider = {
+              _id: provider._id,
+              name: provider.name,
+              identificarion: provider.identification,
+              phone: provider.phone,
+              emial: provider.email,
+            };
+          }
     }
-    
-
+      
     return res.json(product);
   },
   async show(req, res) {
