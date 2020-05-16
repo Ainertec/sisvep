@@ -1,26 +1,30 @@
-import React, { useState, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Text } from 'react-native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { Icon } from 'react-native-material-ui'
 import { Tooltip } from 'react-native-elements'
 import { Form } from '@unform/mobile'
 
-import QrReader from '../../components/QrReader'
-import ActionButton from '../../components/ActionButton'
-
-import { Input, Label, Button } from '../../components/Form'
+import ProductForm from '../../components/PrincipalForms/ProductForm'
+import { Button } from '../../components/Form'
 
 import { Container, Content, MainScroll, Title } from './styles'
 
-export default function UpdateStock({ navigation }) {
-  const [cameraSide, setCameraSide] = useState(true)
-  const [readedCode, setReadedCode] = useState('')
+export default function UpdateStock() {
+  const navigation = useNavigation()
+  const route = useRoute()
+  const { product } = route.params
+
   const formRef = useRef(null)
 
   function handleSubmit(data, { reset }) {
     console.log(data)
-
     reset()
+    navigation.goBack()
   }
+  useEffect(() => {
+    formRef.current.setData(product)
+  })
 
   return (
     <Container>
@@ -31,47 +35,18 @@ export default function UpdateStock({ navigation }) {
       </Content>
 
       <MainScroll>
-        <Title>Estoque de Produto</Title>
-        <QrReader
-          formRef={formRef}
-          cameraSide={cameraSide}
-          setReadedCode={setReadedCode}
-        />
+        <Title>Atualizar Produto</Title>
 
         <Form
           initialData={{ validity: new Date() }}
           ref={formRef}
           onSubmit={handleSubmit}
         >
-          <Label>Código de Barras:</Label>
-          <Input
-            name='barcode'
-            keyboardType='numeric'
-            placeholder='Digite o código de barras'
-            iconName='local-offer'
-          />
-          <Label>Nome:</Label>
-          <Input
-            name='name'
-            placeholder='Digite o nome do produto'
-            iconName='shopping-cart'
-          />
-          <Label>Estoque:</Label>
-          <Input
-            name='stock'
-            keyboardType='numeric'
-            placeholder='Digite o estoque'
-            iconName='storage'
-          />
+          <ProductForm />
+
           <Button onPress={() => formRef.current.submitForm()} />
         </Form>
       </MainScroll>
-      <ActionButton setCameraSide={setCameraSide} />
     </Container>
   )
 }
-
-// const providers = [
-//   { name: 'Julio', _id: 123 },
-//   { name: 'Jão', _id: 789 },
-// ]

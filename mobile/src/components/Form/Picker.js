@@ -1,10 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useRef, useEffect, useState } from 'react'
-import { View, Text, Picker } from 'react-native'
 
 import { useField } from '@unform/core'
 
-// import { Container } from './styles';
+import { PickerView, Picker, PickerTitle } from './styles'
 
 const PickerUnform = ({ name, providers, enabled, ...rest }) => {
   const pickerRef = useRef(null)
@@ -19,25 +18,14 @@ const PickerUnform = ({ name, providers, enabled, ...rest }) => {
       path: 'props.selectedValue',
       clearValue() {},
     })
-    console.log(pickerRef.current.props.enabled)
   }, [registerField, fieldName, pickerRef])
 
   return (
-    <View style={{ backgroundColor: '#333', marginTop: 35 }}>
-      <Text
-        style={{
-          color: '#fff',
-          textAlign: 'center',
-          fontSize: 20,
-          marginTop: 10,
-        }}
-      >
-        Lista de Fornecedores:{' '}
-      </Text>
+    <PickerView>
+      <PickerTitle>Lista de Fornecedores</PickerTitle>
       <Picker
         ref={pickerRef}
         selectedValue={enabled ? selectedValue : undefined}
-        style={{ backgroundColor: '#555', color: '#fff', marginTop: 20 }}
         onValueChange={(itemValue) => setSelectedValue(itemValue)}
         enabled={enabled}
         {...rest}
@@ -50,7 +38,7 @@ const PickerUnform = ({ name, providers, enabled, ...rest }) => {
           />
         ))}
       </Picker>
-    </View>
+    </PickerView>
   )
 }
 

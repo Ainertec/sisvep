@@ -26,10 +26,6 @@ const QrReader = ({ cameraSide, setReadedCode, formRef }) => {
   const handleBarCodeScanned = async ({ data }) => {
     setScanned(true)
     formRef.current.setFieldValue('barcode', `${data}`)
-    // setReadedCode(data)
-
-    // alert(`Código de barra: ${data}`)
-
     setTimeout(() => {
       setScanned(false)
     }, 1000)

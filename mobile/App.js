@@ -1,12 +1,18 @@
+import 'react-native-gesture-handler'
+import React from 'react'
 import { YellowBox } from 'react-native'
-import Routes from './src/routes';
+import { NavigationContainer } from '@react-navigation/native'
+import Routes from './src/routes'
 
 YellowBox.ignoreWarnings([
   'Unrecognized WebSocket',
-  'componentWillReceiveProps',
-  'Possible Unhandled Promise',
+  // 'componentWillReceiveProps',
+  // 'Possible Unhandled Promise',
 ])
 export default function App() {
-  return Routes
+  return (
+    <NavigationContainer>
+      <Routes />
+    </NavigationContainer>
+  )
 }
-

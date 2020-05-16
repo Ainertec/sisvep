@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react'
+import { Platform } from 'react-native'
 import { useField } from '@unform/core'
-import DateTimePicker from '@react-native-community/datetimepicker'
 import formatISO from 'date-fns/formatISO'
 
-import { Input } from 'react-native-elements'
 import { Icon } from 'react-native-material-ui'
+import { TextInput, DatePickerCustom } from './styles'
 import Button from './Button'
 
 const DatePickerT = ({ name, ...rest }) => {
@@ -18,9 +18,11 @@ const DatePickerT = ({ name, ...rest }) => {
     setShow(Platform.OS === 'ios')
     setDate(currentDate)
   }
+
   const showDatePicker = () => {
     setShow(true)
   }
+
   useEffect(() => {
     registerField({
       name: fieldName,
@@ -45,13 +47,11 @@ const DatePickerT = ({ name, ...rest }) => {
 
   return (
     <>
-      <Input
+      <TextInput
         ref={inputRef}
         value={formatISO(date)}
         defaultValue={formatISO(defaultValue)}
-        disabled={true}
-        inputStyle={{ color: '#fff' }}
-        containerStyle={{ backgroundColor: '#222' }}
+        disabled
         leftIcon={
           <Icon
             name='date-range'
@@ -62,10 +62,9 @@ const DatePickerT = ({ name, ...rest }) => {
         }
         {...rest}
       />
-      <Button title='Selcionar data' onPress={showDatePicker} />
+      <Button title='Selcionar validade' onPress={showDatePicker} />
       {show && (
-        <DateTimePicker
-          style={{ width: '100%', backgroundColor: '#222' }}
+        <DatePickerCustom
           value={date}
           mode='date'
           onChange={onChange}

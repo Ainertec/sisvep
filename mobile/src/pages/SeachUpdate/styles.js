@@ -4,8 +4,9 @@ export const Container = styled.View`
   flex: 1;
   background: #222;
 `
+
 export const Content = styled.View`
-  /* background: #202026; */
+  background: #202026;
   height: 100%;
   width: 20px;
   justify-content: center;
@@ -19,13 +20,6 @@ export const MainScroll = styled.ScrollView`
 export const Title = styled.Text`
   color: #fff;
   font-size: 20px;
-  font-weight: bold;
   margin-top: 20px;
   text-align: center;
-`
-export const SwitchView = styled.Switch.attrs({
-  trackColor: { false: '#767577', true: '#ddd' },
-})`
-  align-self: center;
-  margin-top: 10px;
 `

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import { useField } from '@unform/core'
-import { Input as ElementsInput } from 'react-native-elements'
 import { Icon } from 'react-native-material-ui'
+import { TextInput } from './styles'
 
 const Input = ({ name, iconName, ...rest }) => {
   const inputRef = useRef(null)
@@ -30,7 +30,7 @@ const Input = ({ name, iconName, ...rest }) => {
     })
   }, [fieldName, registerField])
   return (
-    <ElementsInput
+    <TextInput
       ref={inputRef}
       defaultValue={defaultValue}
       onChangeText={(value) => {
@@ -38,8 +38,6 @@ const Input = ({ name, iconName, ...rest }) => {
           inputRef.current.value = value
         }
       }}
-      inputStyle={{ color: '#fff' }}
-      containerStyle={{ backgroundColor: '#222' }}
       leftIcon={
         <Icon
           name={iconName}

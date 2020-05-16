@@ -71,12 +71,12 @@ export default function CreateProduct() {
         </Form>
 
         <SwitchView
-          thumbColor={isEnabled ? 'blue' : '#f4f3f4'}
+          thumbColor={isEnabled ? '#080705' : '#f4f3f4'}
           onValueChange={toggleSwitch}
           value={isEnabled}
         />
 
-        <Title>Cadastrar fornecedor:</Title>
+        <Title>Cadastrar fornecedor</Title>
 
         <Form ref={providerFormRef}>
           <ProviderForm isEnabled={isEnabled} />
