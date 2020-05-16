@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Text } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { Icon } from 'react-native-material-ui'
@@ -6,11 +6,15 @@ import { Tooltip } from 'react-native-elements'
 import { Form } from '@unform/mobile'
 
 import ProductForm from '../../components/PrincipalForms/ProductForm'
-import { Button } from '../../components/Form'
+import { Button, Picker } from '../../components/Form'
 
 import { Container, Content, MainScroll, Title } from './styles'
 
 export default function UpdateStock() {
+  const [providers, setProviders] = useState([
+    { name: 'Julio', _id: 123 },
+    { name: 'Jão', _id: 789 },
+  ])
   const navigation = useNavigation()
   const route = useRoute()
   const { product } = route.params
@@ -43,8 +47,12 @@ export default function UpdateStock() {
           onSubmit={handleSubmit}
         >
           <ProductForm />
+          <Picker name='providerId' providers={providers} />
 
-          <Button onPress={() => formRef.current.submitForm()} />
+          <Button
+            style={{ marginTop: 40 }}
+            onPress={() => formRef.current.submitForm()}
+          />
         </Form>
       </MainScroll>
     </Container>

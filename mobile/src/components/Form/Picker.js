@@ -20,25 +20,33 @@ const PickerUnform = ({ name, providers, enabled, ...rest }) => {
     })
   }, [registerField, fieldName, pickerRef])
 
+  const isEnabled = () => {
+    if (enabled === undefined) return selectedValue
+    if (enabled) return selectedValue
+    return undefined
+  }
+
   return (
-    <PickerView>
-      <PickerTitle>Lista de Fornecedores</PickerTitle>
-      <Picker
-        ref={pickerRef}
-        selectedValue={enabled ? selectedValue : undefined}
-        onValueChange={(itemValue) => setSelectedValue(itemValue)}
-        enabled={enabled}
-        {...rest}
-      >
-        {providers.map((provider) => (
-          <Picker.Item
-            key={provider._id}
-            label={provider.name}
-            value={provider._id}
-          />
-        ))}
-      </Picker>
-    </PickerView>
+    <>
+      <PickerTitle>Fornecedor:</PickerTitle>
+      <PickerView>
+        <Picker
+          ref={pickerRef}
+          selectedValue={isEnabled()}
+          onValueChange={(itemValue) => setSelectedValue(itemValue)}
+          enabled={enabled}
+          {...rest}
+        >
+          {providers.map((provider) => (
+            <Picker.Item
+              key={provider._id}
+              label={provider.name}
+              value={provider._id}
+            />
+          ))}
+        </Picker>
+      </PickerView>
+    </>
   )
 }
 

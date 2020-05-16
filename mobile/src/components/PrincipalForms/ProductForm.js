@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Input, Label, Button, DatePicker } from '../Form'
+import { Input, Label, DatePicker } from '../Form'
 
 const ProductForm = () => {
   return (
@@ -23,9 +23,9 @@ const ProductForm = () => {
         name='description'
         iconName='description'
         placeholder='Digite a Descrição'
-        multiline={true}
+        multiline
         numberOfLines={3}
-        editable={true}
+        editable
       />
       <Label>Preço de venda (unidade):</Label>
       <Input

@@ -35,18 +35,16 @@ export const DatePickerCustom = styled(DateTimePicker)`
 `
 
 export const PickerView = styled.View`
-  background: #0d0805;
-  margin-top: 35px;
+  background: darkred;
   border-radius: 20px;
+  margin-top: 10px;
+  height: 42px;
+  justify-content: center;
 `
 export const Picker = styled.Picker`
   color: #fff;
-  margin-top: 20px;
 `
 export const PickerTitle = styled.Text`
   color: #fff;
-  font-weight: bold;
-  text-align: center;
-  font-size: 20px;
-  margin-top: 10px;
+  font-size: 14px;
 `
