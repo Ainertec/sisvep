@@ -1,7 +1,10 @@
 import styled from 'styled-components/native'
 import { Input } from 'react-native-elements'
+import { Searchbar } from 'react-native-paper'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Dimensions } from 'react-native'
+
+const deviceHeight = Dimensions.get('window').height
 
 export const Label = styled.Text`
   color: #fff;
@@ -14,8 +17,8 @@ export const TextInput = styled(Input).attrs({
   inputStyle: { color: '#fff' },
 })``
 export const Touchable = styled.TouchableOpacity`
-  flex: 1;
-  align-self: center;
+  /* flex: 1; */
+  /* align-self: center; */
   margin-top: 10px;
   width: 100%;
   height: 40px;
@@ -50,4 +53,12 @@ export const Picker = styled.Picker`
 export const PickerTitle = styled.Text`
   color: #fff;
   font-size: 14px;
+`
+export const Search = styled(Searchbar)`
+  z-index: 2;
+  margin: ${deviceHeight * 0.02}px 10px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
 `

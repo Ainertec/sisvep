@@ -1,4 +1,5 @@
 import React from 'react'
+import { View } from 'react-native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { useNavigation } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -15,7 +16,7 @@ import Configuracao from './pages/Configuracao'
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
 
-const StackOptions = () => {
+const stackOptions = () => {
   const navigation = useNavigation()
   return {
     headerTitleAlign: 'center',
@@ -23,55 +24,52 @@ const StackOptions = () => {
     headerTintColor: 'white',
     headerStyle: { backgroundColor: '#222' },
     headerLeft: () => (
-      <Icon
-        size={26}
-        name='menu'
-        color='#fff'
-        onPress={() => navigation.openDrawer()}
-      />
+      <View style={{ marginLeft: 15 }}>
+        <Icon
+          size={26}
+          name='menu'
+          color='#fff'
+          onPress={() => navigation.openDrawer()}
+        />
+      </View>
     ),
   }
 }
-
 function TabRest() {
   return (
-    <Stack.Navigator screenOptions={StackOptions}>
+    <Stack.Navigator screenOptions={stackOptions}>
       <Stack.Screen name='Home' component={RestScren} />
     </Stack.Navigator>
   )
 }
-
 function TabVenda() {
   return (
-    <Stack.Navigator screenOptions={StackOptions}>
+    <Stack.Navigator screenOptions={stackOptions}>
       <Stack.Screen name='Venda' component={LeitorCodBarras} />
     </Stack.Navigator>
   )
 }
-
 function TabCreateProduct() {
   return (
-    <Stack.Navigator screenOptions={StackOptions}>
+    <Stack.Navigator screenOptions={stackOptions}>
       <Stack.Screen name='Cadastro' component={CreateProduct} />
     </Stack.Navigator>
   )
 }
-
 function TabSearch() {
   return (
-    <Stack.Navigator screenOptions={StackOptions}>
+    <Stack.Navigator screenOptions={stackOptions}>
       <Stack.Screen name='Busca' component={Search} />
     </Stack.Navigator>
   )
 }
-
 function TabUpdateStock() {
   return (
     <Stack.Navigator>
       <Stack.Screen
         name='Busca'
         component={SeachUpdate}
-        options={StackOptions}
+        options={stackOptions}
       />
       <Stack.Screen
         name='Atualização'
@@ -86,15 +84,13 @@ function TabUpdateStock() {
     </Stack.Navigator>
   )
 }
-
 function TabConfiguracao() {
   return (
-    <Stack.Navigator screenOptions={StackOptions}>
+    <Stack.Navigator screenOptions={stackOptions}>
       <Stack.Screen name='Configuração' component={Configuracao} />
     </Stack.Navigator>
   )
 }
-
 const Routes = () => (
   <Drawer.Navigator
     initialRouteName='Home'
