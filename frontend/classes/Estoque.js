@@ -115,7 +115,7 @@ async function buscarProdutoEstoque(tipo){
 
     VETORPRODUTOCLASSESTOQUE=[];
     document.getElementById('tabelaDeProdutosEstoque').innerHTML = '';
-    var user = JSON.parse(sessionStorage.getItem('login')), cont=0;
+    var cont=0;
 
     var codigoHTML='';
     codigoHTML+='<thead>'
@@ -132,7 +132,7 @@ async function buscarProdutoEstoque(tipo){
 
     if(tipo=='nome'){
         if(validaDadosCampo(['#buscaProduto'])){
-            var json = await requisicaoGET('products?name='+document.getElementById('buscaProduto').value, {headers:{Authorization:`Bearer ${user.token}`}});
+            var json = await requisicaoGET('products?name='+document.getElementById('buscaProduto').value, {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
             while(json.data[cont]){
                 VETORPRODUTOCLASSESTOQUE.push(json.data[cont]);
                 codigoHTML+=carregarProdutosEstoque(json.data[cont], cont);
@@ -144,21 +144,37 @@ async function buscarProdutoEstoque(tipo){
         
     }else if(tipo=='quantidade'){
         if(validaDadosCampo(['#buscaProdutoQuantidade'])){
-            var json = await requisicaoGET('products', {headers:{Authorization:`Bearer ${user.token}`}}), cont2=0;
-            while(json.data[cont]){
-                if(json.data[cont].stock<=parseInt($('#buscaProdutoQuantidade').val())){
-                    VETORPRODUTOCLASSESTOQUE.push(json.data[cont]);
-                    codigoHTML+=carregarProdutosEstoque(json.data[cont], cont2);
-                    cont2++;
+            var json = await requisicaoGET('providers', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}}), cont2=0;
+            json.data.forEach(function (item) {
+                while(item.products[cont]){
+
+                    var json2 = '{"_id": "'+item.products[cont]._id+'",'
+                        json2+='"name": "'+item.products[cont].name+'",'
+                        json2+='"description": "'+item.products[cont].description+'",'
+                        json2+='"barcode": '+item.products[cont].barcode+','
+                        json2+='"price": '+item.products[cont].price+','
+                        json2+='"cost": '+item.products[cont].cost+','
+                        json2+='"validity": "'+item.products[cont].validity+'",'
+                        json2+='"stock": '+item.products[cont].stock+','
+                        json2+='"createdAt": "'+item.products[cont].createdAt+'",'
+                        json2+='"updatedAt": "'+item.products[cont].updatedAt+'",'
+                        json2+='"provider":{"_id":"'+item._id+'"}}'
+
+                    if(item.products[cont].stock<=parseInt($('#buscaProdutoQuantidade').val())){
+                        VETORPRODUTOCLASSESTOQUE.push(JSON.parse(json2));
+                        codigoHTML+=carregarProdutosEstoque(JSON.parse(json2), cont2);
+                        cont2++;
+                    }
+                    cont++;
                 }
-                cont++;
-            }
+                cont=0;     
+            });
         }else{
             mensagemDeErro('Preencha o campo quantidade!')
         }
 
     }else if(tipo=='todos'){
-        var json = await requisicaoGET('providers', {headers:{Authorization:`Bearer ${user.token}`}}), cont2=0;
+        var json = await requisicaoGET('providers', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}}), cont2=0;
         json.data.forEach(function (item) {
             while(item.products[cont]){
 
@@ -213,8 +229,7 @@ async function atualizarEstoqueDeProduto(id){
                     json+='"stock": '+(VETORPRODUTOCLASSESTOQUE[id].stock + parseInt(document.getElementById("quantidadeItem"+id).value))+','
                     json+='"validity": "'+VETORPRODUTOCLASSESTOQUE[id].validity+'"}'
 
-            var user = JSON.parse(sessionStorage.getItem('login'))
-            await requisicaoPUT('products?id='+VETORPRODUTOCLASSESTOQUE[id]._id+'&providerId='+VETORPRODUTOCLASSESTOQUE[id].provider._id, JSON.parse(json), {headers:{Authorization:`Bearer ${user.token}`}})
+            await requisicaoPUT('products?id='+VETORPRODUTOCLASSESTOQUE[id]._id+'&providerId='+VETORPRODUTOCLASSESTOQUE[id].provider._id, JSON.parse(json), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}})
             mensagemDeAviso('Estoque atualizado com sucesso!');
             setTimeout(function(){
                 autenticacaoEstoqueFacede();

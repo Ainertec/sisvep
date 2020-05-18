@@ -109,7 +109,7 @@ function telaProduto(tipo){
             codigoHTML+='<div class="form-row">'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="descricao">Descrição:</label>'
-                    codigoHTML+='<textArea type="text" class="form-control" id="descricao" placeholder="Descrição do produto">'
+                    codigoHTML+='<textArea type="text" class="form-control" id="descricao" placeholder="Descrição do produto">Nenhuma.'
                     codigoHTML+='</textArea>'
                 codigoHTML+='</div>'
             codigoHTML+='</div>'
@@ -237,7 +237,6 @@ function carregarCamposComDadosProduto(posicao){
         document.getElementById('valorCus').value = JSONPRODUTOCLASSEPRODUTO[posicao].cost;
         var data = (JSONPRODUTOCLASSEPRODUTO[posicao].validity).split("T");
         document.getElementById('dataValidade').value = data[0];
-        //document.getElementById('dataChegada').value = JSONPRODUTOCLASSEPRODUTO[posicao].
         document.getElementById('qtdEstoque').value = JSONPRODUTOCLASSEPRODUTO[posicao].stock;
         document.getElementById('listaFornecedor').value = JSONPRODUTOCLASSEPRODUTO[posicao].provider._id;
         document.getElementById('descricao').value = JSONPRODUTOCLASSEPRODUTO[posicao].description;
@@ -257,8 +256,7 @@ function carregarCamposComDadosProduto(posicao){
 //funcao responsavel por carregar a lista de fornecedores na categoria produto
 async function carregarListaDeFornecedoresEmProduto(){
 
-    var user = JSON.parse(sessionStorage.getItem('login'));
-    var codigoHTML='', cont=0, json = await requisicaoGET('providers', {headers:{Authorization:`Bearer ${user.token}`}});
+    var codigoHTML='', cont=0, json = await requisicaoGET('providers', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
     
     while(json.data[cont]){
         codigoHTML+='<option value="'+json.data[cont]._id+'">'+json.data[cont].name+' - '+json.data[cont].identification+'</option>'
@@ -276,10 +274,9 @@ async function carregarListaDeFornecedoresEmProduto(){
 
 
 
+
 //function responsavel por cadastrar produto
 async function cadastrarProduto(){
-
-    var user = JSON.parse(sessionStorage.getItem('login'));
 
     if(document.getElementById('nomeFornecedor') != null && validaDadosCampo(['#nomeFornecedor'])){
 
@@ -297,11 +294,9 @@ async function cadastrarProduto(){
                         jsonProduto +='"description":"'+$('#descricao').val()+'"}'
                     
 
-                    var result = await requisicaoPOST('products', JSON.parse(jsonProduto), {headers:{Authorization:`Bearer ${user.token}`}});
+                    var result = await requisicaoPOST('products', JSON.parse(jsonProduto), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
 
                 setTimeout(async function(){
-
-                    alert(result.data._id);
 
                     var jsonFornecedor = '{"name":"'+$('#nomeFornecedor').val()+'",'
                             jsonFornecedor +='"identification":"'+$('#cpfCnpjFornecedor').val()+'",'
@@ -309,10 +304,8 @@ async function cadastrarProduto(){
                             jsonFornecedor +='"description":"'+$('#descricaoFornecedor').val()+'",'
                             jsonFornecedor +='"products":["'+result.data._id+'"],'
                             jsonFornecedor +='"email":"'+$('#emailFornecedor').val()+'"}'
-                
-                            alert(jsonFornecedor);
 
-                        await requisicaoPOST('providers', JSON.parse(jsonFornecedor), {headers:{Authorization:`Bearer ${user.token}`}});
+                        await requisicaoPOST('providers', JSON.parse(jsonFornecedor), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
 
                     mensagemDeAviso('Cadastrado com sucesso!');
 
@@ -341,9 +334,9 @@ async function cadastrarProduto(){
                         json +='"description":"'+$('#descricao').val()+'",'
                         json +='"providerId":"'+$('#listaFornecedor').val()+'"}'
 
-                    await requisicaoPOST('products', JSON.parse(json), {headers:{Authorization:`Bearer ${user.token}`}})
+                    await requisicaoPOST('products', JSON.parse(json), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}})
 
-                mensagemDeAviso('Cadastrado com sucesso! teste');   
+                mensagemDeAviso('Cadastrado com sucesso!');   
     
             } catch (error) {
                 mensagemDeErro('Não foi possível cadastrar o produto! Erro: '+error);
@@ -368,23 +361,23 @@ async function cadastrarProduto(){
 
 
 
+
 //funcao responsavel por buscar os produtos e enviar para a lista
 async function buscarProduto(tipo){
 
     var cont=0;
-    var user = JSON.parse(sessionStorage.getItem('login'));
     document.getElementById('listaDeProdutos').innerHTML='';
 
     if(tipo=='codigo'){
 
-        var json = await requisicaoGET('products_barcode?barcode='+$('#buscaProduto').val(), {headers:{Authorization:`Bearer ${user.token}`}})
+        var json = await requisicaoGET('products_barcode?barcode='+$('#buscaProduto').val(), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}})
         JSONPRODUTOCLASSEPRODUTO=[];
         JSONPRODUTOCLASSEPRODUTO.push(json.data);
         $('#listaDeProdutos').append(carregarListaProdutos(json.data, 0));
 
     }else if(tipo=='nome'){
     
-        var json = await requisicaoGET('products?name='+$('#buscaProduto').val(), {headers:{Authorization:`Bearer ${user.token}`}})
+        var json = await requisicaoGET('products?name='+$('#buscaProduto').val(), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}})
         JSONPRODUTOCLASSEPRODUTO=[];
         while(json.data[cont]){    
             JSONPRODUTOCLASSEPRODUTO.push(json.data[cont]);
@@ -394,7 +387,7 @@ async function buscarProduto(tipo){
 
     }else if(tipo=='todos'){
         
-        var json = await requisicaoGET('providers', {headers:{Authorization:`Bearer ${user.token}`}}), cont2=0;
+        var json = await requisicaoGET('providers', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}}), cont2=0;
         JSONPRODUTOCLASSEPRODUTO=[];
         
         json.data.forEach(function (item) {
@@ -422,7 +415,7 @@ async function buscarProduto(tipo){
 
     }else if(tipo=='dataValidade'){
         
-        var json = await requisicaoGET('products_validity?date='+$('#buscaProdutoDate').val(), {headers:{Authorization:`Bearer ${user.token}`}})
+        var json = await requisicaoGET('products_validity?date='+$('#buscaProdutoDate').val(), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}})
         JSONPRODUTOCLASSEPRODUTO=[];
         while(json.data[cont]){    
             JSONPRODUTOCLASSEPRODUTO.push(json.data[cont]);
@@ -431,7 +424,15 @@ async function buscarProduto(tipo){
         }
 
     }else if(tipo=='dataChegada'){
-        alert('ainda n disponivel');
+        
+        var json = await requisicaoGET('products_created_date?date='+$('#buscaProdutoDate').val(), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}})
+        JSONPRODUTOCLASSEPRODUTO=[];
+        while(json.data[cont]){    
+            JSONPRODUTOCLASSEPRODUTO.push(json.data[cont]);
+            $('#listaDeProdutos').append(carregarListaProdutos(json.data[cont], cont));
+            cont++;
+        }
+
     }
 
 }
@@ -445,10 +446,9 @@ async function buscarProduto(tipo){
 
 
 
+
 //funcao responsavel por atualizar produto
 async function atualizarProduto(){
-    
-    var user = JSON.parse(sessionStorage.getItem('login'));
 
     if(validaDadosCampo(['#id','#barcode','#nome','#valorUni','#valorCus','#dataValidade','#qtdEstoque'])){
 
@@ -463,7 +463,7 @@ async function atualizarProduto(){
                     jsonProduto +='"stock":'+$('#qtdEstoque').val()+','
                     jsonProduto +='"description":"'+$('#descricao').val()+'"}'
                     
-                    await requisicaoPUT('products?id='+$('#id').val()+'&providerId='+$('#listaFornecedor').val(), JSON.parse(jsonProduto), {headers:{Authorization:`Bearer ${user.token}`}});
+                    await requisicaoPUT('products?id='+$('#id').val()+'&providerId='+$('#listaFornecedor').val(), JSON.parse(jsonProduto), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
                     mensagemDeAviso('Atualizado com sucesso!');
 
         } catch (error) {
@@ -490,8 +490,7 @@ async function excluirProduto(){
     if(validaDadosCampo(['#id'])){
         
         try {
-            var user = JSON.parse(sessionStorage.getItem('login'));
-            await requisicaoDELETE('products/'+$('#id').val(), '', {headers:{Authorization:`Bearer ${user.token}`}});
+            await requisicaoDELETE('products/'+$('#id').val(), '', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
             mensagemDeAviso('Excluido com sucesso!');  
         } catch (error) {
             mensagemDeErro('Não foi possível excluir! Erro: '+error);

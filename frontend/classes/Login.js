@@ -33,6 +33,7 @@ function telaAutenticacao(){
 
     document.getElementById('janela2').innerHTML = codigoHTML;
 
+    Mousetrap.bind('enter', function() { efetuarLogin(); });
 }
 
 

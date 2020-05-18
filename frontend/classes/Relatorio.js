@@ -50,10 +50,11 @@ function telaGeralRelatorio(){
         codigoHTML+='</div>'
         codigoHTML+='<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
             codigoHTML+='<button onclick="graficoLucroMensal(); graficoQuantidadeVendasMensal();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Relatórios periódicos</button>'
-            codigoHTML+='<button onclick="graficoProdutosVendidos(); graficoRepresentacaoDeProdutoSobreVendas(); graficoRepresentacaoDeProdutoSobreLucro(); graficoQuantidadeProdutosporFornecedor();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Relatórios completos</button>'
+            codigoHTML+='<button onclick="graficoLucroTotal(); graficoProdutosVendidos(); graficoRepresentacaoDeProdutoSobreVendas(); graficoRepresentacaoDeProdutoSobreLucro(); graficoQuantidadeProdutosporFornecedor();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Relatórios completos</button>'
         codigoHTML+='</div>'
     codigoHTML+='</div>'
 
+    codigoHTML+='<div id="grafico0" style="margin-top:10px;"></div>'
     codigoHTML+='<div id="grafico1" style="margin-top:10px;"></div>'
     codigoHTML+='<div id="grafico2" style="margin-top:10px;"></div>'
     codigoHTML+='<div id="grafico3" style="margin-top:10px;"></div>'
@@ -82,7 +83,7 @@ async function graficoLucroMensal(){
         var vetor1=[], vetor2=[];
 
         while(json.data[cont]){
-            vetor1.push('Data: '+json.data[cont]._id.month);
+            vetor1.push('Data: '+json.data[cont]._id.month+'/'+json.data[cont]._id.year);
             vetor2.push(json.data[cont].amount);
             cont++
         }
@@ -203,7 +204,7 @@ async function graficoQuantidadeVendasMensal(){
         var vetor1=[], vetor2=[];
 
         while(json.data[cont]){
-            vetor1.push('Data: '+json.data[cont]._id.month);
+            vetor1.push('Data: '+json.data[cont]._id.month+'/'+json.data[cont]._id.year);
             vetor2.push(json.data[cont].total);
             cont++
         }
@@ -422,4 +423,76 @@ async function graficoRepresentacaoDeProdutoSobreLucro(){
         }]
     });
 
+}
+
+
+
+
+
+
+
+
+
+
+//funcao responsavel por gerar a tela de respresentacao de lucro total
+async function graficoLucroTotal(){
+    
+    var json = await requisicaoGET('report_sales_amount', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
+
+    Highcharts.chart('grafico0', {
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Demostrativo de Lucro Total'
+        },
+        subtitle: {
+            text: 'Este gáfico demonstra a valor total arrecado sobre as vendas.'
+        },
+        xAxis: {
+            categories: ['Valor total'],
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            min: 0.0,
+            title: {
+                text: 'Valor (R$ x.xx)',
+                align: 'high'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        },
+        tooltip: {
+            valueSuffix: ' reais'
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -40,
+            y: 80,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor:
+                Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+            shadow: true
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: 'Valor total',
+            data: [parseFloat(json.data.total)]
+        }]
+    });
 }

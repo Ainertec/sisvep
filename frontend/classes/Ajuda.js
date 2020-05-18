@@ -25,6 +25,7 @@ function ajudaInformacoes(){
         codigoHTML+='<p><strong>e</strong> -> Seleciona o campo excluir item aonde será adicionado o código do produto a ser excluido.</p>'
         codigoHTML+='<p><strong>a</strong> -> Seleciona o campo adicionar item aonde será adicionado o código do produto a ser adicionado.</p>' 
         codigoHTML+='<p><strong>b</strong> -> Libera o menu lateral (lembrando que se ativado durante a venda todos os dados da mesma serão perdidos!).</p>'
+        codigoHTML+='<p><strong>l</strong> -> Abre a opção de selecionar o produto pelo nome na hora da venda.</p>'
     codigoHTML+='<p>========================</p>'
     
 
