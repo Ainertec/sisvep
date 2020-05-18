@@ -21,7 +21,7 @@ export default function SeachUpdate() {
     console.log(data)
 
     reset()
-    navigation.navigate('UpdateStock', { product: data })
+    navigation.navigate('Atualização', { product: data })
   }
 
   return (

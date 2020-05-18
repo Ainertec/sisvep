@@ -6,7 +6,7 @@ export const Container = styled.View`
 `
 
 export const Content = styled.View`
-  background: #202026;
+  /* background: #202026; */
   height: 100%;
   width: 20px;
   justify-content: center;
