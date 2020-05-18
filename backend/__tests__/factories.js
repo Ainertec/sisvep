@@ -44,12 +44,7 @@ factory.define('Shop', Shop, {
   identification: faker.name.title(),
   phone: faker.phone.phoneNumber(),
   email: faker.internet.email(),
-  address: {
-    street: faker.address.streetName(),
-    number: faker.random.number(10),
-    district: faker.address.state(),
-    city: faker.address.city(),
-  },
+  address: faker.address.streetName(),
 });
 
 module.exports = factory;

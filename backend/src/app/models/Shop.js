@@ -1,24 +1,5 @@
 const mongoose = require('mongoose');
 
-const AddresSchema = new mongoose.Schema({
-  street: {
-    type: String,
-    required: true,
-  },
-  number: {
-    type: Number,
-    default: null,
-  },
-  city: {
-    type: String,
-    required: true,
-  },
-  district: {
-    type: String,
-    required: true,
-  },
-});
-
 const ShopSchema = new mongoose.Schema(
   {
     name: {
@@ -39,7 +20,10 @@ const ShopSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
-    address: AddresSchema,
+    address: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

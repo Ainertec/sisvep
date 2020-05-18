@@ -273,12 +273,7 @@ routes.post(
       identification: Joi.string().required(),
       phone: Joi.string().required(),
       email: Joi.string().required(),
-      address: Joi.object().keys({
-        number: Joi.number().required(),
-        street: Joi.string().required(),
-        city: Joi.string().required(),
-        district: Joi.string().required(),
-      }),
+      address: Joi.string().required(),
     }),
   }),
   ShopController.store
@@ -294,12 +289,7 @@ routes.put(
       identification: Joi.string().required(),
       phone: Joi.string().required(),
       email: Joi.string().required(),
-      address: Joi.object().keys({
-        number: Joi.number().required(),
-        street: Joi.string().required(),
-        city: Joi.string().required(),
-        district: Joi.string().required(),
-      }),
+      address: Joi.string().required(),
     }),
   }),
   ShopController.update

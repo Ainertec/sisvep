@@ -26,12 +26,7 @@ describe('Shop', () => {
         identification: '1234567890',
         phone: '992726852',
         email: 'cleiton@ainertec.com.br',
-        address: {
-          street: 'Encontro dos rios',
-          number: 22,
-          district: 'Lumiar',
-          city: 'Nova Friburgo',
-        },
+        address: 'Lumiar',
       });
 
     expect(response.status).toBe(200);
@@ -54,12 +49,7 @@ describe('Shop', () => {
         identification: '1234567890',
         phone: '992726852',
         email: 'cleiton@ainertec.com.br',
-        address: {
-          street: 'Encontro dos rios',
-          number: 22,
-          district: 'Lumiar',
-          city: 'Nova Friburgo',
-        },
+        address: 'Lumiar',
       });
 
     expect(response.status).toBe(401);
@@ -79,12 +69,7 @@ describe('Shop', () => {
         identification: '1234567890',
         phone: '992726852',
         email: 'cleiton@ainertec.com.br',
-        address: {
-          street: 'Encontro dos rios',
-          number: 22,
-          district: 'Lumiar',
-          city: 'Nova Friburgo',
-        },
+        address: 'Lumiar',
       });
 
     expect(response.status).toBe(200);
