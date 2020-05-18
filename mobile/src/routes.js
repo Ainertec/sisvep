@@ -25,7 +25,7 @@ const StackOptions = () => {
     headerLeft: () => (
       <Icon
         size={26}
-        name='more-vert'
+        name='menu'
         color='#fff'
         onPress={() => navigation.openDrawer()}
       />

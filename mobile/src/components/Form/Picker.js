@@ -31,6 +31,7 @@ const PickerUnform = ({ name, providers, enabled, ...rest }) => {
       <PickerTitle>Fornecedor:</PickerTitle>
       <PickerView>
         <Picker
+          // mode='dropdown'
           ref={pickerRef}
           selectedValue={isEnabled()}
           onValueChange={(itemValue) => setSelectedValue(itemValue)}
