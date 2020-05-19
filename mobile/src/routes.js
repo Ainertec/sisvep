@@ -6,13 +6,14 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { Icon } from 'react-native-elements'
 
 import RestScren from './pages/RestScreen/index'
-import LeitorCodBarras from './pages/LeitorCodBarras'
+import Sold from './pages/Sold'
 import CreateProduct from './pages/CreateProduct'
 import Search from './pages/Search/index'
 import Details from './pages/Details/index'
 import Update from './pages/Update'
 import SeachUpdate from './pages/SeachUpdate/index'
-import Configuracao from './pages/Configuracao'
+import Setting from './pages/Setting'
+import Login from './pages/Login'
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
@@ -46,7 +47,7 @@ function TabRest() {
 function TabVenda() {
   return (
     <Stack.Navigator screenOptions={stackOptions}>
-      <Stack.Screen name='Venda' component={LeitorCodBarras} />
+      <Stack.Screen name='Venda' component={Sold} />
     </Stack.Navigator>
   )
 }
@@ -98,7 +99,7 @@ function TabUpdateStock() {
 function TabConfiguracao() {
   return (
     <Stack.Navigator screenOptions={stackOptions}>
-      <Stack.Screen name='Configuração' component={Configuracao} />
+      <Stack.Screen name='Configuração' component={Setting} />
     </Stack.Navigator>
   )
 }
@@ -116,6 +117,7 @@ const Routes = () => (
     }}
   >
     <Drawer.Screen name='Home' component={TabRest} />
+    <Drawer.Screen name='Login' component={Login} />
     <Drawer.Screen name='Venda' component={TabVenda} />
     <Drawer.Screen name='Cadastrar produto' component={TabCreateProduct} />
     <Drawer.Screen name='Buscar produto' component={TabSearch} />
