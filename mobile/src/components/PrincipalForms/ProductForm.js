@@ -24,7 +24,7 @@ const ProductForm = () => {
         iconName='description'
         placeholder='Digite a Descrição'
         multiline
-        numberOfLines={3}
+        numberOfLines={2}
         editable
       />
       <Label>Preço de venda (unidade):</Label>

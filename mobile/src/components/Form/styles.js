@@ -17,8 +17,6 @@ export const TextInput = styled(Input).attrs({
   inputStyle: { color: '#fff' },
 })``
 export const Touchable = styled.TouchableOpacity`
-  /* flex: 1; */
-  /* align-self: center; */
   margin-top: 10px;
   width: 100%;
   height: 40px;
@@ -39,12 +37,14 @@ export const DatePickerCustom = styled(DateTimePicker)`
 
 export const PickerView = styled.View`
   background: #222;
+  /* flex-direction: row; */
+  /* align-items: center; */
   border-bottom-width: 1px;
   border-bottom-color: rgba(250, 250, 250, 0.7);
   margin: 0 9px;
   margin-top: 10px;
   height: 42px;
-  justify-content: center;
+  justify-content: space-between;
 `
 export const Picker = styled.Picker`
   color: #fff;
@@ -55,6 +55,7 @@ export const PickerTitle = styled.Text`
   font-size: 14px;
 `
 export const Search = styled(Searchbar)`
+  border-radius: 25px;
   z-index: 2;
   margin: ${deviceHeight * 0.02}px 10px;
   position: absolute;

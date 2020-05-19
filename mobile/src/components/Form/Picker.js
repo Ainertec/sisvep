@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useRef, useEffect, useState } from 'react'
+import { Icon } from 'react-native-elements'
 
 import { useField } from '@unform/core'
 
@@ -46,6 +47,7 @@ const PickerUnform = ({ name, providers, enabled, ...rest }) => {
             />
           ))}
         </Picker>
+        {/* <Icon name='local-shipping' color='#fff' /> */}
       </PickerView>
     </>
   )

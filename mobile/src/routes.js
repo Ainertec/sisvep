@@ -9,7 +9,8 @@ import RestScren from './pages/RestScreen/index'
 import LeitorCodBarras from './pages/LeitorCodBarras'
 import CreateProduct from './pages/CreateProduct'
 import Search from './pages/Search/index'
-import UpdateStock from './pages/UpdateStock/index'
+import Details from './pages/Details/index'
+import Update from './pages/Update'
 import SeachUpdate from './pages/SeachUpdate/index'
 import Configuracao from './pages/Configuracao'
 
@@ -58,8 +59,18 @@ function TabCreateProduct() {
 }
 function TabSearch() {
   return (
-    <Stack.Navigator screenOptions={stackOptions}>
-      <Stack.Screen name='Busca' component={Search} />
+    <Stack.Navigator>
+      <Stack.Screen name='Busca' component={Search} options={stackOptions} />
+      <Stack.Screen
+        name='Details'
+        component={Details}
+        options={{
+          headerTitleAlign: 'center',
+          headerTitle: 'Detalhes',
+          headerTintColor: 'white',
+          headerStyle: { backgroundColor: '#222' },
+        }}
+      />
     </Stack.Navigator>
   )
 }
@@ -72,11 +83,11 @@ function TabUpdateStock() {
         options={stackOptions}
       />
       <Stack.Screen
-        name='Atualização'
-        component={UpdateStock}
+        name='Update'
+        component={Update}
         options={{
           headerTitleAlign: 'center',
-          headerTitle: 'Sisvep',
+          headerTitle: 'Atualizar Produto',
           headerTintColor: 'white',
           headerStyle: { backgroundColor: '#222' },
         }}

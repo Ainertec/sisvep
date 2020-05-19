@@ -16,22 +16,30 @@ export const ListFooter = styled.View`
 `
 export const Item = styled(ListItem).attrs({
   containerStyle: {
-    borderRadius: 8,
-    backgroundColor: '#6a1220',
+    borderRadius: 10,
+    backgroundColor: '#222',
+    borderBottomWidth: 1.5,
+    borderBottomColor: 'rgba(250, 250, 250, 0.70)',
+    // borderLeftWidth: 1.5,
+    // borderLeftColor: 'rgba(250, 250, 250, 0.70)',
     marginHorizontal: 10,
     marginBottom: 10,
   },
-  titleStyle: { color: '#fff' },
-  subtitleStyle: { color: '#fff', paddingTop: 10, paddingBottom: 0 },
-})`
-  color: #fff;
-`
+  titleStyle: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textTransform: 'capitalize',
+  },
+  rightTitleStyle: { color: '#fff' },
+})``
 export const FormContent = styled(Form)`
   flex: 1;
   background: red;
 `
 export const Title = styled.Text`
   color: #fff;
+
   font-size: 20px;
   margin-top: 20px;
   text-align: center;

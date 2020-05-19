@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useRef, useEffect } from 'react'
 import { Animated, Dimensions } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 import { Icon } from 'react-native-elements'
 
 import { SearchBar } from '../../components/Form'
@@ -11,6 +12,7 @@ const deviceHeight = Dimensions.get('window').height
 
 export default function Search() {
   const formRef = useRef(null)
+  const navigation = useNavigation()
 
   useEffect(() => {
     // const staticProviders = setProviders(staticProviders)
@@ -63,11 +65,11 @@ export default function Search() {
         renderItem={({ item }) => (
           <Item
             title={item.name}
-            leftIcon={<Icon name='local-offer' color='#fff' />}
-            rightIcon={<Icon name='more' color='#fff' />}
-            // bottomDivider
+            leftIcon={<Icon name='shopping-cart' color='darkred' size={30} />}
+            onPress={() => navigation.navigate('Details', { product: item })}
             chevron
-            subtitle='R$ 20,00'
+            rightTitle='R$ 20,00'
+            // subtitle='R$ 20,00'
           />
         )}
       />
@@ -79,6 +81,13 @@ const products = [
   {
     _id: 1,
     name: 'pão',
+    barcode: 123,
+    description: 'Françês',
+    price: 7.5,
+    cust: 10.0,
+    stock: 10,
+    validity: '2020-06-01',
+    provider: 'Marco',
   },
   {
     _id: 2,

@@ -10,7 +10,7 @@ import { Button, Picker } from '../../components/Form'
 
 import { Container, Content, MainScroll, Title } from './styles'
 
-export default function UpdateStock() {
+export default function Update() {
   const [providers, setProviders] = useState([
     { name: 'Julio', _id: 123 },
     { name: 'Jão', _id: 789 },
@@ -32,14 +32,14 @@ export default function UpdateStock() {
 
   return (
     <Container>
-      <Content>
+      {/* <Content>
         <Tooltip popover={<Text>Puxe para a direita para abrir o menu!</Text>}>
           <Icon name='last-page' size={20} color='#fff' />
         </Tooltip>
-      </Content>
+      </Content> */}
 
       <MainScroll>
-        <Title>Atualizar Produto</Title>
+        {/* <Title>Atualizar Produto</Title> */}
 
         <Form
           initialData={{ validity: new Date() }}
