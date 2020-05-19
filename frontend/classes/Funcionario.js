@@ -207,11 +207,9 @@ async function buscarFuncionario(tipo,busca){
         var cont=0;
         
         if(busca == 'nome'){
-            var user = JSON.parse(sessionStorage.getItem('login')),
-            json = await requisicaoGET('users_by_name?name='+document.getElementById('buscaFuncionarioByName').value, {headers:{Authorization:`Bearer ${user.token}`}});
+            var json = await requisicaoGET('users_by_name?name='+document.getElementById('buscaFuncionarioByName').value, {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
         }else if(busca == 'todos'){
-            var user = JSON.parse(sessionStorage.getItem('login')),
-            json = await requisicaoGET('users', {headers:{Authorization:`Bearer ${user.token}`}});
+            var json = await requisicaoGET('users', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
         }
 
         document.getElementById('listaFuncionarios').innerHTML='';
@@ -255,8 +253,7 @@ async function cadastrarFuncionario(){
                 json+='"admin":'+$('#tipoFun').val()+'}'
         
         try {
-            var user = JSON.parse(sessionStorage.getItem('login'));
-            await requisicaoPOST('users', JSON.parse(json), {headers:{Authorization:`Bearer ${user.token}`}});
+            await requisicaoPOST('users', JSON.parse(json), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
             mensagemDeAviso("Cadastrado com sucesso!");
             autenticacaoFuncionarioFacede();
         } catch (error) {
@@ -281,17 +278,27 @@ async function cadastrarFuncionario(){
 //funcao responsavel por atualizar funcionario
 async function atualizarFuncionario(){
     
-    if(validaDadosCampo(['#id','#login','#senha','#response'])){
-        
-        var json='{"name":"'+$('#login').val()+'",'
-                json+='"password":"'+$('#senha').val()+'",'
-                json+='"question":"'+$('#question').val()+'",'
-                json+='"response":"'+$('#response').val()+'",'
-                json+='"admin":'+$('#tipoFun').val()+'}'
+    if(validaDadosCampo(['#id','#response'])){
+
+        var json='{';
+
+        VETORDEFUNCIONARIOCLASSEFUNCIONARIO.forEach(function (item) {
+            if(item._id==document.getElementById('id').value){
+                if(item.name!=$('#login').val()){
+                    json+='"name":"'+$('#login').val()+'",'
+                }
+            }
+        });
+
+        if(validaDadosCampo(['#senha'])){
+            json+='"password":"'+$('#senha').val()+'",'
+        }
+        json+='"question":"'+$('#question').val()+'",'
+        json+='"response":"'+$('#response').val()+'",'
+        json+='"admin":'+$('#tipoFun').val()+'}'
         
         try {
-            var user = JSON.parse(sessionStorage.getItem('login'));
-            await requisicaoPUT('users?id='+document.getElementById('id').value, JSON.parse(json), {headers:{Authorization:`Bearer ${user.token}`}});
+            await requisicaoPUT('users?id='+document.getElementById('id').value, JSON.parse(json), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
             mensagemDeAviso('Atualizado com sucesso!');
             autenticacaoFuncionarioFacede();
         } catch (error) {
@@ -319,8 +326,7 @@ async function excluirFuncionario(){
     if(validaDadosCampo(['#id'])){
 
         try {
-            var user = JSON.parse(sessionStorage.getItem('login'));
-            await requisicaoDELETE('users/'+$('#id').val(), '', {headers:{Authorization:`Bearer ${user.token}`}})
+            await requisicaoDELETE('users/'+$('#id').val(), '', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}})
             mensagemDeAviso('Excluido com sucesso!');
             autenticacaoFuncionarioFacede();
         } catch (error) {

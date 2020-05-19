@@ -149,13 +149,13 @@ function carregarTelaDadosFornecedor(tipo){
         codigoHTML+='</div>'
         codigoHTML+='<div class="form-group col-md-6">'
             codigoHTML+='<label for="emailFornecedor">E-mail:</label>'
-            codigoHTML+='<input type="email" class="form-control" id="emailFornecedor" placeholder="Email">'
+            codigoHTML+='<input type="email" class="form-control" id="emailFornecedor" placeholder="Email" value="Inexistente">'
         codigoHTML+='</div>'
     codigoHTML+='</div>'
     codigoHTML+='<div class="form-row">'       
         codigoHTML+='<div class="form-group col-md-6">'
             codigoHTML+='<label for="descricaoFornecedor">Descrição:</label>'
-            codigoHTML+='<textArea type="Text" class="form-control" id="descricaoFornecedor" placeholder="Descrição">'
+            codigoHTML+='<textArea type="Text" class="form-control" id="descricaoFornecedor" placeholder="Descrição">Nenhuma.'
             codigoHTML+='</textArea>'
         codigoHTML+='</div>'
 
@@ -186,13 +186,12 @@ async function buscarFornecedor(tipo){
 
     VETORFORNECEDORCLASSEFORNECEDOR=[];
     document.getElementById('listaDeFornecedores').innerHTML='';
-    var user = JSON.parse(sessionStorage.getItem('login'));
     var cont=0;
 
     if(tipo=='nome'){
-        var json = await requisicaoGET('providers_by_name?name='+document.getElementById('buscaFornecedor').value, {headers:{Authorization:`Bearer ${user.token}`}});
+        var json = await requisicaoGET('providers_by_name?name='+document.getElementById('buscaFornecedor').value, {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
     }else if(tipo=='todos'){
-        var json = await requisicaoGET('providers', {headers:{Authorization:`Bearer ${user.token}`}});
+        var json = await requisicaoGET('providers', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
     }
     
     while(json.data[cont]){
@@ -235,8 +234,6 @@ function carregarDadosFornecedorSelecionado(posicao){
 //funcao responsavel por atualizar o fornecedor
 async function atualizarFornecedor(posicao){
 
-    var user = JSON.parse(sessionStorage.getItem('login'));
-
     if(validaDadosCampo(['#idFornecedor','#nomeFornecedor','#cpfCnpjFornecedor','#telefoneFornecedor','#emailFornecedor','#descricaoFornecedor'])){
        
         try {
@@ -246,7 +243,7 @@ async function atualizarFornecedor(posicao){
             VETORFORNECEDORCLASSEFORNECEDOR[posicao].phone = ($('#telefoneFornecedor').val()).toString();
             VETORFORNECEDORCLASSEFORNECEDOR[posicao].email = ($('#emailFornecedor').val()).toString();
 
-            await requisicaoPUT('providers?id='+$('#idFornecedor').val(), VETORFORNECEDORCLASSEFORNECEDOR[posicao], {headers:{Authorization:`Bearer ${user.token}`}})
+            await requisicaoPUT('providers?id='+$('#idFornecedor').val(), VETORFORNECEDORCLASSEFORNECEDOR[posicao], {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}})
             mensagemDeAviso('Atualizado com sucesso!');
 
         } catch (error) {
@@ -270,9 +267,7 @@ async function atualizarFornecedor(posicao){
 async function excluirFornecedor(){
 
     if(validaDadosCampo(['#idFornecedor'])){
-        var json = '{"id":"'+$('#idFornecedor').val()+'"}'
-
-        document.getElementById('janela2').innerHTML = json;
+        await requisicaoDELETE('providers/'+$('#idFornecedor').val(), '', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
     }else{
         mensagemDeErro('Não foi possivel, falta campo ID!');
     }

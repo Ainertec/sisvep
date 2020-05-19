@@ -11,7 +11,7 @@
 
 
 
-//vetor com códigos dos produtos da venda
+//vetor com dados dos produtos da venda
 var VETORCODIGOITENSVENDA=[];
 
 
@@ -33,7 +33,7 @@ function autenticacaoVendaFacede(){
         document.getElementById('janela2').innerHTML = telaVenda();
         atalhosTeclaVenda();
         $('#submenu').hide();
-        document.getElementById('mensagemSubMenu').innerHTML = '<p>Para liberar o menu pressione a tecla "B"!</p>'
+        document.getElementById('mensagemSubMenu').innerHTML = '<p>Para liberar o menu pressione a tecla "B"!<br/>Pressione "L" para pesquisar produtos pelo nome.</p>'
     }else{
         mensagemDeErro("Usuário não autorizado!");
     }
@@ -165,7 +165,7 @@ function carregarDadosItensVenda(json){
         codigoHTML+='<tr id="produto-'+json.data.barcode+'">'
             codigoHTML+='<td id="codigoProduto'+json.data.barcode+'">'+json.data.barcode+'</td>'
             codigoHTML+='<td id="nomeProduto'+json.data.barcode+'">'+json.data.name+'</td>'
-            codigoHTML+='<td id="valorProduto'+json.data.barcode+'">'+(json.data.price*$('#qtdItemDaVenda').val()).toFixed(2)+'</td>'
+            codigoHTML+='<td id="valorProduto'+json.data.barcode+'">'+(parseFloat(json.data.price)*parseInt($('#qtdItemDaVenda').val())).toFixed(2)+'</td>'
             codigoHTML+='<td id="quantidadeProduto'+json.data.barcode+'">'+$('#qtdItemDaVenda').val()+'</td>'
         codigoHTML+='</tr>'
 
@@ -217,17 +217,17 @@ function modalPagamento(tipo){
                             codigoHTML+='</div>'
                         codigoHTML+='</div>'
                         codigoHTML+='<label for="valorPago" style="margin-top:40px;"><strong>Valor Pago</strong></label>' 
-                        codigoHTML+='<input id="valorPago" type="Number" class="form-control form-control-lg col-5" style="margin-left:10px">'
+                        codigoHTML+='<input id="valorPago" type="Number" class="form-control form-control-lg col-5" style="margin-left:10px" oninput="document.getElementById(\'exibirTroco\').innerHTML = (parseFloat(document.getElementById(\'valorPago\').value) - parseFloat($(\'#valorTotalPagamento\').text())).toFixed(2);">'
                     }
 
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="modal-footer">'
-                    codigoHTML+='<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>'
+                    codigoHTML+='<button onclick="setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>'
                     
                     if(tipo=='dinheiro'){
-                        codigoHTML+='<button onclick="cadastrarVenda(\'Dinheiro\','+$('#valorPago').val()+');" type="button" class="btn btn-primary" data-dismiss="modal">Efetuar Pagamento</button>'
+                        codigoHTML+='<button onclick="cadastrarVenda(\'Dinheiro\');" type="button" class="btn btn-primary" data-dismiss="modal">Efetuar Pagamento</button>'
                     }else if(tipo=='cartao'){
-                        codigoHTML+='<button onclick="cadastrarVenda(\'Cartão\',null);" type="button" class="btn btn-primary" data-dismiss="modal">Efetuar Pagamento</button>'
+                        codigoHTML+='<button onclick="cadastrarVenda(\'Cartão\');" type="button" class="btn btn-primary" data-dismiss="modal">Efetuar Pagamento</button>'
                     }
 
                 codigoHTML+='</div>'
@@ -238,16 +238,6 @@ function modalPagamento(tipo){
     document.getElementById('modal').innerHTML = codigoHTML;
 
     $('#modalPagamento').modal('show');
-
-    if(tipo=='dinheiro'){
-        $("#valorPago").keypress(function(){
-
-            setTimeout(function(){
-                document.getElementById('exibirTroco').innerHTML = (parseFloat(document.getElementById('valorPago').value) - parseFloat($('#valorTotalPagamento').text())).toFixed(2);
-            }, 1000);
-    
-        });
-    }
 
 }
 
@@ -269,7 +259,7 @@ function removerProdutoDaLista(codigoProduto){
 
             var valorUnit = parseFloat($('#valorProduto'+codigoProduto).text())/parseInt($('#quantidadeProduto'+codigoProduto).text());
             document.getElementById('quantidadeProduto'+codigoProduto).innerHTML = parseInt($('#quantidadeProduto'+codigoProduto).text())-$('#qtdItemDaVenda').val();
-            document.getElementById('valorProduto'+codigoProduto).innerHTML = valorUnit * parseInt($('#quantidadeProduto'+codigoProduto).text());
+            document.getElementById('valorProduto'+codigoProduto).innerHTML = (valorUnit * parseInt($('#quantidadeProduto'+codigoProduto).text())).toFixed(2);
             gerarValorTotal();        
             mensagemDeAviso('Item removido com sucesso!');
 
@@ -333,12 +323,14 @@ async function buscarProdutoVenda(codigo){
     if(codigo != ''){
         try {
 
-            var user = JSON.parse(sessionStorage.getItem('login'));
-            var json = await requisicaoGET('products_barcode?barcode='+codigo, {headers:{Authorization:`Bearer ${user.token}`}});
+            var json = await requisicaoGET('products_barcode?barcode='+codigo, {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
         
-            carregarDadosItensVenda(json);
-    
-            beepAlerta();
+            if(json != null){
+                carregarDadosItensVenda(json);
+                beepAlerta();
+            }else{
+                mensagemDeErro('Código de barras inválido!');
+            }
 
         } catch (error) {
             mensagemDeErro('Não foi possível encontrar o produto! Erro: '+error);
@@ -422,28 +414,31 @@ function socketCodigoBarrasRealTime(){
 
 
 //funcao responsavel por cadastrar a venda após concluida
-async function cadastrarVenda(formaPagamento, valorPago){
+async function cadastrarVenda(formaPagamento){
     
     var json = '{"payment":"'+formaPagamento+'","total":'+parseFloat($('#exibirValorTotalAtualizado').text())+',"itens":[';
-    var user = JSON.parse(sessionStorage.getItem('login'));
     var aux=true;
 
     VETORCODIGOITENSVENDA.forEach(function (item) {
         if(document.getElementById('codigoProduto'+item.barcode) != null){
             if(aux){
-                json+='{"product":"'+item.barcode+'","quantity":'+parseInt($('#quantidadeProduto'+item.barcode).text())+'}'
+                json+='{"product":"'+item._id+'","quantity":'+parseInt($('#quantidadeProduto'+item.barcode).text())+'}'
                 aux=false;
             }else{
-                json+=',{"product":"'+item.barcode+'","quantity":'+parseInt($('#quantidadeProduto'+item.barcode).text())+'}'
+                json+=',{"product":"'+item._id+'","quantity":'+parseInt($('#quantidadeProduto'+item.barcode).text())+'}'
             }
         }
     });
 
     json+=']}'
     
-    var result = await requisicaoPOST('sales', JSON.parse(json), {headers:{Authorization:`Bearer ${user.token}`}});
+    var result = await requisicaoPOST('sales', JSON.parse(json), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
 
-    modalImpressaoNota(result,valorPago);
+    if(formaPagamento=='Dinheiro'){
+        modalImpressaoNota(result, parseFloat($('#valorPago').val()));
+    }else{
+        modalImpressaoNota(result, null);
+    }
 
     setTimeout(function(){autenticacaoVendaFacede();},2000);
 
@@ -469,6 +464,7 @@ function atalhosTeclaVenda(){
     Mousetrap.bind('e', function() { document.getElementById('campocodigodeleteitemvenda').focus(); });
     Mousetrap.bind('a', function() { document.getElementById('campocodigoadicionaritemvenda').focus(); });
     Mousetrap.bind('b', function() { liberarSubMenu(); });
+    Mousetrap.bind('l', function() { modalItemVendaPorLista(); });
 }
 
 
@@ -482,65 +478,51 @@ function atalhosTeclaVenda(){
 
 
 //funcao responsavel por gerar o modal de impressao e enviar a nota para a impressao
-function modalImpressaoNota(json, valorPago){
+async function modalImpressaoNota(json, valorPago){
     
-    var codigoHTML='';
+    var codigoHTML='', result = await requisicaoGET('shops', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
 
     codigoHTML+='<div class="modal fade" id="modalNota" tabindex="-1" role="dialog" aria-labelledby="modalNotaImpressao" aria-hidden="true">'
         codigoHTML+='<div class="modal-dialog modal-dialog-scrollable" role="document">'
             codigoHTML+='<div class="modal-content">'
                 codigoHTML+='<div class="modal-header">'
                     codigoHTML+='<h5 class="modal-title" id="modalNotaImpressao">Nota Compra</h5>'
-                    codigoHTML+='<button type="button" class="close" data-dismiss="modal" aria-label="Close">'
-                    codigoHTML+='<span aria-hidden="true">&times;</span>'
+                    codigoHTML+='<button onclick="imprimirImpressora(\'#infoDadosnota\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;">'
+                        codigoHTML+='Imprimir'
+                    codigoHTML+='</button>'
+                    codigoHTML+='<button onclick="setTimeout(function(){limparModal();}, 1000);" type="button" class="close" data-dismiss="modal" aria-label="Close">'
+                        codigoHTML+='<span aria-hidden="true">&times;</span>'
                     codigoHTML+='</button>'
                 codigoHTML+='</div>'
                 codigoHTML+='<div id="infoDadosnota" class="modal-body">'
 
                     codigoHTML+='<p>========================</p>'
-                    codigoHTML+='<p>Nome Loja<br/>'
-                    codigoHTML+='CNPJ<br/>'
-                    codigoHTML+='Telefone<br/>'
-                    codigoHTML+='Endereco</p>'
-                    codigoHTML+='<p>=======================<br/>'
+                    codigoHTML+='<p>'+result.data.name+'<br/>'
+                    codigoHTML+='CPF/CNPJ: '+result.data.identification+'<br/>'
+                    codigoHTML+='Tel.: '+result.data.phone+'<br/>'
+                    codigoHTML+='End.: '+result.data.address+'</p>'
+                    codigoHTML+='<p>========================<br/>'
                     codigoHTML+='CUPOM NÃO FISCAL<br/>'
-                    codigoHTML+='=======================</p>'
-                    codigoHTML+='<p>Data<br/>'
-                    codigoHTML+='Hora</p>'
-                    codigoHTML+='<p>-----------------------</p>'
-                    codigoHTML+='<p>Produto X (quantidade)<br/>'
-                    codigoHTML+='Preco Uni.: x.xx<br/>'
-                    codigoHTML+='Produto X (quantidade)<br/>'
-                    codigoHTML+='Preco Uni.: x.xx<br/>'
-                    codigoHTML+='Produto X (quantidade)<br/>'
-                    codigoHTML+='Preco Uni.: x.xx<br/>'
-                    codigoHTML+='Produto X (quantidade)<br/>'
-                    codigoHTML+='Preco Uni.: x.xx<br/>'
-                    codigoHTML+='Produto X (quantidade)<br/>'
-                    codigoHTML+='Preco Uni.: x.xx<br/>'
-                    codigoHTML+='Produto X (quantidade)<br/>'
-                    codigoHTML+='Preco Uni.: x.xx<br/>'
-                    codigoHTML+='Produto X (quantidade)<br/>'
-                    codigoHTML+='Preco Uni.: x.xx<br/>'
-                    codigoHTML+='Produto X (quantidade)<br/>'
-                    codigoHTML+='Preco Uni.: x.xx<br/>'
-                    codigoHTML+='Produto X (quantidade)<br/>'
-                    codigoHTML+='Preco Uni.: x.xx<br/>'
-                    codigoHTML+='Produto X (quantidade)<br/>'
-                    codigoHTML+='Preco Uni.: x.xx<br/>'
-                    codigoHTML+='Produto X (quantidade)<br/>'
-                    codigoHTML+='Preco Uni.: x.xx<br/>'
-                    codigoHTML+='Produto X (quantidade)<br/>'
-                    codigoHTML+='Preco Uni.: x.xx</p>'
-                    codigoHTML+='<p>=======================</p>'
-                    codigoHTML+='<p>Valor total: '+(json.data.total).toFixed(2)+'<br/>'
+                    codigoHTML+='========================</p>'
+                    var data = (json.data.sale.createdAt).split(".");
+                    codigoHTML+='<p>Data: '+data[0]+'</p>'
+                    codigoHTML+='<p>----------------------------------------</p>'
+                    codigoHTML+='<p>'
+                    json.data.sale.itens.forEach(function (item) {
+                        codigoHTML+='Produto: '+item.product.name+' / quan.:'+parseInt(item.quantity)+'<br/>'
+                        codigoHTML+='-Preço uni.: R$'+(parseFloat(item.product.price)).toFixed(2)+' preço tot.: R$'+(parseFloat(item.product.price)*parseInt(item.quantity)).toFixed(2)+'<br/>'
+                    });
+                    codigoHTML+='</p>'
+                    codigoHTML+='<p>========================</p>'
+                    codigoHTML+='<p>Valor total: R$'+(json.data.sale.total).toFixed(2)+'<br/>'
                     if(valorPago != null){
-                        codigoHTML+='Valor pago: '+(valorPago).toFixed(2)+'</p>'
+                        codigoHTML+='Valor pago: R$'+(valorPago).toFixed(2)+'<br/>'
                     }else{
-                        codigoHTML+='Valor pago: '+(json.data.total).toFixed(2)+'</p>'
+                        codigoHTML+='Valor pago: R$'+(json.data.sale.total).toFixed(2)+'<br/>'
                     }
-                    codigoHTML+='<p>=======================</p>'
-                    codigoHTML+='<p>ID venda: '+json.data._id+'</p>'
+                    codigoHTML+='Forma de pagamento: '+json.data.sale.payment+'</p>'
+                    codigoHTML+='<p>========================</p>'
+                    codigoHTML+='<p>ID venda: '+json.data.sale._id+'</p>'
 
 
                 codigoHTML+='</div>'
@@ -551,29 +533,8 @@ function modalImpressaoNota(json, valorPago){
     document.getElementById('modal').innerHTML = codigoHTML;
 
     $('#modalNota').modal('show');
-    $('#infoDadosnota').printThis({
-        debug: false,               // show the iframe for debugging
-        importCSS: true,            // import parent page css
-        importStyle: false,         // import style tags
-        printContainer: true,       // print outer container/$.selector
-        loadCSS: "./../bootstrap/css/escopo-css-impressao.css",                // path to additional css file - use an array [] for multiple
-        pageTitle: "",              // add title to print page
-        removeInline: false,        // remove inline styles from print elements
-        removeInlineSelector: "*",  // custom selectors to filter inline styles. removeInline must be true
-        printDelay: 222,            // variable print delay
-        header: false,               // prefix to html
-        footer: null,               // postfix to html
-        base: false,                // preserve the BASE tag or accept a string for the URL
-        formValues: true,           // preserve input/form values
-        canvas: false,              // copy canvas content
-        doctypeString: false,       // enter a different doctype for older markup
-        removeScripts: false,       // remove script tags from print content
-        copyTagClasses: false,      // copy classes from the html & body tag
-        beforePrintEvent: null,     // function for printEvent in iframe
-        beforePrint: null,          // function called before iframe is filled
-        afterPrint: null            // function called before iframe is removed
-    });
 
+    imprimirImpressora('#infoDadosnota');
 }
 
 
@@ -606,4 +567,82 @@ function liberarSubMenu(){
         codigoHTML+='</div>'
         document.getElementById('modal').innerHTML = codigoHTML;
         $('#modalDesbloquearSubMenu').modal('show');
+}
+
+
+
+
+
+
+
+
+
+
+//funcao responsavel por lista um produto por nome para a venda
+function modalItemVendaPorLista(){
+    var codigoHTML='';
+
+    codigoHTML+='<div class="modal fade" id="modalListaItemVenda" tabindex="-1" role="dialog" aria-labelledby="modalListaItemVenda" aria-hidden="true">'
+        codigoHTML+='<div class="modal-dialog modal-dialog-scrollable" role="document">'
+            codigoHTML+='<div class="modal-content">'
+                codigoHTML+='<div class="modal-header">'
+                    codigoHTML+='<h5 class="modal-title" id="modalListaItemVenda">Lista de Produtos</h5>'
+                    codigoHTML+='<button onclick="setTimeout(function(){limparModal();}, 1000);" type="button" class="close" data-dismiss="modal" aria-label="Close">'
+                        codigoHTML+='<span aria-hidden="true">&times;</span>'
+                    codigoHTML+='</button>'
+                codigoHTML+='</div>'
+                codigoHTML+='<div class="modal-body">'
+                    codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
+                        codigoHTML+='<h5 class="text-center">Buscar Produto</h5>'
+                        codigoHTML+='<div class="input-group mb-3">'
+                            codigoHTML+='<input id="buscaProduto" type="text" class="form-control" placeholder="Nome">'
+                        codigoHTML+='</div>'
+                        codigoHTML+='<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
+                            codigoHTML+='<button onclick="buscarItemVendaLista();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
+                        codigoHTML+='</div>'
+                    codigoHTML+='</div>'
+                    codigoHTML+='<div id="listaDeProdutos" class="list-group">'
+                    codigoHTML+='</div>'
+                codigoHTML+='</div>'
+            codigoHTML+='</div>'
+        codigoHTML+='</div>'
+    codigoHTML+='</div>'
+
+    document.getElementById('modal').innerHTML = codigoHTML;
+
+    $('#modalListaItemVenda').modal('show');
+}
+
+
+
+
+
+
+
+
+
+
+//funcao responsavel por buscar os produtos do modal produtos da tela venda
+async function buscarItemVendaLista(){
+    var codigoHTML='';
+
+    if(validaDadosCampo(['#buscaProduto'])){
+        try {
+            var json = await requisicaoGET('products?name='+$('#buscaProduto').val(), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});   
+            json.data.forEach(function (item) {
+                codigoHTML+='<a href="#" onclick="buscarProdutoVenda('+item.barcode+'); setTimeout(function(){limparModal();}, 1000);" class="list-group-item list-group-item-action" data-dismiss="modal">'
+                    codigoHTML+='<div class="d-flex w-100 justify-content-between">'
+                        codigoHTML+='<h5 class="mb-1">Nome: '+item.name+'</h5>'
+                        codigoHTML+='<small>Código de barras: '+item.barcode+'</small>'
+                    codigoHTML+='</div>'
+                    codigoHTML+='<small>Descrição: '+item.description+'</small>'
+                codigoHTML+='</a>'
+            });
+            document.getElementById('listaDeProdutos').innerHTML = codigoHTML;
+        } catch (error) {
+            mensagemDeErro('Não foi possível fazer a busca! Erro: '+error);
+        }
+    }else{
+        mensagemDeErro('Preencha o campo nome!');
+    }
 }

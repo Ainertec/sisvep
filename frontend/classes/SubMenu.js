@@ -50,6 +50,12 @@ function subMenuImpressao(){
         codigoHTML+='<button onclick="telaDadosEtiqueta();" type="button" class="btn btn-light border-danger btn-lg btn-block">'
             codigoHTML+='<span class="fas fa-barcode"></span> Impressão Etiquetas'
         codigoHTML+='</button>'
+        codigoHTML+='<button onclick="telaReimpressaoDeComprovanteVenda();" type="button" class="btn btn-light border-danger btn-lg btn-block">'
+            codigoHTML+='<span class="fas fa-vote-yea"></span> Reimpressão Comprovante Venda'
+        codigoHTML+='</button>'
+        codigoHTML+='<button onclick="telaImpressaoRelatorio();" type="button" class="btn btn-light border-danger btn-lg btn-block">'
+            codigoHTML+='<span class="fas fa-chart-pie"></span> Impressão Relatório'
+        codigoHTML+='</button>'
         
     codigoHTML+='</div>'
 

@@ -72,7 +72,7 @@ function telaLoja(tipo){
             codigoHTML+='<div class="form-row">'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="email">E-mail:</label>'
-                    codigoHTML+='<input type="email" class="form-control" id="email" placeholder="Email">'
+                    codigoHTML+='<input type="email" class="form-control" id="email" placeholder="Email" value="Inexistente">'
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="endereco">Endereço:</label>'
@@ -84,7 +84,6 @@ function telaLoja(tipo){
 
                 if(tipo=='Atualizar'){
                     codigoHTML+='<button onclick="atualizarLoja();" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-edit"></span> Salvar</button>'
-                    codigoHTML+='<button onclick="excluirLoja();" type="button" class="btn btn-danger" style="margin: 5px;"><span class="fas fa-trash-alt"></span> Excluir</button>'
                 }else if(tipo=='Cadastrar'){
                     codigoHTML+='<button onclick="cadastrarLoja();" type="button" class="btn btn-primary" style="margin: 5px;"><span class="fas fa-save"></span> Salvar</button>'
                 }
@@ -105,12 +104,11 @@ function telaLoja(tipo){
 
 
 //funcao responsavel por verificar se existe algum caddastro de loja
-function verificarCadastroLoja(){
-    var json = '[{"id":"1a2", "nome":"loja 1", "cpfCnpj":"188.649.517-63", "telefone":"(22) 99985-2356", "email":"loja@gmail.com", "endereco":"Rua Sete de Setembro, Lumiar/RJ"}]'
+async function verificarCadastroLoja(){
 
-    json = JSON.parse(json);
+    var json = await requisicaoGET('shops', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
 
-    if(json[0] != null){
+    if(json.data != null){
         document.getElementById('janela2').innerHTML = telaLoja('Atualizar');
         setTimeout(function(){carregarDadosLoja(json);},1000);
     }else{
@@ -130,12 +128,12 @@ function verificarCadastroLoja(){
 //funcao responsavel por carregar os dados da loja cadastrada
 function carregarDadosLoja(json){
 
-    document.getElementById('id').value = json[0].id;
-    document.getElementById('nome').value = json[0].nome;
-    document.getElementById('cpfCnpj').value = json[0].cpfCnpj;
-    document.getElementById('telefone').value = json[0].telefone;
-    document.getElementById('email').value = json[0].email;
-    document.getElementById('endereco').value = json[0].endereco;
+    document.getElementById('id').value = json.data._id;
+    document.getElementById('nome').value = json.data.name;
+    document.getElementById('cpfCnpj').value = json.data.identification;
+    document.getElementById('telefone').value = json.data.phone;
+    document.getElementById('email').value = json.data.email;
+    document.getElementById('endereco').value = json.data.address;
 
 }
 
@@ -149,17 +147,22 @@ function carregarDadosLoja(json){
 
 
 //funcao responsavel por atualizar os dados da loja
-function atualizarLoja(){
+async function atualizarLoja(){
 
     if(validaDadosCampo(['#id','#nome','#cpfCnpj','#telefone','#email','#endereco'])){
-        var json = '{"id":"'+$('#id').val()+'",'
-            json +='"nome":"'+$('#nome').val()+'",'
-            json +='"cpfCnpj":"'+$('#cpfCnpj').val()+'",'
-            json +='"telefone":"'+$('#telefone').val()+'",'
+        var json = '{"name":"'+$('#nome').val()+'",'
+            json +='"identification":"'+$('#cpfCnpj').val()+'",'
+            json +='"phone":"'+$('#telefone').val()+'",'
             json +='"email":"'+$('#email').val()+'",'
-            json +='"endereco":"'+$('#endereco').val()+'"}'
+            json +='"address":"'+$('#endereco').val()+'"}'
         
-        document.getElementById('janela2').innerHTML = json;
+        try {
+            await requisicaoPUT('shops?id='+$('#id').val(), JSON.parse(json), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
+            mensagemDeAviso('Atualizado com sucesso!');  
+        } catch (error) {
+            mensagemDeErro('Não foi possível atualizar! Erro: '+error);
+        }
+
     }else{
         mensagemDeErro('Preencha todos os dados!');
     }
@@ -176,39 +179,24 @@ function atualizarLoja(){
 
 
 //funcao responsavel por cadastrar os dados da loja
-function cadastrarLoja(){
+async function cadastrarLoja(){
 
     if(validaDadosCampo(['#nome','#cpfCnpj','#telefone','#email','#endereco'])){
-        var json = '{"nome":"'+$('#nome').val()+'",'
-            json +='"cpfCnpj":"'+$('#cpfCnpj').val()+'",'
-            json +='"telefone":"'+$('#telefone').val()+'",'
+        var json = '{"name":"'+$('#nome').val()+'",'
+            json +='"identification":"'+$('#cpfCnpj').val()+'",'
+            json +='"phone":"'+$('#telefone').val()+'",'
             json +='"email":"'+$('#email').val()+'",'
-            json +='"endereco":"'+$('#endereco').val()+'"}'
+            json +='"address":"'+$('#endereco').val()+'"}'
+       
+        try {
+            await requisicaoPOST('shops', JSON.parse(json), {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
+            mensagemDeAviso('Cadastrado com sucesso!');
+        } catch (error) {
+            mensagemDeErro('Não foi possível cadastrar! Erro: '+error);
+        }
         
-        document.getElementById('janela2').innerHTML = json;
     }else{
         mensagemDeErro('Preencha todos os dados!');
-    }
-    
-}
-
-
-
-
-
-
-
-
-
-//funcao responsavel por excluir a loja
-function excluirLoja(){
-    
-    if(validaDadosCampo(['#id'])){
-        var json = '{"id":"'+$('#id').val()+'"}'
-
-        document.getElementById('janela2').innerHTML = json;
-    }else{
-        mensagemDeErro('Não é possivel, falta de ID!');
     }
 
 }

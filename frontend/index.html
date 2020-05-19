@@ -20,9 +20,8 @@
       
       
       <img src="./img/logo.png" class="rounded mx-auto d-block" style="width: 250px; margin-top: 310px;" alt="...">
-      
-      <div id="progresso" class="progress mx-auto" style="height: 5px; width: 200px; margin-top: 30px;"></div>
-      
+      <img src="./img/loading.gif" class="rounded mx-auto d-block" style="height: 200px; width: 200px;" alt="...">
+
       <div id="mensagemDeErro" style="margin-top:50px;" class="text-center"></div>
     </div>
 
@@ -40,12 +39,6 @@
     </script>
     <script>
       if(verificarValidadeSerial()){
-        setTimeout(function(){document.getElementById('progresso').innerHTML = '<div class="progress-bar bg-primary" role="progressbar" style="width: 25%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>'
-            setTimeout(function(){document.getElementById('progresso').innerHTML = '<div class="progress-bar bg-primary" role="progressbar" style="width: 60%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>'
-              setTimeout(function(){document.getElementById('progresso').innerHTML = '<div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>'
-              }, 1000);
-            }, 1000);
-        }, 1000);
         setTimeout(function(){window.location.href = "home.html";},3000);
       }else{
         setTimeout(async function(){
