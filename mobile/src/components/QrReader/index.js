@@ -76,6 +76,7 @@ const QrReader = ({ cameraSide, setReadedCode, formRef }) => {
             BarCodeScanner.Constants.BarCodeType.ean13,
             BarCodeScanner.Constants.BarCodeType.ean8,
             BarCodeScanner.Constants.BarCodeType.code39,
+            BarCodeScanner.Constants.BarCodeType.qr,
           ]}
           type={cameraSide ? 'back' : 'front'}
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
