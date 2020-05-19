@@ -11,7 +11,7 @@
 
 
 
-//vetor com códigos dos produtos da venda
+//vetor com dados dos produtos da venda
 var VETORCODIGOITENSVENDA=[];
 
 
@@ -238,16 +238,6 @@ function modalPagamento(tipo){
     document.getElementById('modal').innerHTML = codigoHTML;
 
     $('#modalPagamento').modal('show');
-
-    /*if(tipo=='dinheiro'){
-        $("#valorPago").keypress(function(){
-
-            setTimeout(function(){
-                document.getElementById('exibirTroco').innerHTML = (parseFloat(document.getElementById('valorPago').value) - parseFloat($('#valorTotalPagamento').text())).toFixed(2);
-            }, 1000);
-    
-        });
-    }*/
 
 }
 

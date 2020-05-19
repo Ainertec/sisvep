@@ -11,6 +11,7 @@
 
 
 
+//vetor responsavel por guardar os dados dos produtos em tempo de execução
 var JSONPRODUTOCLASSEPRODUTO=[];
 
 
