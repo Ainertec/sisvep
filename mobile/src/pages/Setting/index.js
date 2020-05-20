@@ -1,15 +1,21 @@
 import React, { useRef } from 'react'
-import { Text, View, ScrollView } from 'react-native'
+
 import { Form } from '@unform/mobile'
+
+import { useAuth } from '../../contexts/auth'
 
 import { Input, Label, Button } from '../../components/Form'
 import { Container, Scroll, Title } from './styles'
 
 export default function Setting() {
   const formRef = useRef(null)
+  const { signOut } = useAuth()
 
   async function handleSubmit(data) {
     console.log(data)
+  }
+  async function signedOut() {
+    signOut()
   }
 
   return (
@@ -26,6 +32,8 @@ export default function Setting() {
           />
           <Button onPress={() => formRef.current.submitForm()} />
         </Form>
+
+        <Button title='Logout' onPress={() => signedOut()} />
       </Scroll>
     </Container>
   )

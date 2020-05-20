@@ -5,15 +5,14 @@ import { useNavigation } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { Icon } from 'react-native-elements'
 
-import RestScren from './pages/RestScreen/index'
-import Sold from './pages/Sold'
-import CreateProduct from './pages/CreateProduct'
-import Search from './pages/Search/index'
-import Details from './pages/Details/index'
-import Update from './pages/Update'
-import SeachUpdate from './pages/SeachUpdate/index'
-import Setting from './pages/Setting'
-import Login from './pages/Login'
+import RestScren from '../pages/RestScreen/index'
+import Sold from '../pages/Sold'
+import CreateProduct from '../pages/CreateProduct'
+import Search from '../pages/Search/index'
+import Details from '../pages/Details/index'
+import Update from '../pages/Update'
+import SeachUpdate from '../pages/SeachUpdate/index'
+import Setting from '../pages/Setting'
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
@@ -103,7 +102,7 @@ function TabConfiguracao() {
     </Stack.Navigator>
   )
 }
-const Routes = () => (
+const AppRoutes = () => (
   <Drawer.Navigator
     initialRouteName='Home'
     drawerType='back'
@@ -117,7 +116,6 @@ const Routes = () => (
     }}
   >
     <Drawer.Screen name='Home' component={TabRest} />
-    <Drawer.Screen name='Login' component={Login} />
     <Drawer.Screen name='Venda' component={TabVenda} />
     <Drawer.Screen name='Cadastrar produto' component={TabCreateProduct} />
     <Drawer.Screen name='Buscar produto' component={TabSearch} />
@@ -126,4 +124,4 @@ const Routes = () => (
   </Drawer.Navigator>
 )
 
-export default Routes
+export default AppRoutes
