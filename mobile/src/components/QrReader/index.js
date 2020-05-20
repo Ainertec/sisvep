@@ -6,7 +6,7 @@ import { Container } from './styles'
 
 const windownHeader = Dimensions.get('window').height
 
-const QrReader = ({ cameraSide, setReadedCode, formRef }) => {
+const QrReader = ({ cameraSide, formRef, ...rest }) => {
   const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
   const [isEnabled, setIsEnabled] = useState(false)
@@ -26,6 +26,7 @@ const QrReader = ({ cameraSide, setReadedCode, formRef }) => {
   const handleBarCodeScanned = async ({ data }) => {
     setScanned(true)
     formRef.current.setFieldValue('barcode', `${data}`)
+    formRef.current.setFieldValue('ipAddress', `${data}`)
     setTimeout(() => {
       setScanned(false)
     }, 1000)
@@ -76,7 +77,7 @@ const QrReader = ({ cameraSide, setReadedCode, formRef }) => {
             BarCodeScanner.Constants.BarCodeType.ean13,
             BarCodeScanner.Constants.BarCodeType.ean8,
             BarCodeScanner.Constants.BarCodeType.code39,
-            BarCodeScanner.Constants.BarCodeType.qr,
+            // BarCodeScanner.Constants.BarCodeType.qr,
           ]}
           type={cameraSide ? 'back' : 'front'}
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
@@ -84,6 +85,7 @@ const QrReader = ({ cameraSide, setReadedCode, formRef }) => {
             height: scannerHeigthRef.current,
             marginTop: windownHeader * 0.04,
           }}
+          {...rest}
         />
       )}
     </Container>

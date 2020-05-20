@@ -9,8 +9,7 @@ import { Container, Logo, Title } from './styles'
 
 const Login = () => {
   const formRef = useRef(null)
-  const { signed, signIn } = useAuth()
-  console.log(signed)
+  const { signIn } = useAuth()
 
   async function handleSubmit(data) {
     signIn()

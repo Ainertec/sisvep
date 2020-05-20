@@ -12,9 +12,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    SplashScreen.preventAutoHide()
     async function loadStorage() {
-      SplashScreen.preventAutoHide()
       const storagedUser = await AsyncStorage.getItem('@RNAuth:user')
       const storagedToken = await AsyncStorage.getItem('@RNAuth:token')
       if (storagedUser && storagedToken) {
@@ -23,8 +21,8 @@ export const AuthProvider = ({ children }) => {
 
         setUser(JSON.parse(storagedUser))
         setLoading(false)
-        SplashScreen.hide()
       }
+      SplashScreen.hide()
     }
 
     loadStorage()

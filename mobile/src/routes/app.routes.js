@@ -13,6 +13,7 @@ import Details from '../pages/Details/index'
 import Update from '../pages/Update'
 import SeachUpdate from '../pages/SeachUpdate/index'
 import Setting from '../pages/Setting'
+import IpSetting from '../pages/IpSetting'
 
 const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
@@ -97,8 +98,22 @@ function TabUpdateStock() {
 }
 function TabConfiguracao() {
   return (
-    <Stack.Navigator screenOptions={stackOptions}>
-      <Stack.Screen name='Configuração' component={Setting} />
+    <Stack.Navigator>
+      <Stack.Screen
+        name='Configuração'
+        component={Setting}
+        options={stackOptions}
+      />
+      <Stack.Screen
+        name='IpSetting'
+        component={IpSetting}
+        options={{
+          headerTitleAlign: 'center',
+          headerTitle: 'Configurar Ip',
+          headerTintColor: 'white',
+          headerStyle: { backgroundColor: '#222' },
+        }}
+      />
     </Stack.Navigator>
   )
 }
