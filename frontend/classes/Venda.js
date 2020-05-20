@@ -222,7 +222,7 @@ function modalPagamento(tipo){
 
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="modal-footer">'
-                    codigoHTML+='<button onclick="setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>'
+                    codigoHTML+='<button onclick="limparModal();" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>'
                     
                     if(tipo=='dinheiro'){
                         codigoHTML+='<button onclick="cadastrarVenda(\'Dinheiro\');" type="button" class="btn btn-primary" data-dismiss="modal">Efetuar Pagamento</button>'
@@ -490,7 +490,7 @@ async function modalImpressaoNota(json, valorPago){
                     codigoHTML+='<button onclick="imprimirImpressora(\'#infoDadosnota\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;">'
                         codigoHTML+='Imprimir'
                     codigoHTML+='</button>'
-                    codigoHTML+='<button onclick="setTimeout(function(){limparModal();}, 1000);" type="button" class="close" data-dismiss="modal" aria-label="Close">'
+                    codigoHTML+='<button onclick="limparModal();" type="button" class="close" data-dismiss="modal" aria-label="Close">'
                         codigoHTML+='<span aria-hidden="true">&times;</span>'
                     codigoHTML+='</button>'
                 codigoHTML+='</div>'
@@ -587,7 +587,7 @@ function modalItemVendaPorLista(){
             codigoHTML+='<div class="modal-content">'
                 codigoHTML+='<div class="modal-header">'
                     codigoHTML+='<h5 class="modal-title" id="modalListaItemVenda">Lista de Produtos</h5>'
-                    codigoHTML+='<button onclick="setTimeout(function(){limparModal();}, 1000);" type="button" class="close" data-dismiss="modal" aria-label="Close">'
+                    codigoHTML+='<button onclick="limparModal();" type="button" class="close" data-dismiss="modal" aria-label="Close">'
                         codigoHTML+='<span aria-hidden="true">&times;</span>'
                     codigoHTML+='</button>'
                 codigoHTML+='</div>'

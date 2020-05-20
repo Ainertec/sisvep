@@ -30,7 +30,7 @@ function mensagemDeAviso(mensagem){
 
 //funcao para limpar tela de mensagens
 function limparTelaDeMensagem(){
-    setTimeout(function(){document.getElementById('mensagemDeErro').innerHTML=""},2000);
+    setTimeout(function(){document.getElementById('mensagemDeErro').innerHTML=""},4000);
 }
 
 
