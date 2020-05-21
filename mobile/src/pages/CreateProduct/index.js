@@ -62,37 +62,44 @@ export default function CreateProduct() {
 
   return (
     <Container>
-      <MainScroll>
-        <Title>Atualizar/Visualizar Produto</Title>
+      <KeyboardAvoidingView
+        style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}
+        behavior='height'
+        enable
+        keyboardVerticalOffset={130}
+      >
+        <MainScroll>
+          <Title>Atualizar/Visualizar Produto</Title>
 
-        <QrReader cameraSide={cameraSide} formRef={productFormRef} />
+          <QrReader cameraSide={cameraSide} formRef={productFormRef} />
 
-        <Form
-          initialData={{ validity: new Date() }}
-          ref={productFormRef}
-          onSubmit={handleSubmit}
-        >
-          <ProductForm />
-          <Picker
-            name='providerId'
-            providers={providers}
-            enabled={!isEnabled}
+          <Form
+            initialData={{ validity: new Date() }}
+            ref={productFormRef}
+            onSubmit={handleSubmit}
+          >
+            <ProductForm />
+            <Picker
+              name='providerId'
+              providers={providers}
+              enabled={!isEnabled}
+            />
+          </Form>
+          <SwitchView
+            thumbColor={isEnabled ? '#080705' : '#f4f3f4'}
+            onValueChange={toggleSwitch}
+            value={isEnabled}
           />
-        </Form>
-        <SwitchView
-          thumbColor={isEnabled ? '#080705' : '#f4f3f4'}
-          onValueChange={toggleSwitch}
-          value={isEnabled}
-        />
 
-        <Title>Cadastrar fornecedor</Title>
+          <Title>Cadastrar fornecedor</Title>
 
-        <Form ref={providerFormRef}>
-          <ProviderForm isEnabled={isEnabled} />
+          <Form ref={providerFormRef}>
+            <ProviderForm isEnabled={isEnabled} />
 
-          <Button onPress={() => productFormRef.current.submitForm()} />
-        </Form>
-      </MainScroll>
+            <Button onPress={() => productFormRef.current.submitForm()} />
+          </Form>
+        </MainScroll>
+      </KeyboardAvoidingView>
 
       <ActionButton setCameraSide={setCameraSide} />
     </Container>
