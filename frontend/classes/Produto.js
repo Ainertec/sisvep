@@ -32,8 +32,10 @@ function autenticacaoProduto(tipo){
         if(tipo=='Cadastrar'){
             document.getElementById('janela2').innerHTML = telaProduto(tipo);
             carregarListaDeFornecedoresEmProduto();
+            atalhoTeclaProduto();
         }else if(tipo=='Atualizar'){
             document.getElementById('janela2').innerHTML = telaBuscarProduto();
+            atalhoTeclaProduto();
         }
     }else{
         mensagemDeErro("Usuário não autorizado!");
@@ -67,39 +69,39 @@ function telaProduto(tipo){
                 if(tipo=='Atualizar'){
                     codigoHTML+='<div class="form-group col-md-6">'
                         codigoHTML+='<label for="id">ID:</label>'
-                        codigoHTML+='<input type="text" class="form-control" id="id" placeholder="ID" disabled>'
+                        codigoHTML+='<input type="text" class="form-control mousetrap" id="id" placeholder="ID" disabled>'
                     codigoHTML+='</div>'
                 }
 
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="barcode">Código de barras:</label>'
-                    codigoHTML+='<input type="Number" class="form-control" id="barcode" placeholder="Código de barras">'
+                    codigoHTML+='<input type="Number" class="form-control mousetrap" id="barcode" placeholder="Código de barras">'
                 codigoHTML+='</div>'
             codigoHTML+='</div>'
             codigoHTML+='<div class="form-row">'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="nome">Nome:</label>'
-                    codigoHTML+='<input type="text" class="form-control" id="nome" placeholder="Nome do produto">'
+                    codigoHTML+='<input type="text" class="form-control mousetrap" id="nome" placeholder="Nome do produto">'
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="valorUni">Valor unidade:</label>'
-                    codigoHTML+='<input type="Number" class="form-control" id="valorUni" placeholder="Valor da unidade">'
+                    codigoHTML+='<input type="Number" class="form-control mousetrap" id="valorUni" placeholder="Valor da unidade">'
                 codigoHTML+='</div>'
             codigoHTML+='</div>'
             codigoHTML+='<div class="form-row">'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="valorCus">Valor Custo:</label>'
-                    codigoHTML+='<input type="Number" class="form-control" id="valorCus" placeholder="Valor de custo">'
+                    codigoHTML+='<input type="Number" class="form-control mousetrap" id="valorCus" placeholder="Valor de custo">'
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="dataValidade">Data validade:</label>' 
-                    codigoHTML+='<input type="date" class="form-control" id="dataValidade">'
+                    codigoHTML+='<input type="date" class="form-control mousetrap" id="dataValidade">'
                 codigoHTML+='</div>'
             codigoHTML+='</div>'
             codigoHTML+='<div class="form-row">'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="qtdEstoque">Quantidade estoque:</label>'
-                    codigoHTML+='<input type="Number" class="form-control" id="qtdEstoque" placeholder="Quantidade em estoque">'
+                    codigoHTML+='<input type="Number" class="form-control mousetrap" id="qtdEstoque" placeholder="Quantidade em estoque">'
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="listaFornecedor">Lista de fornecedores:</label>'
@@ -157,10 +159,10 @@ function telaBuscarProduto(){
     codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
         codigoHTML+='<h5 class="text-center">Buscar Produto</h5>'
         codigoHTML+='<div class="input-group mb-3">'
-            codigoHTML+='<input id="buscaProduto" type="text" class="form-control" placeholder="Nome ou código de barras">'
+            codigoHTML+='<input id="buscaProduto" type="text" class="form-control mousetrap" placeholder="Nome ou código de barras">'
         codigoHTML+='</div>'
         codigoHTML+='<div class="input-group mb-3">'
-            codigoHTML+='<input id="buscaProdutoDate" type="month" class="form-control">'
+            codigoHTML+='<input id="buscaProdutoDate" type="month" class="form-control mousetrap">'
         codigoHTML+='</div>'
         codigoHTML+='<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
             codigoHTML+='<button onclick="buscarProduto(\'codigo\');" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Código de barras</button>'

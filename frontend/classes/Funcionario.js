@@ -28,9 +28,11 @@ function autenticacaoFuncionarioFacede(){
     
     if(JSON.parse(situacao).tipo == 'Administrador'){
         document.getElementById('janela2').innerHTML = telaFuncionario('Admin');
+        atalhoTeclaFuncionario("Administrador");
     }else if(JSON.parse(situacao).tipo == 'Comum'){
         document.getElementById('janela2').innerHTML = telaFuncionario('Comum');
         buscarFuncionario('Comum');
+        atalhoTeclaFuncionario("Comum");
     }else{
         mensagemDeErro("Usuário não autorizado!");
     }
@@ -59,7 +61,7 @@ function telaFuncionario(tipo){
         codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
             codigoHTML+='<h5 class="text-center">Buscar Funcionário</h5>'
             codigoHTML+='<div class="input-group mb-3">'
-                codigoHTML+='<input id="buscaFuncionarioByName" type="text" class="form-control" placeholder="Nome">'
+                codigoHTML+='<input id="buscaFuncionarioByName" type="text" class="form-control mousetrap" placeholder="Nome">'
             codigoHTML+='</div>'
             codigoHTML+='<div class="btn-group btn-lg btn-block" role="group">'
                 codigoHTML+='<button onclick="buscarFuncionario(\'Administrador\',\'nome\');" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
@@ -83,17 +85,17 @@ function telaFuncionario(tipo){
             codigoHTML+='<div class="form-row">'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="id">ID:</label>'
-                    codigoHTML+='<input type="text" class="form-control" id="id" placeholder="ID" disabled>'
+                    codigoHTML+='<input type="text" class="form-control mousetrap" id="id" placeholder="ID" disabled>'
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="login">Login:</label>'
-                    codigoHTML+='<input type="text" class="form-control" id="login" placeholder="Login">'
+                    codigoHTML+='<input type="text" class="form-control mousetrap" id="login" placeholder="Login">'
                 codigoHTML+='</div>'
             codigoHTML+='</div>'
             codigoHTML+='<div class="form-row">'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="senha">Senha:</label>'
-                    codigoHTML+='<input type="password" class="form-control" id="senha" placeholder="Senha">'
+                    codigoHTML+='<input type="password" class="form-control mousetrap" id="senha" placeholder="Senha">'
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="question">Pergunta recuperação de senha:</label>'
@@ -109,7 +111,7 @@ function telaFuncionario(tipo){
             codigoHTML+='<div class="form-row">'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="senha">Resposta pergunta:</label>'
-                    codigoHTML+='<input type="text" class="form-control" id="response" placeholder="Resposta">'
+                    codigoHTML+='<input type="text" class="form-control mousetrap" id="response" placeholder="Resposta">'
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="tipoFun">Tipo de funcionário:</label>'

@@ -16,7 +16,8 @@ function autenticacaoLoja(){
     var situacao = autenticacaoLogin();
     
     if(JSON.parse(situacao).tipo == 'Administrador'){
-        verificarCadastroLoja();        
+        verificarCadastroLoja();
+        atalhoTeclaLoja();        
     }else{
         mensagemDeErro("Usuário não autorizado!");
     }
@@ -50,29 +51,29 @@ function telaLoja(tipo){
                 if(tipo=='Atualizar'){
                     codigoHTML+='<div class="form-group col-md-6">'
                         codigoHTML+='<label for="id">ID:</label>'
-                        codigoHTML+='<input type="text" class="form-control" id="id" placeholder="ID" disabled>'
+                        codigoHTML+='<input type="text" class="form-control mousetrap" id="id" placeholder="ID" disabled>'
                     codigoHTML+='</div>'
                 }
 
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="nome">Nome:</label>'
-                    codigoHTML+='<input type="Text" class="form-control" id="nome" placeholder="Nome">'
+                    codigoHTML+='<input type="Text" class="form-control mousetrap" id="nome" placeholder="Nome">'
                 codigoHTML+='</div>'
             codigoHTML+='</div>'
             codigoHTML+='<div class="form-row">'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="cpfCnpj">CPF/CNPJ:</label>'
-                    codigoHTML+='<input type="text" class="form-control" id="cpfCnpj" placeholder="CPF ou CNPJ">'
+                    codigoHTML+='<input type="text" class="form-control mousetrap" id="cpfCnpj" placeholder="CPF ou CNPJ">'
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="telefone">Telefone:</label>'
-                    codigoHTML+='<input type="Text" class="form-control" id="telefone" placeholder="Telefone">'
+                    codigoHTML+='<input type="Text" class="form-control mousetrap" id="telefone" placeholder="Telefone">'
                 codigoHTML+='</div>'
             codigoHTML+='</div>'
             codigoHTML+='<div class="form-row">'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="email">E-mail:</label>'
-                    codigoHTML+='<input type="email" class="form-control" id="email" placeholder="Email" value="Inexistente">'
+                    codigoHTML+='<input type="email" class="form-control mousetrap" id="email" placeholder="Email" value="Inexistente">'
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="endereco">Endereço:</label>'

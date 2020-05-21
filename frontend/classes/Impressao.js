@@ -22,11 +22,11 @@ function telaDadosEtiqueta(){
             codigoHTML+='<div class="form-row">'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="nome">Quantidade:</label>'
-                    codigoHTML+='<input type="Number" class="form-control" id="quantidade" placeholder="Quantidade">'
+                    codigoHTML+='<input type="Number" class="form-control mousetrap" id="quantidade" placeholder="Quantidade">'
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="nome">Código:</label>'
-                    codigoHTML+='<input type="number" class="form-control" id="codigo" placeholder="Código" max="9999999" min="999999">'
+                    codigoHTML+='<input type="number" class="form-control mousetrap" id="codigo" placeholder="Código" max="9999999" min="999999">'
                 codigoHTML+='</div>'
             codigoHTML+='</div>'
             codigoHTML+='<div class="form-row">'
@@ -36,6 +36,7 @@ function telaDadosEtiqueta(){
     codigoHTML+='</div>'
 
     document.getElementById('janela2').innerHTML = codigoHTML;
+    atalhoTeclaImpressao("etiqueta");
 
 }
 
@@ -111,7 +112,7 @@ function telaReimpressaoDeComprovanteVenda(){
                 codigoHTML+='<div class="form-row">'
                     codigoHTML+='<div class="form-group col-md-12">'
                         codigoHTML+='<label for="nome">Código ID:</label>'
-                        codigoHTML+='<input type="text" class="form-control" id="codigo" placeholder="Código ID">'
+                        codigoHTML+='<input type="text" class="form-control mousetrap" id="codigo" placeholder="Código ID">'
                     codigoHTML+='</div>'
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="form-row">'
@@ -120,7 +121,8 @@ function telaReimpressaoDeComprovanteVenda(){
             codigoHTML+='</form>'
         codigoHTML+='</div>'
 
-        document.getElementById('janela2').innerHTML = codigoHTML;   
+        document.getElementById('janela2').innerHTML = codigoHTML;
+        atalhoTeclaImpressao(null); 
     }else{
         mensagemDeErro("Usuário não autorizado!");
     }

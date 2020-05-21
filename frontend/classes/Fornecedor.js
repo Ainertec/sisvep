@@ -30,6 +30,7 @@ function autenticacaoFornecedorFacede(){
     if(JSON.parse(situacao).tipo == 'Administrador' || JSON.parse(situacao).tipo == 'Comum'){
         document.getElementById('janela2').innerHTML = telaFornecedor();
         document.getElementById('dadosDoFornecedor').innerHTML = carregarTelaDadosFornecedor('Atualizar');
+        atalhoTeclaFornecedor();
     }else{
         mensagemDeErro("Usuário não autorizado!");
     }
@@ -56,7 +57,7 @@ function telaFornecedor(){
     codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
         codigoHTML+='<h5 class="text-center">Buscar Fornecedor</h5>'
         codigoHTML+='<div class="input-group mb-3">'
-            codigoHTML+='<input id="buscaFornecedor" type="text" class="form-control" placeholder="Nome" aria-label="Recipients username" aria-describedby="botaoBuscar">'
+            codigoHTML+='<input id="buscaFornecedor" type="text" class="form-control mousetrap" placeholder="Nome" aria-label="Recipients username" aria-describedby="botaoBuscar">'
         codigoHTML+='</div>'
         codigoHTML+='<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
             codigoHTML+='<button onclick="buscarFornecedor(\'nome\');" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
@@ -135,21 +136,21 @@ function carregarTelaDadosFornecedor(tipo){
     codigoHTML+='<div class="form-row" style="margin-top:30px;">'
         codigoHTML+='<div class="form-group col-md-6">'
             codigoHTML+='<label for="nomeFornecedor">Nome:</label>'
-            codigoHTML+='<input type="Text" class="form-control" id="nomeFornecedor" placeholder="Nome">'
+            codigoHTML+='<input type="Text" class="form-control mousetrap" id="nomeFornecedor" placeholder="Nome">'
         codigoHTML+='</div>'
         codigoHTML+='<div class="form-group col-md-6">'
             codigoHTML+='<label for="cpfCnpjFornecedor">CPF/CNPJ:</label>'
-            codigoHTML+='<input type="text" class="form-control" id="cpfCnpjFornecedor" placeholder="CPF ou CNPJ">'
+            codigoHTML+='<input type="text" class="form-control mousetrap" id="cpfCnpjFornecedor" placeholder="CPF ou CNPJ">'
         codigoHTML+='</div>'
     codigoHTML+='</div>'
     codigoHTML+='<div class="form-row">'
         codigoHTML+='<div class="form-group col-md-6">'
             codigoHTML+='<label for="telefoneFornecedor">Telefone:</label>'
-            codigoHTML+='<input type="Text" class="form-control" id="telefoneFornecedor" placeholder="Telefone">'
+            codigoHTML+='<input type="Text" class="form-control mousetrap" id="telefoneFornecedor" placeholder="Telefone">'
         codigoHTML+='</div>'
         codigoHTML+='<div class="form-group col-md-6">'
             codigoHTML+='<label for="emailFornecedor">E-mail:</label>'
-            codigoHTML+='<input type="email" class="form-control" id="emailFornecedor" placeholder="Email" value="Inexistente">'
+            codigoHTML+='<input type="email" class="form-control mousetrap" id="emailFornecedor" placeholder="Email" value="Inexistente">'
         codigoHTML+='</div>'
     codigoHTML+='</div>'
     codigoHTML+='<div class="form-row">'       
@@ -162,7 +163,7 @@ function carregarTelaDadosFornecedor(tipo){
         if(tipo=='Atualizar'){
             codigoHTML+='<div class="form-group col-md-6">'
                 codigoHTML+='<label for="idFornecedor">ID:</label>'
-                codigoHTML+='<input type="text" class="form-control" id="idFornecedor" placeholder="ID" disabled>'
+                codigoHTML+='<input type="text" class="form-control mousetrap" id="idFornecedor" placeholder="ID" disabled>'
             codigoHTML+='</div>'
         }
         
