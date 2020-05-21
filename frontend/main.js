@@ -1,10 +1,10 @@
-const { app, BrowserWindow} = require('electron')
+const { app, BrowserWindow, shell} = require('electron')
 
 let mainWindow
 
 function createWindow () {
   mainWindow = new BrowserWindow({
-    icon: './img/icon.ico',
+    icon: '../executaveis_modulos/icon.ico',
     autoHideMenuBar: true,
     title: 'Sisvep - sistema para gerenciamento de vendas',
     minHeight:840,
@@ -15,11 +15,20 @@ function createWindow () {
   mainWindow.maximize()
 
   mainWindow.on('closed', function () {
-    mainWindow = null
+    mainWindow = null,
+    shell.openItem("C://sisvep-x64//executaveis_modulos//close.vbs");
   })
 
 }
 
+shell.openItem("C://sisvep-x64//executaveis_modulos//startMongo.vbs")
+shell.openItem("C://sisvep-x64//executaveis_modulos//startNode.vbs")
+
+var data = new Date();
+  
+if(data.getDate()==5 || data.getDate()==15 || data.getDate()==25){
+  shell.openItem("C://sisvep-x64//executaveis_modulos//startBackup.vbs")
+}
 
 app.on('ready', createWindow)
 

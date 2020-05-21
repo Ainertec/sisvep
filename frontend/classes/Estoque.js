@@ -29,6 +29,7 @@ function autenticacaoEstoqueFacede(){
     
     if(JSON.parse(situacao).tipo == 'Administrador' || JSON.parse(situacao).tipo == 'Comum'){
         document.getElementById('janela2').innerHTML = telaEstoque();
+        atalhoTeclaEstoque();
     }else{
         mensagemDeErro("Usuário não autorizado!");
     }
@@ -55,10 +56,10 @@ function telaEstoque(){
     codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
         codigoHTML+='<h5 class="text-center">Buscar</h5>'
         codigoHTML+='<div class="input-group mb-3">'
-            codigoHTML+='<input id="buscaProduto" type="text" class="form-control" placeholder="Nome">'
+            codigoHTML+='<input id="buscaProduto" type="text" class="form-control mousetrap" placeholder="Nome">'
         codigoHTML+='</div>'
         codigoHTML+='<div class="input-group mb-3">'
-            codigoHTML+='<input id="buscaProdutoQuantidade" type="Number" class="form-control" placeholder="Quantidade">'
+            codigoHTML+='<input id="buscaProdutoQuantidade" type="Number" class="form-control mousetrap" placeholder="Quantidade">'
         codigoHTML+='</div>'
         codigoHTML+='<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
             codigoHTML+='<button onclick="buscarProdutoEstoque(\'nome\');" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'

@@ -38,6 +38,7 @@
                 <a onclick="autenticacaoEstoqueFacede();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-boxes iconsTam"></span> Estoque</a>
                 <a onclick="autenticacaoRelatorioFacede();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-chart-line iconsTam"></span> Relatórios</a>
                 <a onclick="subMenuImpressao();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-print iconsTam"></span> Impressão</a>
+                <a onclick="telaDeConfiguracaoDispositivo();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-mobile-alt iconsTam"></span> Dispositivos</a>
                 <a onclick="autenticacaoLoja();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-store-alt iconsTam"></span> Loja</a>
                 <a onclick="ajudaInformacoes();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-question-circle iconsTam"></span> Ajuda</a>
             </ul>
@@ -66,9 +67,10 @@
 
     <script src="./axios/axios.js"></script>
     <script src="./bootstrap/js/jquery.min.js"></script>
-    <script src="./bootstrap/js/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="./bootstrap/js/popper.min.js" crossorigin="anonymous"></script>
     <script src="./bootstrap/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="./bootstrap/js/JsBarcode.all.min.js"></script>
+    <script src="./bootstrap/js/qrcode.js"></script>
     <script src="./bootstrap/js/highchartsgrafico.js"></script>
     <script src="./bootstrap/js/mousetrap.min.js"></script>
     <script src="./bootstrap/js/printThis.js"></script>
@@ -86,6 +88,7 @@
     <script src="./classes/Estoque.js"></script>
     <script src="./classes/Relatorio.js"></script>
     <script src="./classes/SubMenu.js"></script>
+    <script src="./classes/Dispositivo.js"></script>
     <script src="./classes/AtalhosTeclas.js"></script>
     <script src="./classes/Ajuda.js"></script>
     

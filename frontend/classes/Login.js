@@ -20,8 +20,8 @@ function telaAutenticacao(){
     codigoHTML+='<form class="text-center" style="margin-top:30px;">'
         codigoHTML+='<h1><span class="fas fa-user-circle"></span></h1>'
         codigoHTML+='<div class="form-row col-4 rounded mx-auto d-block">'
-            codigoHTML+='<input id="login" type="text" class="form-control mb-2" placeholder="Login">'
-            codigoHTML+='<input id="senha" type="password" class="form-control mb-2" placeholder="Senha">'
+            codigoHTML+='<input id="login" type="text" class="form-control mb-2 mousetrap" placeholder="Login">'
+            codigoHTML+='<input id="senha" type="password" class="form-control mb-2 mousetrap" placeholder="Senha">'
             codigoHTML+='<button onclick="efetuarLogin();" type="button" class="btn btn-primary border border-danger col-md-3">'
                 codigoHTML+='<span class="fas fa-key"></span> Acessar'
             codigoHTML+='</button>'
@@ -33,7 +33,8 @@ function telaAutenticacao(){
 
     document.getElementById('janela2').innerHTML = codigoHTML;
 
-    Mousetrap.bind('enter', function() { efetuarLogin(); });
+    atalhosTeclaLogin();
+
 }
 
 
@@ -54,8 +55,8 @@ async function telaRecuperacaoSenha(){
     codigoHTML+='<div class="text-center" style="margin-top:10px;">'
         codigoHTML+='<div class="form-row col-4 rounded mx-auto d-block">'
             codigoHTML+='<label for="pergunta">Responda a pergunta de segurança: '+questao.data.question+'</label>'
-            codigoHTML+='<input id="pergunta" type="text" class="form-control mb-2" placeholder="Resposta">'
-            codigoHTML+='<input id="novaSenha" type="password" class="form-control mb-2" placeholder="Digite uma nova senha">'
+            codigoHTML+='<input id="pergunta" type="text" class="form-control mb-2 mousetrap" placeholder="Resposta">'
+            codigoHTML+='<input id="novaSenha" type="password" class="form-control mb-2 mousetrap" placeholder="Digite uma nova senha">'
             codigoHTML+='<button onclick="recuperarSenha();" type="button" class="btn btn-primary border border-danger col-md-3">'
                 codigoHTML+='<span class="fas fa-key"></span> Recuperar'
             codigoHTML+='</button>'

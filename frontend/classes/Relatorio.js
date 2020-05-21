@@ -12,12 +12,14 @@
 
 
 //funcao responsavel autenticar o acesso ao setor de relatorio
-function autenticacaoRelatorioFacede(){
+async function autenticacaoRelatorioFacede(){
 
     var situacao = autenticacaoLogin();
     
     if(JSON.parse(situacao).tipo == 'Administrador'){
+        await requisicaoDELETE('sales', '', {headers:{Authorization:`Bearer ${buscarSessionUser().token}`}});
         document.getElementById('janela2').innerHTML = telaGeralRelatorio();
+        atalhosTeclaRelatorio();
     }else{
         mensagemDeErro("Usuário não autorizado!");
     }
@@ -42,11 +44,11 @@ function telaGeralRelatorio(){
     codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
         codigoHTML+='<h5 class="text-center">Data inicial</h5>'
         codigoHTML+='<div class="input-group mb-3">'
-            codigoHTML+='<input id="dataInicio" type="date" class="form-control" aria-label="Recipients username" aria-describedby="botaoBuscar">'
+            codigoHTML+='<input id="dataInicio" type="date" class="form-control mousetrap" aria-label="Recipients username" aria-describedby="botaoBuscar">'
         codigoHTML+='</div>'
         codigoHTML+='<h5 class="text-center">Data final</h5>'
         codigoHTML+='<div class="input-group mb-3">'
-            codigoHTML+='<input id="dataFim" type="date" class="form-control" aria-label="Recipients username" aria-describedby="botaoBuscar">'
+            codigoHTML+='<input id="dataFim" type="date" class="form-control mousetrap" aria-label="Recipients username" aria-describedby="botaoBuscar">'
         codigoHTML+='</div>'
         codigoHTML+='<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
             codigoHTML+='<button onclick="graficoLucroMensal(); graficoQuantidadeVendasMensal();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Relatórios periódicos</button>'

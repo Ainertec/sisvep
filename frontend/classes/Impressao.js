@@ -22,20 +22,21 @@ function telaDadosEtiqueta(){
             codigoHTML+='<div class="form-row">'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="nome">Quantidade:</label>'
-                    codigoHTML+='<input type="Number" class="form-control" id="quantidade" placeholder="Quantidade">'
+                    codigoHTML+='<input type="Number" class="form-control mousetrap" id="quantidade" placeholder="Quantidade">'
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="form-group col-md-6">'
                     codigoHTML+='<label for="nome">Código:</label>'
-                    codigoHTML+='<input type="number" class="form-control" id="codigo" placeholder="Código" max="9999999" min="0">'
+                    codigoHTML+='<input type="number" class="form-control mousetrap" id="codigo" placeholder="Código" max="9999999" min="999999">'
                 codigoHTML+='</div>'
             codigoHTML+='</div>'
             codigoHTML+='<div class="form-row">'
-                codigoHTML+='<button onclick="if(document.getElementById(\'codigo\').value<=9999999){gerarEtiquetasCodigoDeBarras(document.getElementById(\'quantidade\').value, document.getElementById(\'codigo\').value)}else{mensagemDeErro(\'O código deve ter menos que 7 digitos!\')}" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-file-pdf"></span> Gerar</button>'
+                codigoHTML+='<button onclick="if(document.getElementById(\'codigo\').value<=9999999 && document.getElementById(\'codigo\').value>999999){gerarEtiquetasCodigoDeBarras(document.getElementById(\'quantidade\').value, document.getElementById(\'codigo\').value)}else{mensagemDeErro(\'O código deve ter menos que 7 digitos!\')}" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-file-pdf"></span> Gerar</button>'
             codigoHTML+='</div>'
         codigoHTML+='</form>'
     codigoHTML+='</div>'
 
     document.getElementById('janela2').innerHTML = codigoHTML;
+    atalhoTeclaImpressao("etiqueta");
 
 }
 
@@ -61,7 +62,7 @@ function gerarEtiquetasCodigoDeBarras(quantidade,codigo){
                         codigoHTML+='<button onclick="imprimirImpressora(\'#emissaoCodigoDeBarras\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;">'
                             codigoHTML+='Imprimir'
                         codigoHTML+='</button>'
-                        codigoHTML+='<button onclick="setTimeout(function(){limparModal();}, 1000);" type="button" class="close" data-dismiss="modal" aria-label="Close">'
+                        codigoHTML+='<button onclick="limparModal();" type="button" class="close" data-dismiss="modal" aria-label="Close">'
                             codigoHTML+='<span aria-hidden="true">&times;</span>'
                         codigoHTML+='</button>'
                     codigoHTML+='</div>'
@@ -111,7 +112,7 @@ function telaReimpressaoDeComprovanteVenda(){
                 codigoHTML+='<div class="form-row">'
                     codigoHTML+='<div class="form-group col-md-12">'
                         codigoHTML+='<label for="nome">Código ID:</label>'
-                        codigoHTML+='<input type="text" class="form-control" id="codigo" placeholder="Código ID">'
+                        codigoHTML+='<input type="text" class="form-control mousetrap" id="codigo" placeholder="Código ID">'
                     codigoHTML+='</div>'
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="form-row">'
@@ -120,7 +121,8 @@ function telaReimpressaoDeComprovanteVenda(){
             codigoHTML+='</form>'
         codigoHTML+='</div>'
 
-        document.getElementById('janela2').innerHTML = codigoHTML;   
+        document.getElementById('janela2').innerHTML = codigoHTML;
+        atalhoTeclaImpressao(null); 
     }else{
         mensagemDeErro("Usuário não autorizado!");
     }
@@ -151,7 +153,7 @@ async function gerarSegundaViaComprovante(codigo){
                     codigoHTML+='<button onclick="imprimirImpressora(\'#infoDadosnota\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;">'
                         codigoHTML+='Imprimir'
                     codigoHTML+='</button>'
-                    codigoHTML+='<button onclick="setTimeout(function(){limparModal();}, 1000);" type="button" class="close" data-dismiss="modal" aria-label="Close">'
+                    codigoHTML+='<button onclick="limparModal();" type="button" class="close" data-dismiss="modal" aria-label="Close">'
                         codigoHTML+='<span aria-hidden="true">&times;</span>'
                     codigoHTML+='</button>'
                 codigoHTML+='</div>'
@@ -221,7 +223,7 @@ function telaImpressaoRelatorio(){
                         codigoHTML+='<button onclick="imprimirImpressora(\'#infoDadosRelatorio\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;">'
                             codigoHTML+='Imprimir'
                         codigoHTML+='</button>'
-                        codigoHTML+='<button onclick="setTimeout(function(){limparModal();}, 1000);" type="button" class="close" data-dismiss="modal" aria-label="Close">'
+                        codigoHTML+='<button onclick="limparModal();" type="button" class="close" data-dismiss="modal" aria-label="Close">'
                             codigoHTML+='<span aria-hidden="true">&times;</span>'
                         codigoHTML+='</button>'
                     codigoHTML+='</div>'

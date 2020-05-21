@@ -31,6 +31,7 @@ function autenticacaoVendaFacede(){
     
     if(JSON.parse(situacao).tipo == 'Administrador' || JSON.parse(situacao).tipo == 'Comum'){
         document.getElementById('janela2').innerHTML = telaVenda();
+        pausarAtalhos();
         atalhosTeclaVenda();
         $('#submenu').hide();
         document.getElementById('mensagemSubMenu').innerHTML = '<p>Para liberar o menu pressione a tecla "B"!<br/>Pressione "L" para pesquisar produtos pelo nome.</p>'
@@ -68,12 +69,12 @@ function telaVenda(){
                     codigoHTML+='<div class="card-body">'
                         codigoHTML+='<div class="form-group row">'
                             codigoHTML+='<label for="qtdItemDaVenda">Produto <strong>X</strong></label>' 
-                            codigoHTML+='<input type="Number" class="form-control form-control-sm col-3" id="qtdItemDaVenda" style="margin-left:10px" value=1>'
+                            codigoHTML+='<input type="Number" class="form-control form-control-sm col-3 mousetrap" id="qtdItemDaVenda" style="margin-left:10px" value=1>'
                         codigoHTML+='</div>'
                         codigoHTML+='<div class="form-group row">'
                             codigoHTML+='<div class="input-group mb-3">'
                                 codigoHTML+='<label for="campocodigodeleteitemvenda">Produto</label>'
-                                codigoHTML+='<input id="campocodigodeleteitemvenda" type="Number" class="form-control form-control-sm col-4" style="margin-left:10px" placeholder="Código" aria-describedby="buttonDeleteItemDaVenda">'
+                                codigoHTML+='<input id="campocodigodeleteitemvenda" type="Number" class="form-control form-control-sm col-4 mousetrap" style="margin-left:10px" placeholder="Código" aria-describedby="buttonDeleteItemDaVenda">'
                                 codigoHTML+='<div class="input-group-append">'
                                     codigoHTML+='<button onclick="removerProdutoDaLista(document.getElementById(\'campocodigodeleteitemvenda\').value);" class="btn btn-danger btn-sm" type="button" id="buttonDeleteItemDaVenda"><span class="fas fa-times iconsTam"></span> Remover</button>'
                                 codigoHTML+='</div>'
@@ -82,7 +83,7 @@ function telaVenda(){
                         codigoHTML+='<div class="form-group row">'
                             codigoHTML+='<div class="input-group mb-3">'
                                 codigoHTML+='<label for="campocodigoadicionaritemvenda">Produto</label>'
-                                codigoHTML+='<input id="campocodigoadicionaritemvenda" type="Number" class="form-control form-control-sm col-4" style="margin-left:10px" placeholder="Código" aria-describedby="buttonAdicionarItemDaVenda">'
+                                codigoHTML+='<input id="campocodigoadicionaritemvenda" type="Number" class="form-control form-control-sm col-4 mousetrap" style="margin-left:10px" placeholder="Código" aria-describedby="buttonAdicionarItemDaVenda">'
                                 codigoHTML+='<div class="input-group-append">'
                                     codigoHTML+='<button onclick="buscarProdutoVenda(document.getElementById(\'campocodigoadicionaritemvenda\').value);" class="btn btn-primary btn-sm" type="button" id="buttonAdicionarItemDaVenda"><span class="fas fa-plus iconsTam"></span> Adicionar</button>'
                                 codigoHTML+='</div>'
@@ -217,12 +218,12 @@ function modalPagamento(tipo){
                             codigoHTML+='</div>'
                         codigoHTML+='</div>'
                         codigoHTML+='<label for="valorPago" style="margin-top:40px;"><strong>Valor Pago</strong></label>' 
-                        codigoHTML+='<input id="valorPago" type="Number" class="form-control form-control-lg col-5" style="margin-left:10px" oninput="document.getElementById(\'exibirTroco\').innerHTML = (parseFloat(document.getElementById(\'valorPago\').value) - parseFloat($(\'#valorTotalPagamento\').text())).toFixed(2);">'
+                        codigoHTML+='<input id="valorPago" type="Number" class="form-control form-control-lg col-5 mousetrap" style="margin-left:10px" oninput="document.getElementById(\'exibirTroco\').innerHTML = (parseFloat(document.getElementById(\'valorPago\').value) - parseFloat($(\'#valorTotalPagamento\').text())).toFixed(2);">'
                     }
 
                 codigoHTML+='</div>'
                 codigoHTML+='<div class="modal-footer">'
-                    codigoHTML+='<button onclick="setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>'
+                    codigoHTML+='<button onclick="limparModal();" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>'
                     
                     if(tipo=='dinheiro'){
                         codigoHTML+='<button onclick="cadastrarVenda(\'Dinheiro\');" type="button" class="btn btn-primary" data-dismiss="modal">Efetuar Pagamento</button>'
@@ -454,29 +455,6 @@ async function cadastrarVenda(formaPagamento){
 
 
 
-//funcao responsavel por gerar as teclas de atalho da venda
-function atalhosTeclaVenda(){
-    Mousetrap.bind('ctrl+del', function() { removerProdutoDaLista(document.getElementById('campocodigodeleteitemvenda').value); });
-    Mousetrap.bind('ctrl+enter', function() { buscarProdutoVenda(document.getElementById('campocodigoadicionaritemvenda').value); });
-    Mousetrap.bind('d enter', function() { modalPagamento('dinheiro'); });
-    Mousetrap.bind('c enter', function() { modalPagamento('cartao'); });
-    Mousetrap.bind('q', function() { document.getElementById('qtdItemDaVenda').focus(); });
-    Mousetrap.bind('e', function() { document.getElementById('campocodigodeleteitemvenda').focus(); });
-    Mousetrap.bind('a', function() { document.getElementById('campocodigoadicionaritemvenda').focus(); });
-    Mousetrap.bind('b', function() { liberarSubMenu(); });
-    Mousetrap.bind('l', function() { modalItemVendaPorLista(); });
-}
-
-
-
-
-
-
-
-
-
-
-
 //funcao responsavel por gerar o modal de impressao e enviar a nota para a impressao
 async function modalImpressaoNota(json, valorPago){
     
@@ -490,7 +468,7 @@ async function modalImpressaoNota(json, valorPago){
                     codigoHTML+='<button onclick="imprimirImpressora(\'#infoDadosnota\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;">'
                         codigoHTML+='Imprimir'
                     codigoHTML+='</button>'
-                    codigoHTML+='<button onclick="setTimeout(function(){limparModal();}, 1000);" type="button" class="close" data-dismiss="modal" aria-label="Close">'
+                    codigoHTML+='<button onclick="limparModal();" type="button" class="close" data-dismiss="modal" aria-label="Close">'
                         codigoHTML+='<span aria-hidden="true">&times;</span>'
                     codigoHTML+='</button>'
                 codigoHTML+='</div>'
@@ -560,7 +538,7 @@ function liberarSubMenu(){
                     codigoHTML+='</div>'
                     codigoHTML+='<div class="modal-footer">'
                         codigoHTML+='<button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>'
-                        codigoHTML+='<button onclick="$(\'#submenu\').show(); document.getElementById(\'mensagemSubMenu\').innerHTML = \'\';" type="button" class="btn btn-primary" data-dismiss="modal">Sim</button>'
+                        codigoHTML+='<button onclick="$(\'#submenu\').show(); document.getElementById(\'mensagemSubMenu\').innerHTML = \'\'; retirarPausaAtalho();" type="button" class="btn btn-primary" data-dismiss="modal">Sim</button>'
                     codigoHTML+='</div>'
                 codigoHTML+='</div>'
             codigoHTML+='</div>'
@@ -587,7 +565,7 @@ function modalItemVendaPorLista(){
             codigoHTML+='<div class="modal-content">'
                 codigoHTML+='<div class="modal-header">'
                     codigoHTML+='<h5 class="modal-title" id="modalListaItemVenda">Lista de Produtos</h5>'
-                    codigoHTML+='<button onclick="setTimeout(function(){limparModal();}, 1000);" type="button" class="close" data-dismiss="modal" aria-label="Close">'
+                    codigoHTML+='<button onclick="limparModal();" type="button" class="close" data-dismiss="modal" aria-label="Close">'
                         codigoHTML+='<span aria-hidden="true">&times;</span>'
                     codigoHTML+='</button>'
                 codigoHTML+='</div>'
@@ -595,7 +573,7 @@ function modalItemVendaPorLista(){
                     codigoHTML+='<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
                         codigoHTML+='<h5 class="text-center">Buscar Produto</h5>'
                         codigoHTML+='<div class="input-group mb-3">'
-                            codigoHTML+='<input id="buscaProduto" type="text" class="form-control" placeholder="Nome">'
+                            codigoHTML+='<input id="buscaProduto" type="text" class="form-control mousetrap" placeholder="Nome">'
                         codigoHTML+='</div>'
                         codigoHTML+='<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
                             codigoHTML+='<button onclick="buscarItemVendaLista();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'

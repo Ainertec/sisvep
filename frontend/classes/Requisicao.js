@@ -24,7 +24,11 @@ async function requisicaoGET(url, authorization){
 			}
 		})
 		.catch(function(error){
-			mensagemDeErro(error);
+			if(error.response){
+				mensagemDeErro('Erro: '+error.response.data.message);
+			}else{
+				mensagemDeErro(error);
+			}
 		});
 
 	return retorno;
@@ -49,7 +53,11 @@ async function requisicaoDELETE(url,json, authorization){
 			}
 		})
 		.catch(function(error){
-			mensagemDeErro(error);
+			if(error.response){
+				mensagemDeErro(error.response.data.message);
+			}else{
+				mensagemDeErro(error);
+			}
 		});
 }
 
@@ -75,7 +83,11 @@ async function requisicaoPOST(url,json,authorization){
 		}
 	})
 	.catch(function(error){
-		mensagemDeErro(error);
+		if(error.response){
+			mensagemDeErro(error.response.data.message);
+		}else{
+			mensagemDeErro(error);
+		}
 	});
 
 	return retorno;
@@ -99,6 +111,10 @@ async function requisicaoPUT(url,json,authorization){
 		}
 	})
 	.catch(function(error){
-		mensagemDeErro(error);
+		if(error.response){
+			mensagemDeErro(error.response.data.message);
+		}else{
+			mensagemDeErro(error);
+		}
 	});
 }
