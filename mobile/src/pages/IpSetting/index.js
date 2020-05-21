@@ -3,6 +3,7 @@ import { AsyncStorage } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { Form } from '@unform/mobile'
+import * as Yup from 'yup'
 
 import { Input, Label, Button } from '../../components/Form'
 import QrReader from '../../components/QrReader'
@@ -13,8 +14,26 @@ export default function Setting() {
   const navigation = useNavigation()
 
   async function handleSubmit(data) {
-    await AsyncStorage.setItem('@RN:ip', data.ipAddress)
-    navigation.goBack()
+    try {
+      formRef.current.setErrors({})
+      const schema = Yup.object().shape({
+        ipAddress: Yup.string().required('O ip é obrigatório.'),
+      })
+      await schema.validate(data, {
+        abortEarly: false,
+      })
+
+      await AsyncStorage.setItem('@RN:ip', data.ipAddress)
+      navigation.goBack()
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errorMessages = {}
+        err.inner.forEach((error) => {
+          errorMessages[error.path] = error.message
+        })
+        formRef.current.setErrors(errorMessages)
+      }
+    }
   }
 
   return (

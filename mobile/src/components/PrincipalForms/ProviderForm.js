@@ -8,7 +8,6 @@ const ProviderForm = ({ isEnabled }) => {
       <Label>Nome:</Label>
       <Input
         disabled={!isEnabled}
-        disabled={!isEnabled}
         name='name'
         iconName='group'
         placeholder='Digite o Nome do produto'
@@ -19,9 +18,9 @@ const ProviderForm = ({ isEnabled }) => {
         name='description'
         iconName='description'
         placeholder='Digite a Descrição'
-        multiline={true}
+        multiline
         numberOfLines={3}
-        editable={true}
+        editable
       />
       <Label>Telefone:</Label>
       <Input

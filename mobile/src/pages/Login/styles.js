@@ -4,12 +4,13 @@ export const Container = styled.View`
   flex: 1;
   background: #222;
   padding: 0 10px;
+  padding-top: 50px;
 `
 export const Logo = styled.ImageBackground.attrs({
   resizeMode: 'cover',
 })`
   height: 100px;
-  margin-top: 200px;
+  margin-top: 130px;
   margin-bottom: 100px;
   justify-content: center;
 `
@@ -19,4 +20,12 @@ export const Title = styled.Text`
   line-height: 30px;
   padding-left: 4px;
   color: #fff;
+`
+export const ConfigIcon = styled.View`
+  justify-content: flex-start;
+  align-items: flex-end;
+  /* background: red; */
+  margin: 0;
+  padding: 0;
+  height: 30px;
 `

@@ -8,8 +8,11 @@ const Input = ({ name, iconName, ...rest }) => {
   const { fieldName, defaultValue, registerField, error } = useField(name)
 
   useEffect(() => {
-    inputRef.current.value = defaultValue
-  }, [defaultValue])
+    if (error) {
+      inputRef.current.focus()
+      inputRef.current.shake()
+    }
+  }, [error])
 
   useEffect(() => {
     registerField({
@@ -17,7 +20,7 @@ const Input = ({ name, iconName, ...rest }) => {
       ref: inputRef.current,
       path: 'value',
       clearValue(ref) {
-        ref.value = ''
+        ref.value = undefined
         ref.clear()
       },
       setValue(ref, value) {
@@ -33,9 +36,10 @@ const Input = ({ name, iconName, ...rest }) => {
     <TextInput
       ref={inputRef}
       defaultValue={defaultValue}
+      errorMessage={error}
       onChangeText={(value) => {
         if (inputRef.current) {
-          inputRef.current.value = value
+          inputRef.current.value = value !== '' ? value : undefined
         }
       }}
       leftIcon={
