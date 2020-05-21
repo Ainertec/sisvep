@@ -4,7 +4,7 @@ let mainWindow
 
 function createWindow () {
   mainWindow = new BrowserWindow({
-    icon: './img/icon.ico',
+    icon: '../executaveis_modulos/icon.ico',
     autoHideMenuBar: true,
     title: 'Sisvep - sistema para gerenciamento de vendas',
     minHeight:840,
@@ -15,7 +15,7 @@ function createWindow () {
   mainWindow.maximize()
 
   mainWindow.on('closed', function () {
-    mainWindow = null//,
+    mainWindow = null,
     shell.openItem("C://sisvep-x64//executaveis_modulos//close.vbs");
   })
 
