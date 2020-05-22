@@ -17,7 +17,6 @@ const Login = () => {
   const navigation = useNavigation()
 
   async function handleSubmit(data) {
-    console.log(data)
     try {
       formRef.current.setErrors({})
       const schema = Yup.object().shape({
@@ -28,14 +27,13 @@ const Login = () => {
         abortEarly: false,
       })
 
-      signIn()
+      signIn(data)
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errorMessages = {}
         err.inner.forEach((error) => {
           errorMessages[error.path] = error.message
         })
-        // console.log('deu erro')
 
         formRef.current.setErrors(errorMessages)
       }
@@ -52,7 +50,7 @@ const Login = () => {
         />
       </ConfigIcon>
 
-      <KeyboardAvoidingView behavior='position' enabled>
+      <KeyboardAvoidingView behavior='position' enable>
         <Logo source={logo} />
         <Title>Faça login</Title>
         <Form ref={formRef} onSubmit={handleSubmit}>

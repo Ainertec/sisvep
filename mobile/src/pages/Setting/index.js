@@ -11,10 +11,11 @@ import {
   Content,
   SwitchView,
   SettingsView,
+  UserName,
 } from './styles'
 
 export default function Setting() {
-  const { signOut } = useAuth()
+  const { signOut, user } = useAuth()
   const navigation = useNavigation()
 
   return (
@@ -52,6 +53,7 @@ export default function Setting() {
               size={35}
               onPress={() => signOut()}
             />
+            <UserName>{user.name}</UserName>
           </SettingsView>
         </Content>
       </Scroll>

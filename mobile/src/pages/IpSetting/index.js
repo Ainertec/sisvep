@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { AsyncStorage } from 'react-native'
+import { AsyncStorage, KeyboardAvoidingView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { Form } from '@unform/mobile'
@@ -38,23 +38,30 @@ export default function Setting() {
 
   return (
     <Container>
-      <Scroll>
-        <QrReader
-          formRef={formRef}
-          cameraSide
-          barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
-        />
-
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <Label>Endereço ip:</Label>
-          <Input
-            name='ipAddress'
-            iconName='leak-add'
-            placeholder='Digite endereço ip'
+      <KeyboardAvoidingView
+        style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}
+        behavior='height'
+        enable
+        keyboardVerticalOffset={100}
+      >
+        <Scroll>
+          <QrReader
+            formRef={formRef}
+            cameraSide
+            barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
           />
-          <Button onPress={() => formRef.current.submitForm()} />
-        </Form>
-      </Scroll>
+
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <Label>Endereço ip:</Label>
+            <Input
+              name='ipAddress'
+              iconName='leak-add'
+              placeholder='Digite endereço ip'
+            />
+            <Button onPress={() => formRef.current.submitForm()} />
+          </Form>
+        </Scroll>
+      </KeyboardAvoidingView>
     </Container>
   )
 }

@@ -66,7 +66,7 @@ export default function CreateProduct() {
         style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}
         behavior='height'
         enable
-        keyboardVerticalOffset={130}
+        keyboardVerticalOffset={100}
       >
         <MainScroll>
           <Title>Atualizar/Visualizar Produto</Title>

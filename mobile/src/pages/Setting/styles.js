@@ -27,6 +27,10 @@ export const Label = styled.Text`
   margin-bottom: 5px;
   /* text-align: center; */
 `
+export const UserName = styled.Text`
+  color: #fff;
+  font-size: 14px;
+`
 
 export const Item = styled(ListItem).attrs({
   containerStyle: {
