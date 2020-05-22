@@ -1,5 +1,5 @@
-import React from 'react'
-import { SplashScreen } from 'expo'
+import React, { useEffect } from 'react'
+import * as SplashScreen from 'expo-splash-screen'
 
 import { useAuth } from '../contexts/auth'
 
@@ -9,9 +9,17 @@ import AuthRoutes from './auth.routes'
 const Routes = () => {
   const { signed, loading } = useAuth()
 
-  if (loading) {
-    SplashScreen.preventAutoHide()
-  }
+  useEffect(() => {
+    async function loadingScreen() {
+      if (loading) {
+        await SplashScreen.preventAutoHideAsync()
+      } else {
+        await SplashScreen.hideAsync()
+      }
+    }
+    loadingScreen()
+  }, [loading])
+
   return signed ? <AppRoutes /> : <AuthRoutes />
 }
 

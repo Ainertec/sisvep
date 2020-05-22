@@ -1,8 +1,6 @@
 import React, { useState, useRef } from 'react'
-import { Text } from 'react-native'
+import { KeyboardAvoidingView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { Icon } from 'react-native-material-ui'
-import { Tooltip } from 'react-native-elements'
 import { Form } from '@unform/mobile'
 import * as Yup from 'yup'
 
@@ -11,7 +9,7 @@ import QrReader from '../../components/QrReader'
 import ActionButton from '../../components/ActionButton'
 import { Input, Label, Button } from '../../components/Form'
 
-import { Container, Content, MainScroll, Title } from './styles'
+import { Container, MainScroll, Title } from './styles'
 
 export default function SeachUpdate() {
   const [cameraSide, setCameraSide] = useState(true)
@@ -40,31 +38,32 @@ export default function SeachUpdate() {
 
   return (
     <Container>
-      <Content>
-        <Tooltip popover={<Text>Puxe para a direita para abrir o menu!</Text>}>
-          <Icon name='last-page' size={20} color='#fff' />
-        </Tooltip>
-      </Content>
+      <KeyboardAvoidingView
+        style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}
+        behavior='height'
+        enable
+        keyboardVerticalOffset={100}
+      >
+        <MainScroll>
+          <Title>Buscar Produto</Title>
+          <QrReader formRef={formRef} cameraSide={cameraSide} />
 
-      <MainScroll>
-        <Title>Buscar Produto</Title>
-        <QrReader formRef={formRef} cameraSide={cameraSide} />
-
-        <Form
-          initialData={{ validity: new Date() }}
-          ref={formRef}
-          onSubmit={handleSubmit}
-        >
-          <Label>Código de Barras:</Label>
-          <Input
-            name='barcode'
-            keyboardType='numeric'
-            placeholder='Digite o código de barras'
-            iconName='local-offer'
-          />
-          <Button onPress={() => formRef.current.submitForm()} />
-        </Form>
-      </MainScroll>
+          <Form
+            initialData={{ validity: new Date() }}
+            ref={formRef}
+            onSubmit={handleSubmit}
+          >
+            <Label>Código de Barras:</Label>
+            <Input
+              name='barcode'
+              keyboardType='numeric'
+              placeholder='Digite o código de barras'
+              iconName='local-offer'
+            />
+            <Button onPress={() => formRef.current.submitForm()} />
+          </Form>
+        </MainScroll>
+      </KeyboardAvoidingView>
       <ActionButton setCameraSide={setCameraSide} />
     </Container>
   )

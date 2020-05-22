@@ -8,7 +8,6 @@ const deviceHeight = Dimensions.get('window').height
 
 export const Label = styled.Text`
   color: #fff;
-
   margin-top: 35px;
 `
 

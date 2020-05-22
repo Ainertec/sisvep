@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { KeyboardAvoidingView } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { Form } from '@unform/mobile'
 
@@ -36,21 +37,28 @@ export default function Update() {
 
   return (
     <Container>
-      <MainScroll>
-        <Form
-          initialData={{ validity: new Date() }}
-          ref={formRef}
-          onSubmit={handleSubmit}
-        >
-          <ProductForm />
-          <Picker name='providerId' providers={providers} />
+      <KeyboardAvoidingView
+        style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}
+        behavior='height'
+        enable
+        keyboardVerticalOffset={100}
+      >
+        <MainScroll>
+          <Form
+            initialData={{ validity: new Date() }}
+            ref={formRef}
+            onSubmit={handleSubmit}
+          >
+            <ProductForm />
+            <Picker name='providerId' providers={providers} />
 
-          <Button
-            style={{ marginTop: 40 }}
-            onPress={() => formRef.current.submitForm()}
-          />
-        </Form>
-      </MainScroll>
+            <Button
+              style={{ marginTop: 40 }}
+              onPress={() => formRef.current.submitForm()}
+            />
+          </Form>
+        </MainScroll>
+      </KeyboardAvoidingView>
     </Container>
   )
 }
