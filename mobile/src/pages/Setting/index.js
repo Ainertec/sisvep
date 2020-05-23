@@ -1,39 +1,61 @@
-import React, { useRef } from 'react'
-
-import { Form } from '@unform/mobile'
+import React from 'react'
+import { useNavigation } from '@react-navigation/native'
+import { Icon } from 'react-native-elements'
 
 import { useAuth } from '../../contexts/auth'
 
-import { Input, Label, Button } from '../../components/Form'
-import { Container, Scroll, Title } from './styles'
+import {
+  Container,
+  Scroll,
+  Label,
+  Content,
+  SwitchView,
+  SettingsView,
+  UserName,
+} from './styles'
 
 export default function Setting() {
-  const formRef = useRef(null)
-  const { signOut } = useAuth()
-
-  async function handleSubmit(data) {
-    console.log(data)
-  }
-  async function signedOut() {
-    signOut()
-  }
+  const { signOut, user } = useAuth()
+  const navigation = useNavigation()
 
   return (
     <Container>
       <Scroll>
-        <Title>Configuração</Title>
-
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <Label>Endereço ip:</Label>
-          <Input
-            name='ipAddress'
-            iconName='leak-add'
-            placeholder='Digite endereço ip'
-          />
-          <Button onPress={() => formRef.current.submitForm()} />
-        </Form>
-
-        <Button title='Logout' onPress={() => signedOut()} />
+        <Content>
+          <Label>Configurações de ip</Label>
+          <SettingsView>
+            <Icon
+              name='leak-add'
+              color='darkred'
+              size={35}
+              onPress={() => {
+                navigation.navigate('IpSetting')
+              }}
+            />
+          </SettingsView>
+        </Content>
+        <Content>
+          <Label>Tema</Label>
+          <SettingsView>
+            <SwitchView
+              thumbColor='darkred'
+              // onValueChange={toggleSwitch}
+              // value={isEnabled}
+            />
+          </SettingsView>
+        </Content>
+        <Content>
+          <Label>Logout</Label>
+          <SettingsView>
+            <Icon
+              name='exit-to-app'
+              color='darkred'
+              size={35}
+              onPress={() => signOut()}
+            />
+            <UserName>{user.name}</UserName>
+          </SettingsView>
+        </Content>
       </Scroll>
     </Container>
   )

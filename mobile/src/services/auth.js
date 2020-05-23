@@ -1,13 +1,15 @@
-export function signIn() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        token: 'dfhqefbwifgywqbcvhbqwcwqe',
-        user: {
-          name: 'Cleiton',
-          email: 'cleitonBaloneker@gmail.com',
-        },
-      })
-    }, 2000)
-  })
+import { api } from './api'
+
+export async function signIn(name, password) {
+  const apiConnection = await api()
+  const response = apiConnection
+    .post('/sessions', {
+      name,
+      password,
+    })
+    .catch((error) => {
+      return error.request
+    })
+
+  return response
 }

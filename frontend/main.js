@@ -4,11 +4,11 @@ let mainWindow
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    icon: './img/icon.ico',
+    icon: '../executaveis_modulos/icon.ico',
     autoHideMenuBar: true,
     title: 'Sisvep - sistema para gerenciamento de vendas',
     minHeight: 840,
-    minWidth: 1300,
+    minWidth: 1300
   })
 
   mainWindow.loadFile('index.html')
@@ -16,8 +16,9 @@ function createWindow() {
 
   mainWindow.on('closed', function () {
     mainWindow = null,
-      shell.openItem("C://sisvep-x64//executaveis_modulos//close.vbs")
+      shell.openItem("C://sisvep-x64//executaveis_modulos//close.vbs");
   })
+
 }
 
 shell.openItem("C://sisvep-x64//executaveis_modulos//startMongo.vbs")
@@ -30,6 +31,7 @@ if (data.getDate() == 5 || data.getDate() == 15 || data.getDate() == 25) {
 }
 
 app.on('ready', createWindow)
+
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()

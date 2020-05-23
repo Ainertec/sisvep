@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react'
 import { AsyncStorage } from 'react-native'
-import { SplashScreen } from 'expo'
 
 import * as auth from '../services/auth'
 import { api } from '../services/api'
@@ -12,9 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    SplashScreen.preventAutoHide()
     async function loadStorage() {
-      SplashScreen.preventAutoHide()
       const storagedUser = await AsyncStorage.getItem('@RNAuth:user')
       const storagedToken = await AsyncStorage.getItem('@RNAuth:token')
       if (storagedUser && storagedToken) {
@@ -22,29 +19,40 @@ export const AuthProvider = ({ children }) => {
         apiService.defaults.headers.Authorization = `Bearer ${storagedToken}`
 
         setUser(JSON.parse(storagedUser))
-        setLoading(false)
-        SplashScreen.hide()
       }
+      setLoading(false)
     }
 
     loadStorage()
   }, [])
 
-  async function signIn() {
-    const response = await auth.signIn()
+  async function signIn(data) {
+    const response = await auth.signIn(data.name, data.password)
 
-    setUser(response.user)
+    if (!response.status) {
+      return alert('não foi possivel conectar')
+    }
+    if (response.status === 401) {
+      return alert('Usuário ou senha incorretos')
+    }
 
+    setUser(response.data.user)
     const apiService = await api()
-    apiService.defaults.headers.Authorization = `Bearer ${response.token}`
+    apiService.defaults.headers.Authorization = `Bearer ${response.data.token}`
 
-    await AsyncStorage.setItem('@RNAuth:user', JSON.stringify(response.user))
-    await AsyncStorage.setItem('@RNAuth:token', response.token)
+    await AsyncStorage.setItem(
+      '@RNAuth:user',
+      JSON.stringify(response.data.user)
+    )
+    await AsyncStorage.setItem('@RNAuth:token', response.data.token)
   }
 
   function signOut() {
     setUser(null)
-    AsyncStorage.clear().then(() => {
+    AsyncStorage.removeItem('@RNAuth:user').then(() => {
+      setUser(null)
+    })
+    AsyncStorage.removeItem('@RNAuth:token').then(() => {
       setUser(null)
     })
   }

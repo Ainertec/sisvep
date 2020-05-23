@@ -8,7 +8,6 @@ const deviceHeight = Dimensions.get('window').height
 
 export const Label = styled.Text`
   color: #fff;
-
   margin-top: 35px;
 `
 
@@ -37,8 +36,6 @@ export const DatePickerCustom = styled(DateTimePicker)`
 
 export const PickerView = styled.View`
   background: #222;
-  /* flex-direction: row; */
-  /* align-items: center; */
   border-bottom-width: 1px;
   border-bottom-color: rgba(250, 250, 250, 0.7);
   margin: 0 9px;

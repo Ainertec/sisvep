@@ -1,18 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Text } from 'react-native'
-import { Icon } from 'react-native-material-ui'
-import { Tooltip } from 'react-native-elements'
+import { KeyboardAvoidingView } from 'react-native'
 
 import { Form } from '@unform/mobile'
 
 import QrReader from '../../components/QrReader'
 import ActionButton from '../../components/ActionButton'
 
-import PrincipalForm from '../../components/PrincipalForms/ProductForm'
-import ProviderForm from '../../components/PrincipalForms/ProviderForm'
+import {
+  ProviderForm,
+  ProductForm,
+  productValidation,
+  providerValidation,
+} from '../../components/PrincipalForms'
+import sendError from '../../utils/sendError'
+
 import { Button, Picker } from '../../components/Form'
 
-import { Container, Content, MainScroll, Title, SwitchView } from './styles'
+import { Container, MainScroll, Title, SwitchView } from './styles'
 
 export default function CreateProduct() {
   const [cameraSide, setCameraSide] = useState(true)
@@ -25,16 +29,28 @@ export default function CreateProduct() {
   const productFormRef = useRef(null)
   const providerFormRef = useRef(null)
 
-  function handleSubmitProvider(data) {
-    console.log(data)
+  async function handleSubmitProvider(data) {
+    try {
+      providerFormRef.current.setErrors({})
+      await providerValidation(data)
+      console.log(data)
+    } catch (err) {
+      sendError(err, providerFormRef)
+    }
   }
 
-  function handleSubmit(data) {
-    console.log(data)
-    if (isEnabled) {
-      const providerData = providerFormRef.current.getData()
-      providerData.products = [1234]
-      handleSubmitProvider(providerData)
+  async function handleSubmit(data) {
+    try {
+      productFormRef.current.setErrors({})
+      await productValidation(data)
+      console.log(data)
+      if (isEnabled) {
+        const providerData = providerFormRef.current.getData()
+        providerData.products = [1234]
+        handleSubmitProvider(providerData)
+      }
+    } catch (err) {
+      sendError(err, productFormRef)
     }
   }
 
@@ -46,44 +62,45 @@ export default function CreateProduct() {
 
   return (
     <Container>
-      <Content>
-        <Tooltip popover={<Text>Puxe para a direita para abrir o menu!</Text>}>
-          <Icon name='last-page' size={20} color='#fff' />
-        </Tooltip>
-      </Content>
+      <KeyboardAvoidingView
+        style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}
+        behavior='height'
+        enable
+        keyboardVerticalOffset={100}
+      >
+        <MainScroll>
+          <Title>Atualizar/Visualizar Produto</Title>
 
-      <MainScroll>
-        <Title>Atualizar/Visualizar Produto</Title>
+          <QrReader cameraSide={cameraSide} formRef={productFormRef} />
 
-        <QrReader cameraSide={cameraSide} formRef={productFormRef} />
-
-        <Form
-          initialData={{ validity: new Date() }}
-          ref={productFormRef}
-          onSubmit={handleSubmit}
-        >
-          <PrincipalForm />
-          <Picker
-            name='providerId'
-            providers={providers}
-            enabled={!isEnabled}
+          <Form
+            initialData={{ validity: new Date() }}
+            ref={productFormRef}
+            onSubmit={handleSubmit}
+          >
+            <ProductForm />
+            <Picker
+              name='providerId'
+              providers={providers}
+              enabled={!isEnabled}
+            />
+          </Form>
+          <SwitchView
+            thumbColor={isEnabled ? '#080705' : '#f4f3f4'}
+            onValueChange={toggleSwitch}
+            value={isEnabled}
           />
-        </Form>
 
-        <SwitchView
-          thumbColor={isEnabled ? '#080705' : '#f4f3f4'}
-          onValueChange={toggleSwitch}
-          value={isEnabled}
-        />
+          <Title>Cadastrar fornecedor</Title>
 
-        <Title>Cadastrar fornecedor</Title>
+          <Form ref={providerFormRef}>
+            <ProviderForm isEnabled={isEnabled} />
 
-        <Form ref={providerFormRef}>
-          <ProviderForm isEnabled={isEnabled} />
+            <Button onPress={() => productFormRef.current.submitForm()} />
+          </Form>
+        </MainScroll>
+      </KeyboardAvoidingView>
 
-          <Button onPress={() => productFormRef.current.submitForm()} />
-        </Form>
-      </MainScroll>
       <ActionButton setCameraSide={setCameraSide} />
     </Container>
   )
