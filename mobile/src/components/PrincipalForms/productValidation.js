@@ -1,4 +1,4 @@
-import * as Yup from 'yup'
+import * as Yup from 'yup';
 
 const productSchema = async (data) => {
   const schema = Yup.object().shape({
@@ -11,7 +11,7 @@ const productSchema = async (data) => {
     price: Yup.number()
       .required('O preço é obrigatório.')
       .positive('O preço precisa ser um número positivo.'),
-    cust: Yup.number()
+    cost: Yup.number()
       .required('O custo é obrigatório.')
       .positive('O custo precisa ser um número positivo.'),
     stock: Yup.number()
@@ -19,9 +19,9 @@ const productSchema = async (data) => {
       .positive('O estoque precisa ser um número positivo.')
       .integer('O estoque precisa ser um número inteiro.'),
     validity: Yup.date().required('A validade é obrigatória.'),
-  })
+  });
   await schema.validate(data, {
     abortEarly: false,
-  })
-}
-export default productSchema
+  });
+};
+export default productSchema;

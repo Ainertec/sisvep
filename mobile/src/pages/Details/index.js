@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react'
-// import { View } from 'react-native'
+import React from 'react'
 import { Icon } from 'react-native-elements'
 import { useRoute } from '@react-navigation/native'
 
 import {
   Container,
-  Title,
   Scroll,
   DetailField,
   FieldLabel,
@@ -14,70 +12,66 @@ import {
 } from './styles'
 
 const Details = () => {
-  const [providerDetails, setProviderDetails] = useState({})
   const route = useRoute()
-  useEffect(() => {
-    const { product } = route.params
-    setProviderDetails(product)
-  }, [])
+  const { product } = route.params
+
   return (
     <Container>
-      {/* <Title>Detalhes</Title> */}
       <Scroll>
         <DetailField>
           <FieldLabel>Código de barra:</FieldLabel>
           <FiledTextView>
             <Icon name='local-offer' color='#fff' />
-            <FieldTitle>{providerDetails.barcode}</FieldTitle>
+            <FieldTitle>{product.barcode}</FieldTitle>
           </FiledTextView>
         </DetailField>
         <DetailField>
           <FieldLabel>Nome:</FieldLabel>
           <FiledTextView>
             <Icon name='shopping-cart' color='#fff' />
-            <FieldTitle>{providerDetails.name}</FieldTitle>
+            <FieldTitle>{product.name}</FieldTitle>
           </FiledTextView>
         </DetailField>
         <DetailField>
           <FieldLabel>Descrição:</FieldLabel>
           <FiledTextView>
             <Icon name='description' color='#fff' />
-            <FieldTitle>{providerDetails.description}</FieldTitle>
+            <FieldTitle>{product.description}</FieldTitle>
           </FiledTextView>
         </DetailField>
         <DetailField>
           <FieldLabel>Preço de venda (unidade):</FieldLabel>
           <FiledTextView>
             <Icon name='attach-money' color='#fff' />
-            <FieldTitle>{providerDetails.price}</FieldTitle>
+            <FieldTitle>{product.price}</FieldTitle>
           </FiledTextView>
         </DetailField>
         <DetailField>
           <FieldLabel>Preço de custo:</FieldLabel>
           <FiledTextView>
             <Icon name='attach-money' color='#fff' />
-            <FieldTitle>{providerDetails.cust}</FieldTitle>
+            <FieldTitle>{product.cost}</FieldTitle>
           </FiledTextView>
         </DetailField>
         <DetailField>
           <FieldLabel>Estoque:</FieldLabel>
           <FiledTextView>
             <Icon name='storage' color='#fff' />
-            <FieldTitle>{providerDetails.stock}</FieldTitle>
+            <FieldTitle>{product.stock}</FieldTitle>
           </FiledTextView>
         </DetailField>
         <DetailField>
           <FieldLabel>Validade:</FieldLabel>
           <FiledTextView>
             <Icon name='date-range' color='#fff' />
-            <FieldTitle>{providerDetails.validity}</FieldTitle>
+            <FieldTitle>{product.validity}</FieldTitle>
           </FiledTextView>
         </DetailField>
         <DetailField>
           <FieldLabel>Fornecedor:</FieldLabel>
           <FiledTextView>
             <Icon name='local-shipping' color='#fff' />
-            <FieldTitle>{providerDetails.provider}</FieldTitle>
+            <FieldTitle>{[product.provider.name]}</FieldTitle>
           </FiledTextView>
         </DetailField>
       </Scroll>

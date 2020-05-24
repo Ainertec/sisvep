@@ -1,64 +1,67 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { KeyboardAvoidingView } from 'react-native'
+/* eslint-disable no-underscore-dangle */
+import React, { useState, useRef } from 'react';
+import { KeyboardAvoidingView, Alert } from 'react-native';
 
-import { Form } from '@unform/mobile'
+import { Form } from '@unform/mobile';
 
-import QrReader from '../../components/QrReader'
-import ActionButton from '../../components/ActionButton'
+import QrReader from '../../components/QrReader';
+import ActionButton from '../../components/ActionButton';
 
 import {
   ProviderForm,
   ProductForm,
   productValidation,
   providerValidation,
-} from '../../components/PrincipalForms'
-import sendError from '../../utils/sendError'
+} from '../../components/PrincipalForms';
+import sendError from '../../utils/sendError';
 
-import { Button, Picker } from '../../components/Form'
+import { Button, Picker } from '../../components/Form';
 
-import { Container, MainScroll, Title, SwitchView } from './styles'
+import api from '../../services/api';
+
+import { Container, MainScroll, Title, SwitchView } from './styles';
 
 export default function CreateProduct() {
-  const [cameraSide, setCameraSide] = useState(true)
-  const [isEnabled, setIsEnabled] = useState(false)
-  const [providers, setProviders] = useState([
-    { name: 'Julio', _id: 123 },
-    { name: 'Jão', _id: 789 },
-  ])
+  const [cameraSide, setCameraSide] = useState(true);
+  const [isEnabled, setIsEnabled] = useState(false);
 
-  const productFormRef = useRef(null)
-  const providerFormRef = useRef(null)
+  const productFormRef = useRef(null);
+  const providerFormRef = useRef(null);
 
   async function handleSubmitProvider(data) {
     try {
-      providerFormRef.current.setErrors({})
-      await providerValidation(data)
-      console.log(data)
+      providerFormRef.current.setErrors({});
+      await providerValidation(data);
+      await api.post('/providers', data).catch((error) => {
+        if (!error.request.status)
+          Alert.alert(
+            'Ops...',
+            'Não existe produto com esse código de barras'
+          );
+      });
     } catch (err) {
-      sendError(err, providerFormRef)
+      sendError(err, providerFormRef);
     }
   }
 
-  async function handleSubmit(data) {
+  async function handleSubmit(data, { reset }) {
     try {
-      productFormRef.current.setErrors({})
-      await productValidation(data)
-      console.log(data)
+      productFormRef.current.setErrors({});
+      await productValidation(data);
+      const response = await api.post('/products', data);
+
       if (isEnabled) {
-        const providerData = providerFormRef.current.getData()
-        providerData.products = [1234]
-        handleSubmitProvider(providerData)
+        const providerData = providerFormRef.current.getData();
+        providerData.products = [response.data._id];
+        handleSubmitProvider(providerData);
       }
+      reset()
     } catch (err) {
-      sendError(err, productFormRef)
+      sendError(err, productFormRef);
     }
   }
 
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState)
-
-  useEffect(() => {
-    // const staticProviders = setProviders(staticProviders)
-  }, [])
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   return (
     <Container>
@@ -79,11 +82,7 @@ export default function CreateProduct() {
             onSubmit={handleSubmit}
           >
             <ProductForm />
-            <Picker
-              name='providerId'
-              providers={providers}
-              enabled={!isEnabled}
-            />
+            <Picker name='providerId' enabled={!isEnabled} />
           </Form>
           <SwitchView
             thumbColor={isEnabled ? '#080705' : '#f4f3f4'}
@@ -103,5 +102,5 @@ export default function CreateProduct() {
 
       <ActionButton setCameraSide={setCameraSide} />
     </Container>
-  )
+  );
 }

@@ -1,60 +1,65 @@
-import React, { createContext, useState, useEffect, useContext } from 'react'
-import { AsyncStorage } from 'react-native'
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import { AsyncStorage } from 'react-native';
 
-import * as auth from '../services/auth'
-import { api } from '../services/api'
+import * as auth from '../services/auth';
+import api from '../services/api';
 
-const AuthContext = createContext({})
+const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadStorage() {
-      const storagedUser = await AsyncStorage.getItem('@RNAuth:user')
-      const storagedToken = await AsyncStorage.getItem('@RNAuth:token')
+      const storagedUser = await AsyncStorage.getItem('@RNAuth:user');
+      const storagedToken = await AsyncStorage.getItem('@RNAuth:token');
       if (storagedUser && storagedToken) {
-        const apiService = await api()
-        apiService.defaults.headers.Authorization = `Bearer ${storagedToken}`
+        // const apiService = await api();
 
-        setUser(JSON.parse(storagedUser))
+        api.defaults.headers.Authorization = `Bearer ${storagedToken}`;
+        // console.log(apiService.defaults.headers.common.Authorization);
+
+        setUser(JSON.parse(storagedUser));
       }
-      setLoading(false)
+      setLoading(false);
     }
 
-    loadStorage()
-  }, [])
+    loadStorage();
+  }, []);
 
   async function signIn(data) {
-    const response = await auth.signIn(data.name, data.password)
+    const response = await auth.signIn(data.name, data.password);
 
     if (!response.status) {
-      return alert('não foi possivel conectar')
+      return 404;
     }
     if (response.status === 401) {
-      return alert('Usuário ou senha incorretos')
+      return 401;
     }
 
-    setUser(response.data.user)
-    const apiService = await api()
-    apiService.defaults.headers.Authorization = `Bearer ${response.data.token}`
+    setUser(response.data.user);
+
+    // const apiService = await api();
+    api.defaults.headers.Authorization = `Bearer ${response.data.token}`;
 
     await AsyncStorage.setItem(
       '@RNAuth:user',
       JSON.stringify(response.data.user)
-    )
-    await AsyncStorage.setItem('@RNAuth:token', response.data.token)
+    );
+    await AsyncStorage.setItem('@RNAuth:token', response.data.token);
+
+    return 200;
   }
 
   function signOut() {
-    setUser(null)
+    setUser(null);
     AsyncStorage.removeItem('@RNAuth:user').then(() => {
-      setUser(null)
-    })
+      setUser(null);
+    });
     AsyncStorage.removeItem('@RNAuth:token').then(() => {
-      setUser(null)
-    })
+      setUser(null);
+    });
   }
 
   return (
@@ -63,10 +68,10 @@ export const AuthProvider = ({ children }) => {
     >
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};
 
 export function useAuth() {
-  const context = useContext(AuthContext)
-  return context
+  const context = useContext(AuthContext);
+  return context;
 }

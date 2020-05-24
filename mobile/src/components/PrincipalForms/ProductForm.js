@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-import { Input, Label, DatePicker } from '../Form'
+import { Input, Label, DatePicker } from '../Form';
 
 const ProductForm = () => {
   return (
@@ -36,7 +36,7 @@ const ProductForm = () => {
       />
       <Label>Preço de custo:</Label>
       <Input
-        name='cust'
+        name='cost'
         iconName='attach-money'
         placeholder='Digite o Custo'
         keyboardType='numeric'
@@ -51,7 +51,7 @@ const ProductForm = () => {
       <Label>Validade:</Label>
       <DatePicker name='validity' />
     </>
-  )
-}
+  );
+};
 
-export default ProductForm
+export default ProductForm;

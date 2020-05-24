@@ -1,31 +1,55 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useRef, useEffect, useState } from 'react'
-import { Icon } from 'react-native-elements'
+import React, { useRef, useEffect, useState } from 'react';
+import { Alert } from 'react-native';
+// import { Icon } from 'react-native-elements';
 
-import { useField } from '@unform/core'
+import { useField } from '@unform/core';
 
-import { PickerView, Picker, PickerTitle } from './styles'
+import api from '../../services/api';
+import { PickerView, Picker, PickerTitle } from './styles';
 
-const PickerUnform = ({ name, providers, enabled, ...rest }) => {
-  const pickerRef = useRef(null)
-  const { fieldName, registerField, error } = useField(name)
+const PickerUnform = ({ name, enabled, providerId, ...rest }) => {
+  const pickerRef = useRef(null);
+  const { fieldName, registerField } = useField(name);
 
-  const [selectedValue, setSelectedValue] = useState(providers[0]._id)
+  const [providers, setProviders] = useState([]);
+  const [selectedValue, setSelectedValue] = useState('epeita');
 
   useEffect(() => {
     registerField({
       name: fieldName,
       ref: pickerRef.current,
       path: 'props.selectedValue',
-      clearValue() {},
-    })
-  }, [registerField, fieldName, pickerRef])
+      clearValue() { },
+    });
+  }, [registerField, fieldName]);
+
+  useEffect(() => {
+    async function loadProvider() {
+      const response = await api.get('/providers').catch((error) => {
+        if (error.request.status === 0)
+          Alert.alert(
+            'Ops...',
+            'Não foi possivel se conectar, verifique as configurações de ip'
+          );
+      });
+      setProviders(response.data);
+      if (providerId)
+        response.data.forEach(provider => {
+          if (provider._id === providerId) {
+            setSelectedValue(provider._id)
+          }
+        })
+    }
+
+    loadProvider();
+  }, []);
 
   const isEnabled = () => {
-    if (enabled === undefined) return selectedValue
-    if (enabled) return selectedValue
-    return undefined
-  }
+    if (enabled === undefined) return selectedValue;
+    if (enabled) return selectedValue;
+    return undefined;
+  };
 
   return (
     <>
@@ -50,7 +74,7 @@ const PickerUnform = ({ name, providers, enabled, ...rest }) => {
         {/* <Icon name='local-shipping' color='#fff' /> */}
       </PickerView>
     </>
-  )
-}
+  );
+};
 
-export default PickerUnform
+export default PickerUnform;

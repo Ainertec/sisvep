@@ -1,39 +1,70 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { KeyboardAvoidingView } from 'react-native'
-import { useNavigation, useRoute } from '@react-navigation/native'
-import { Form } from '@unform/mobile'
+/* eslint-disable no-underscore-dangle */
+import React, { useEffect, useRef } from 'react';
+import { KeyboardAvoidingView, Alert } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { Form } from '@unform/mobile';
 
-import sendError from '../../utils/sendError'
-import { ProductForm, productValidation } from '../../components/PrincipalForms'
-import { Button, Picker } from '../../components/Form'
+import api from '../../services/api';
+import sendError from '../../utils/sendError';
+import {
+  ProductForm,
+  productValidation,
+} from '../../components/PrincipalForms';
+import { Button, Picker } from '../../components/Form';
 
-import { Container, MainScroll } from './styles'
+import { Container, MainScroll } from './styles';
 
 export default function Update() {
-  const [providers, setProviders] = useState([
-    { name: 'Julio', _id: 123 },
-    { name: 'Jão', _id: 789 },
-  ])
-  const navigation = useNavigation()
-  const route = useRoute()
-  const { product } = route.params
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { product } = route.params;
 
-  const formRef = useRef(null)
+  const formRef = useRef(null);
 
   async function handleSubmit(data, { reset }) {
     try {
-      formRef.current.setErrors({})
-      await productValidation(data)
-      console.log(data)
-      reset()
-      navigation.goBack()
+      formRef.current.setErrors({});
+      await productValidation(data);
+
+      reset();
+      await api
+        .put(
+          `products`,
+          {
+            ...data,
+            providerId: undefined,
+          },
+          {
+            params: {
+              id: product._id,
+              providerId: data.providerId,
+            },
+          }
+        )
+        .catch((error) => {
+          if (!error.request.status)
+            Alert.alert(
+              'Ops...',
+              'Não existe produto com esse código de barras'
+            );
+        });
+
+      navigation.goBack();
+
     } catch (err) {
-      sendError(err, formRef)
+      sendError(err, formRef);
     }
   }
   useEffect(() => {
-    formRef.current.setData(product)
-  })
+    formRef.current.setData({
+      ...product,
+      price: [product.price].toString(),
+      cost: [product.cost].toString(),
+      stock: [product.stock].toString(),
+      barcode: [product.barcode].toString(),
+      validity: [product.validity].toString(),
+    });
+  });
 
   return (
     <Container>
@@ -50,7 +81,7 @@ export default function Update() {
             onSubmit={handleSubmit}
           >
             <ProductForm />
-            <Picker name='providerId' providers={providers} />
+            <Picker name='providerId' providerId={product.provider._id} />
 
             <Button
               style={{ marginTop: 40 }}
@@ -60,5 +91,5 @@ export default function Update() {
         </MainScroll>
       </KeyboardAvoidingView>
     </Container>
-  )
+  );
 }

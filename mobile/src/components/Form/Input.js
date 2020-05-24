@@ -1,18 +1,18 @@
-import React, { useRef, useEffect } from 'react'
-import { useField } from '@unform/core'
-import { Icon } from 'react-native-material-ui'
-import { TextInput } from './styles'
+import React, { useRef, useEffect } from 'react';
+import { useField } from '@unform/core';
+import { Icon } from 'react-native-material-ui';
+import { TextInput } from './styles';
 
 const Input = ({ name, iconName, ...rest }) => {
-  const inputRef = useRef(null)
-  const { fieldName, defaultValue, registerField, error } = useField(name)
+  const inputRef = useRef(null);
+  const { fieldName, defaultValue, registerField, error } = useField(name);
 
   useEffect(() => {
     if (error) {
-      inputRef.current.focus()
-      inputRef.current.shake()
+      inputRef.current.focus();
+      inputRef.current.shake();
     }
-  }, [error])
+  }, [error]);
 
   useEffect(() => {
     registerField({
@@ -20,18 +20,18 @@ const Input = ({ name, iconName, ...rest }) => {
       ref: inputRef.current,
       path: 'value',
       clearValue(ref) {
-        ref.value = undefined
-        ref.clear()
+        ref.value = undefined;
+        ref.clear();
       },
       setValue(ref, value) {
-        ref.setNativeProps({ text: value })
-        inputRef.current.value = value
+        ref.setNativeProps({ text: value });
+        inputRef.current.value = value;
       },
       getValue(ref) {
-        return ref.value
+        return ref.value;
       },
-    })
-  }, [fieldName, registerField])
+    });
+  }, [fieldName, registerField]);
   return (
     <TextInput
       ref={inputRef}
@@ -39,7 +39,7 @@ const Input = ({ name, iconName, ...rest }) => {
       errorMessage={error}
       onChangeText={(value) => {
         if (inputRef.current) {
-          inputRef.current.value = value !== '' ? value : undefined
+          inputRef.current.value = value !== '' ? value : undefined;
         }
       }}
       leftIcon={
@@ -52,7 +52,7 @@ const Input = ({ name, iconName, ...rest }) => {
       }
       {...rest}
     />
-  )
-}
+  );
+};
 
-export default Input
+export default Input;

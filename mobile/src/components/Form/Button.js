@@ -5,7 +5,7 @@ import { Touchable, TouchableText } from './styles'
 const Button = ({ title, ...rest }) => {
   return (
     <Touchable {...rest}>
-      <TouchableText>{title ? title : 'Enviar'}</TouchableText>
+      <TouchableText>{title || 'Enviar'}</TouchableText>
     </Touchable>
   )
 }

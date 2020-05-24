@@ -1,40 +1,51 @@
-import React, { useRef } from 'react'
-import { AsyncStorage, KeyboardAvoidingView } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import { BarCodeScanner } from 'expo-barcode-scanner'
-import { Form } from '@unform/mobile'
-import * as Yup from 'yup'
-
-import { Input, Label, Button } from '../../components/Form'
-import QrReader from '../../components/QrReader'
-import { Container, Scroll } from './styles'
+import { useNavigation } from '@react-navigation/native';
+import { Form } from '@unform/mobile';
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import React, { useEffect, useRef } from 'react';
+import { AsyncStorage, KeyboardAvoidingView } from 'react-native';
+import * as Yup from 'yup';
+import { Button, Input, Label } from '../../components/Form';
+import QrReader from '../../components/QrReader';
+import api from '../../services/api';
+import { Container, Scroll } from './styles';
 
 export default function Setting() {
-  const formRef = useRef(null)
-  const navigation = useNavigation()
+  const formRef = useRef(null);
+  const navigation = useNavigation();
 
   async function handleSubmit(data) {
     try {
-      formRef.current.setErrors({})
+      formRef.current.setErrors({});
       const schema = Yup.object().shape({
         ipAddress: Yup.string().required('O ip é obrigatório.'),
-      })
+      });
       await schema.validate(data, {
         abortEarly: false,
-      })
+      });
+      api.defaults.baseURL = `http://${data.ipAddress}:3333`;
+      await AsyncStorage.setItem('@RN:ip', data.ipAddress);
 
-      await AsyncStorage.setItem('@RN:ip', data.ipAddress)
-      navigation.goBack()
+      navigation.goBack();
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
-        const errorMessages = {}
+        const errorMessages = {};
         err.inner.forEach((error) => {
-          errorMessages[error.path] = error.message
-        })
-        formRef.current.setErrors(errorMessages)
+          errorMessages[error.path] = error.message;
+        });
+        formRef.current.setErrors(errorMessages);
       }
     }
   }
+
+  useEffect(() => {
+    async function loadIpAddress() {
+      const ipAddress = await AsyncStorage.getItem('@RN:ip');
+      // const ipAddress = api.defaults.baseURL;
+
+      formRef.current.setData({ ipAddress });
+    }
+    loadIpAddress();
+  }, []);
 
   return (
     <Container>
@@ -63,5 +74,5 @@ export default function Setting() {
         </Scroll>
       </KeyboardAvoidingView>
     </Container>
-  )
+  );
 }
