@@ -5,7 +5,7 @@ function TelaConfigurarSerial(){
     var codigoHTML;
 
     codigoHTML='<h4 class="text-center">Serial Atual</h4>'
-    codigoHTML+='<h5 class="text-center" style="margin-top:50px">Data Atual: <span class="badge badge-success">'+localStorage.getItem("dataAtual")+'</span> - Licença até: <span class="badge badge-danger">'+localStorage.getItem("dataFim")+'</span></h5>'
+    codigoHTML+='<h5 class="text-center" style="margin-top:50px">Data Atual: <span class="badge badge-success">'+localStorage.getItem("dataAtualLicencaSisvep")+'</span> - Licença até: <span class="badge badge-danger">'+localStorage.getItem("dataFimLicencaSisvep")+'</span></h5>'
     codigoHTML+='<hr class="my-6 bg-dark" style="margin-top:50px">'
     codigoHTML+='<h4 class="text-center" style="margin-top:50px">Cadastrar Novo Serial</h4>'
     codigoHTML+='<form style="margin-top:50px">'
@@ -35,10 +35,10 @@ function autenticacaoSerial(){
 function cadastrarSerial(){
     var date= new Date();
     
-    localStorage.removeItem("dataFim");
-    localStorage.removeItem("dataAtual");
-    localStorage.setItem("dataFim",$("#dataFim").val());
-    localStorage.setItem("dataAtual",date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate());
+    localStorage.removeItem("dataFimLicencaSisvep");
+    localStorage.removeItem("dataAtualLicencaSisvep");
+    localStorage.setItem("dataFimLicencaSisvep",$("#dataFim").val());
+    localStorage.setItem("dataAtualLicencaSisvep",date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate());
 
 }
 
@@ -46,18 +46,18 @@ function cadastrarSerial(){
 
 //function para verificar o serial
 function verificarValidadeSerial(){
-    var dataFim = new Date(localStorage.getItem("dataFim"));
-    var dataEmMemoria = new Date(localStorage.getItem("dataAtual"));
+    var dataFim = new Date(localStorage.getItem("dataFimLicencaSisvep"));
+    var dataEmMemoria = new Date(localStorage.getItem("dataAtualLicencaSisvep"));
     var date = new Date();
     var dataAtual = new Date(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate());
     var codicao = false;
 
-    if(localStorage.getItem("dataFim")==""){
+    if(localStorage.getItem("dataFimLicencaSisvep")==""){
         codicao=true;
     }else{
         if(dataEmMemoria<=dataAtual){
-            localStorage.removeItem("dataAtual");
-            localStorage.setItem("dataAtual",date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate());
+            localStorage.removeItem("dataAtualLicencaSisvep");
+            localStorage.setItem("dataAtualLicencaSisvep",date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate());
     
             if(dataFim>dataAtual){
                 codicao=true;
