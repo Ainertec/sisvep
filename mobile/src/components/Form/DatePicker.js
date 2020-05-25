@@ -10,7 +10,7 @@ import Button from './Button'
 const DatePickerT = ({ name, ...rest }) => {
   const { fieldName, defaultValue, registerField, error } = useField(name)
   const inputRef = useRef(null)
-  const [date, setDate] = useState(defaultValue)
+  const [date, setDate] = useState(new Date())
   const [show, setShow] = useState(false)
 
   const onChange = (event, selectedDate) => {
@@ -22,6 +22,14 @@ const DatePickerT = ({ name, ...rest }) => {
   const showDatePicker = () => {
     setShow(true)
   }
+
+  useEffect(() => {
+    if (error) {
+      inputRef.current.focus();
+      inputRef.current.shake();
+    }
+  }, [error]);
+
 
   useEffect(() => {
     registerField({
@@ -50,7 +58,8 @@ const DatePickerT = ({ name, ...rest }) => {
       <TextInput
         ref={inputRef}
         value={formatISO(date)}
-        defaultValue={formatISO(defaultValue)}
+        defaultValue={defaultValue}
+        errorMessage={error}
         disabled
         leftIcon={
           <Icon

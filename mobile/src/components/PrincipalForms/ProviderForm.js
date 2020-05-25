@@ -2,19 +2,17 @@ import React from 'react'
 
 import { Input, Label } from '../Form'
 
-const ProviderForm = ({ isEnabled }) => {
+const ProviderForm = () => {
   return (
     <>
       <Label>Nome:</Label>
       <Input
-        disabled={!isEnabled}
         name='name'
         iconName='group'
         placeholder='Digite o Nome do produto'
       />
       <Label>Descrição:</Label>
       <Input
-        disabled={!isEnabled}
         name='description'
         iconName='description'
         placeholder='Digite a Descrição'
@@ -24,7 +22,6 @@ const ProviderForm = ({ isEnabled }) => {
       />
       <Label>Telefone:</Label>
       <Input
-        disabled={!isEnabled}
         name='phone'
         iconName='phone'
         placeholder='Digite o telefone'
@@ -32,14 +29,12 @@ const ProviderForm = ({ isEnabled }) => {
       />
       <Label>Email:</Label>
       <Input
-        disabled={!isEnabled}
         name='email'
         iconName='email'
         placeholder='Digite o email'
       />
       <Label>CPF/CNPJ:</Label>
       <Input
-        disabled={!isEnabled}
         name='identification'
         iconName='assignment-ind'
         placeholder='Digite o CPF/CNPJ'

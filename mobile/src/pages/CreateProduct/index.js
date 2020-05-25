@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useRef } from 'react';
-import { KeyboardAvoidingView, Alert } from 'react-native';
+import { KeyboardAvoidingView, Keyboard } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
 
 import { Form } from '@unform/mobile';
 
@@ -8,10 +9,9 @@ import QrReader from '../../components/QrReader';
 import ActionButton from '../../components/ActionButton';
 
 import {
-  ProviderForm,
   ProductForm,
   productValidation,
-  providerValidation,
+
 } from '../../components/PrincipalForms';
 import sendError from '../../utils/sendError';
 
@@ -19,49 +19,44 @@ import { Button, Picker } from '../../components/Form';
 
 import api from '../../services/api';
 
-import { Container, MainScroll, Title, SwitchView } from './styles';
+import { Container, MainScroll, Title } from './styles';
 
 export default function CreateProduct() {
   const [cameraSide, setCameraSide] = useState(true);
-  const [isEnabled, setIsEnabled] = useState(false);
+  const navigation = useNavigation();
 
-  const productFormRef = useRef(null);
-  const providerFormRef = useRef(null);
+  const formRef = useRef(null);
 
-  async function handleSubmitProvider(data) {
+  async function handleCreateProvider() {
+    Keyboard.dismiss()
+    const product = formRef.current.getData();
     try {
-      providerFormRef.current.setErrors({});
-      await providerValidation(data);
-      await api.post('/providers', data).catch((error) => {
-        if (!error.request.status)
-          Alert.alert(
-            'Ops...',
-            'Não existe produto com esse código de barras'
-          );
-      });
+      formRef.current.setErrors({});
+      await productValidation(product);
+      product.providerId = undefined
+
+      navigation.navigate('CreateProvider', { product })
+
     } catch (err) {
-      sendError(err, providerFormRef);
+      sendError(err, formRef);
     }
+
   }
 
   async function handleSubmit(data, { reset }) {
     try {
-      productFormRef.current.setErrors({});
+      Keyboard.dismiss()
+      formRef.current.setErrors({});
       await productValidation(data);
-      const response = await api.post('/products', data);
-
-      if (isEnabled) {
-        const providerData = providerFormRef.current.getData();
-        providerData.products = [response.data._id];
-        handleSubmitProvider(providerData);
-      }
+      await api.post('/products', data);
       reset()
+      alert('opa foi');
+
     } catch (err) {
-      sendError(err, productFormRef);
+      sendError(err, formRef);
     }
   }
 
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   return (
     <Container>
@@ -72,31 +67,23 @@ export default function CreateProduct() {
         keyboardVerticalOffset={100}
       >
         <MainScroll>
-          <Title>Atualizar/Visualizar Produto</Title>
+          <Title>Cadastrar Produto</Title>
 
-          <QrReader cameraSide={cameraSide} formRef={productFormRef} />
+          <QrReader cameraSide={cameraSide} formRef={formRef} />
 
           <Form
-            initialData={{ validity: new Date() }}
-            ref={productFormRef}
+
+            ref={formRef}
             onSubmit={handleSubmit}
           >
             <ProductForm />
-            <Picker name='providerId' enabled={!isEnabled} />
+            <Picker name='providerId' />
+
+            <Button title='Cadastrar novo fornecedor' onPress={() => handleCreateProvider()} />
+
+            <Button onPress={() => formRef.current.submitForm()} />
           </Form>
-          <SwitchView
-            thumbColor={isEnabled ? '#080705' : '#f4f3f4'}
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-          />
 
-          <Title>Cadastrar fornecedor</Title>
-
-          <Form ref={providerFormRef}>
-            <ProviderForm isEnabled={isEnabled} />
-
-            <Button onPress={() => productFormRef.current.submitForm()} />
-          </Form>
         </MainScroll>
       </KeyboardAvoidingView>
 

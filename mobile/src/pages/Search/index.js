@@ -80,7 +80,7 @@ export default function Search() {
             onPress={() => navigation.navigate('Details', { product: item })}
             chevron
             rightTitle={`R$ ${item.price}`}
-          // subtitle='R$ 20,00'
+
           />
         )}
       />
@@ -88,76 +88,3 @@ export default function Search() {
   )
 }
 
-// const products = [
-//   {
-//     _id: 1,
-//     name: 'pão',
-//     barcode: 123,
-//     description: 'Françês',
-//     price: 7.5,
-//     cust: 10.0,
-//     stock: 10,
-//     validity: '2020-06-01',
-//     provider: 'Marco',
-//   },
-//   {
-//     _id: 2,
-//     name: 'Quijo',
-//   },
-//   {
-//     _id: 3,
-//     name: 'Presunto',
-//   },
-//   {
-//     _id: 4,
-//     name: 'Tomate',
-//   },
-//   {
-//     _id: 5,
-//     name: 'pão',
-//   },
-//   {
-//     _id: 6,
-//     name: 'Quijo',
-//   },
-//   {
-//     _id: 7,
-//     name: 'Presunto',
-//   },
-//   {
-//     _id: 8,
-//     name: 'Tomate',
-//   },
-//   {
-//     _id: 9,
-//     name: 'pão',
-//   },
-//   {
-//     _id: 10,
-//     name: 'Quijo',
-//   },
-//   {
-//     _id: 11,
-//     name: 'Presunto',
-//   },
-//   {
-//     _id: 12,
-//     name: 'Tomate',
-//   },
-//   {
-//     _id: 13,
-//     name: 'pão',
-//   },
-//   {
-//     _id: 14,
-//     name: 'Quijo',
-//   },
-//   {
-//     _id: 15,
-//     name: 'Presunto',
-//   },
-//   {
-//     _id: 16,
-//     name: 'Tomate',
-//   },
-// ]

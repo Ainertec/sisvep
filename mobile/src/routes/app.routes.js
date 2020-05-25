@@ -8,6 +8,7 @@ import { Icon } from 'react-native-elements'
 import RestScren from '../pages/RestScreen/index'
 import Sold from '../pages/Sold'
 import CreateProduct from '../pages/CreateProduct'
+import CreateProvider from '../pages/CreateProvider'
 import Search from '../pages/Search/index'
 import Details from '../pages/Details/index'
 import Update from '../pages/Update'
@@ -53,8 +54,15 @@ function TabVenda() {
 }
 function TabCreateProduct() {
   return (
-    <Stack.Navigator screenOptions={stackOptions}>
-      <Stack.Screen name='Cadastro' component={CreateProduct} />
+    <Stack.Navigator >
+      <Stack.Screen name='Cadastro' component={CreateProduct} options={stackOptions} />
+      <Stack.Screen name='CreateProvider' component={CreateProvider} options={{
+        headerTitleAlign: 'center',
+        headerTitle: 'Cadastrar Fornecedor',
+        headerTintColor: 'white',
+        headerStyle: { backgroundColor: '#222' },
+      }}
+      />
     </Stack.Navigator>
   )
 }
@@ -132,10 +140,10 @@ const AppRoutes = () => (
   >
     <Drawer.Screen name='Home' component={TabRest} />
     <Drawer.Screen name='Venda' component={TabVenda} />
-    <Drawer.Screen name='Cadastrar produto' component={TabCreateProduct} />
-    <Drawer.Screen name='Buscar produto' component={TabSearch} />
-    <Drawer.Screen name='Estoque' component={TabUpdateStock} />
-    <Drawer.Screen name='Configuração' component={TabConfiguracao} />
+    <Drawer.Screen name='Cadastrar ' component={TabCreateProduct} />
+    <Drawer.Screen name='Buscar ' component={TabSearch} />
+    <Drawer.Screen name='Atulizar' component={TabUpdateStock} />
+    <Drawer.Screen name='Configurações' component={TabConfiguracao} />
   </Drawer.Navigator>
 )
 

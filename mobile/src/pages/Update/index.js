@@ -76,7 +76,6 @@ export default function Update() {
       >
         <MainScroll>
           <Form
-            initialData={{ validity: new Date() }}
             ref={formRef}
             onSubmit={handleSubmit}
           >
