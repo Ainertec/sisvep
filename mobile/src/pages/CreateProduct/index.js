@@ -1,17 +1,17 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useRef } from 'react';
 import { KeyboardAvoidingView, Keyboard } from 'react-native';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
 
 import { Form } from '@unform/mobile';
 
 import QrReader from '../../components/QrReader';
 import ActionButton from '../../components/ActionButton';
+import Alert from '../../components/Alert';
 
 import {
   ProductForm,
   productValidation,
-
 } from '../../components/PrincipalForms';
 import sendError from '../../utils/sendError';
 
@@ -26,37 +26,34 @@ export default function CreateProduct() {
   const navigation = useNavigation();
 
   const formRef = useRef(null);
+  const seccessAlertRef = useRef(null);
 
   async function handleCreateProvider() {
-    Keyboard.dismiss()
+    Keyboard.dismiss();
     const product = formRef.current.getData();
     try {
       formRef.current.setErrors({});
       await productValidation(product);
-      product.providerId = undefined
+      product.providerId = undefined;
 
-      navigation.navigate('CreateProvider', { product })
-
+      navigation.navigate('CreateProvider', { product });
     } catch (err) {
       sendError(err, formRef);
     }
-
   }
 
   async function handleSubmit(data, { reset }) {
     try {
-      Keyboard.dismiss()
+      Keyboard.dismiss();
       formRef.current.setErrors({});
       await productValidation(data);
-      await api.post('/products', data);
-      reset()
-      alert('opa foi');
-
+      // await api.post('/products', data);
+      // reset();
+      seccessAlertRef.current.open();
     } catch (err) {
       sendError(err, formRef);
     }
   }
-
 
   return (
     <Container>
@@ -71,22 +68,25 @@ export default function CreateProduct() {
 
           <QrReader cameraSide={cameraSide} formRef={formRef} />
 
-          <Form
-
-            ref={formRef}
-            onSubmit={handleSubmit}
-          >
+          <Form ref={formRef} onSubmit={handleSubmit}>
             <ProductForm />
             <Picker name='providerId' />
 
-            <Button title='Cadastrar novo fornecedor' onPress={() => handleCreateProvider()} />
+            <Button
+              title='Cadastrar novo fornecedor'
+              onPress={() => handleCreateProvider()}
+            />
 
             <Button onPress={() => formRef.current.submitForm()} />
           </Form>
-
         </MainScroll>
       </KeyboardAvoidingView>
-
+      <Alert
+        ref={seccessAlertRef}
+        success
+        title='sucesso'
+        subtitle='Produto cadastrado com sucesso'
+      />
       <ActionButton setCameraSide={setCameraSide} />
     </Container>
   );

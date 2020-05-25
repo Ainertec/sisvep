@@ -1,31 +1,34 @@
-import React from 'react'
-import { View } from 'react-native'
-import { createDrawerNavigator } from '@react-navigation/drawer'
-import { useNavigation } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
-import { Icon } from 'react-native-elements'
+import React from 'react';
+import { View } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { useNavigation } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Icon } from 'react-native-elements';
 
-import RestScren from '../pages/RestScreen/index'
-import Sold from '../pages/Sold'
-import CreateProduct from '../pages/CreateProduct'
-import CreateProvider from '../pages/CreateProvider'
-import Search from '../pages/Search/index'
-import Details from '../pages/Details/index'
-import Update from '../pages/Update'
-import SeachUpdate from '../pages/SeachUpdate/index'
-import Setting from '../pages/Setting'
-import IpSetting from '../pages/IpSetting'
+import RestScren from '../pages/RestScreen/index';
+import Sold from '../pages/Sold';
+import CreateProduct from '../pages/CreateProduct';
+import CreateProvider from '../pages/CreateProvider';
+import Search from '../pages/Search/index';
+import Details from '../pages/Details/index';
+import Update from '../pages/Update';
+import SeachUpdate from '../pages/SeachUpdate/index';
+import Setting from '../pages/Setting';
+import IpSetting from '../pages/IpSetting';
 
-const Drawer = createDrawerNavigator()
-const Stack = createStackNavigator()
+const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
 const stackOptions = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   return {
     headerTitleAlign: 'center',
     headerTitle: 'Sisvep',
     headerTintColor: 'white',
-    headerStyle: { backgroundColor: '#222' },
+    headerStyle: {
+      backgroundColor: '#222',
+      elevation: 10,
+    },
     headerLeft: () => (
       <View style={{ marginLeft: 15 }}>
         <Icon
@@ -36,35 +39,42 @@ const stackOptions = () => {
         />
       </View>
     ),
-  }
-}
+  };
+};
 function TabRest() {
   return (
     <Stack.Navigator screenOptions={stackOptions}>
       <Stack.Screen name='Home' component={RestScren} />
     </Stack.Navigator>
-  )
+  );
 }
 function TabVenda() {
   return (
     <Stack.Navigator screenOptions={stackOptions}>
       <Stack.Screen name='Venda' component={Sold} />
     </Stack.Navigator>
-  )
+  );
 }
 function TabCreateProduct() {
   return (
-    <Stack.Navigator >
-      <Stack.Screen name='Cadastro' component={CreateProduct} options={stackOptions} />
-      <Stack.Screen name='CreateProvider' component={CreateProvider} options={{
-        headerTitleAlign: 'center',
-        headerTitle: 'Cadastrar Fornecedor',
-        headerTintColor: 'white',
-        headerStyle: { backgroundColor: '#222' },
-      }}
+    <Stack.Navigator>
+      <Stack.Screen
+        name='Cadastro'
+        component={CreateProduct}
+        options={stackOptions}
+      />
+      <Stack.Screen
+        name='CreateProvider'
+        component={CreateProvider}
+        options={{
+          headerTitleAlign: 'center',
+          headerTitle: 'Cadastrar Fornecedor',
+          headerTintColor: 'white',
+          headerStyle: { backgroundColor: '#222', elevation: 10 },
+        }}
       />
     </Stack.Navigator>
-  )
+  );
 }
 function TabSearch() {
   return (
@@ -77,11 +87,11 @@ function TabSearch() {
           headerTitleAlign: 'center',
           headerTitle: 'Detalhes',
           headerTintColor: 'white',
-          headerStyle: { backgroundColor: '#222' },
+          headerStyle: { backgroundColor: '#222', elevation: 10 },
         }}
       />
     </Stack.Navigator>
-  )
+  );
 }
 function TabUpdateStock() {
   return (
@@ -98,11 +108,11 @@ function TabUpdateStock() {
           headerTitleAlign: 'center',
           headerTitle: 'Atualizar Produto',
           headerTintColor: 'white',
-          headerStyle: { backgroundColor: '#222' },
+          headerStyle: { backgroundColor: '#222', elevation: 10 },
         }}
       />
     </Stack.Navigator>
-  )
+  );
 }
 function TabConfiguracao() {
   return (
@@ -119,11 +129,11 @@ function TabConfiguracao() {
           headerTitleAlign: 'center',
           headerTitle: 'Configurar Ip',
           headerTintColor: 'white',
-          headerStyle: { backgroundColor: '#222' },
+          headerStyle: { backgroundColor: '#222', elevation: 10 },
         }}
       />
     </Stack.Navigator>
-  )
+  );
 }
 const AppRoutes = () => (
   <Drawer.Navigator
@@ -145,6 +155,6 @@ const AppRoutes = () => (
     <Drawer.Screen name='Atulizar' component={TabUpdateStock} />
     <Drawer.Screen name='Configurações' component={TabConfiguracao} />
   </Drawer.Navigator>
-)
+);
 
-export default AppRoutes
+export default AppRoutes;
