@@ -35,7 +35,7 @@ function telaGeralRelatorio() {
   codigoHTML +=
     '<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
   codigoHTML +=
-    '<button onclick="if(validaDadosCampo([\'#dataInicio\',\'#dataFim\'])){graficoLucroMensal(); graficoQuantidadeVendasMensal();}else{mensagemDeErro(\'Preencha os campos de data inicial e data final!\');}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Relatórios periódicos</button>'
+    '<button onclick="if(validaDadosCampo([\'#dataInicio\',\'#dataFim\'])){graficoLucroMensal(); graficoQuantidadeVendasMensal();}else{mensagemDeErro(\'Preencha os campos de data inicial e data final!\'); mostrarCamposIncorreto([\'dataInicio\',\'dataFim\'])}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Relatórios periódicos</button>'
   codigoHTML +=
     '<button onclick="graficoLucroTotal(); graficoProdutosVendidos(); graficoRepresentacaoDeProdutoSobreVendas(); graficoRepresentacaoDeProdutoSobreLucro(); graficoQuantidadeProdutosporFornecedor();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Relatórios completos</button>'
   codigoHTML += '</div>'

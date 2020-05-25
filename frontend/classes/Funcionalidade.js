@@ -1,6 +1,10 @@
+//funcao de inicializacao basica funcionalidade
+$(document).ready(function () {
+  limparTelaDeMensagem();
+})
+
 // funcao para gerar mensagem de erro
 function mensagemDeErro(mensagem) {
-  $('#mensagemDeErro').animate({ width: 'hide' })
   document.getElementById(
     'mensagemDeErro'
   ).innerHTML = `<span class="badge badge-danger h5">${mensagem}</span>`
@@ -10,7 +14,6 @@ function mensagemDeErro(mensagem) {
 
 // funcao para gerar mensagem de aviso
 function mensagemDeAviso(mensagem) {
-  $('#mensagemDeErro').animate({ width: 'hide' })
   document.getElementById(
     'mensagemDeErro'
   ).innerHTML = `<span class="badge badge-success h5">${mensagem}</span>`
@@ -22,10 +25,7 @@ function mensagemDeAviso(mensagem) {
 function limparTelaDeMensagem() {
   setTimeout(function () {
     $('#mensagemDeErro').animate({ width: 'hide' })
-  }, 4000)
-  setTimeout(function () {
-    document.getElementById('mensagemDeErro').innerHTML = ''
-  }, 4500)
+  }, 3000)
 }
 
 // funcao resopnsavel por validar os dados preenchidos nos campos
@@ -123,4 +123,30 @@ function corrigirTamanhoString(tamMax, texto) {
     texto += '...'
   }
   return texto
+}
+
+//funcao responsavel por exbir cor diferente no campor incorreto
+function mostrarCamposIncorreto(campo) {
+  campo.forEach(function (item) {
+    document.getElementById(item).classList.add('border');
+    document.getElementById(item).classList.add('border-danger');
+    setTimeout(function () {
+      document.getElementById(item).classList.remove('border');
+      document.getElementById(item).classList.remove('border-danger')
+    }, 2000)
+  });
+}
+
+//funcao de animacao slideUp
+function animacaoSlideUp(idReferencia) {
+  idReferencia.forEach(function (item) {
+    $(item).slideUp(300)
+  });
+}
+
+//funcao de animacao slideDown
+function animacaoSlideDown(idReferencia) {
+  idReferencia.forEach(function (item) {
+    $(item).slideDown(300)
+  })
 }

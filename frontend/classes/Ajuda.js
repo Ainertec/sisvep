@@ -35,6 +35,9 @@ function ajudaInformacoes() {
   codigoHTML +=
     '<p><strong>l</strong> -> Abre a opção de selecionar o produto pelo nome na hora da venda.</p>'
   codigoHTML += '<p>========================</p>'
+  //codigoHTML += '<h2>Informções de funcionamento</h2>'
+  //codigoHTML += '<p>------------------------</p>'
+  //codigoHTML += '<img src="..." class="img-fluid"></img>'
 
   document.getElementById('janela2').innerHTML = codigoHTML
 }

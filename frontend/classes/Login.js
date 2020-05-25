@@ -10,14 +10,19 @@ function telaAutenticacao() {
   codigoHTML += '<div class="form-row col-4 rounded mx-auto d-block">'
   codigoHTML +=
     '<input id="login" type="text" class="form-control mb-2 mousetrap" placeholder="Login">'
+  codigoHTML += '<div class="input-group mb-3">'
   codigoHTML +=
-    '<input id="senha" type="password" class="form-control mb-2 mousetrap" placeholder="Senha">'
+    '<input id="senha" type="password" class="form-control mousetrap" placeholder="Senha" aria-describedby="senhabutton">'
+  codigoHTML += '<div class="input-group-append">'
+  codigoHTML += '<button class="btn btn-outline-secondary btn-sm" type="button" id="senhabutton" onmouseover="document.getElementById(\'senha\').type=\'text\'" onmouseout="document.getElementById(\'senha\').type=\'password\'"><span class="fas fa-eye"></span></button>'
+  codigoHTML += '</div>'
+  codigoHTML += '</div>'
   codigoHTML +=
-    '<button onclick="efetuarLogin();" type="button" class="btn btn-primary border border-danger col-md-3">'
+    '<button onclick="if(validaDadosCampo([\'#login\', \'#senha\'])){efetuarLogin();}else{mensagemDeErro(\'Preencha todos os campos!\'); mostrarCamposIncorreto([\'login\',\'senha\']);}" type="button" class="btn btn-primary border border-dark col-md-4">'
   codigoHTML += '<span class="fas fa-key"></span> Acessar'
   codigoHTML += '</button>'
   codigoHTML +=
-    '<a href="#" onclick="if(validaDadosCampo([\'#login\'])){telaRecuperacaoSenha();}else{mensagemDeErro(\'Digite o nome de usuario!\');}" style="margin-left:20px;" class="col-md-3">Esqueceu a senha?</a>'
+    '<a href="#" onclick="if(validaDadosCampo([\'#login\'])){telaRecuperacaoSenha(); animacaoSlideUp([\'#areaRecuperarSenha\'])}else{mensagemDeErro(\'Digite o nome de usuario!\'); mostrarCamposIncorreto([\'login\']);}" style="margin-left:20px;" class="col-md-3">Esqueceu a senha?</a>'
   codigoHTML += '</div>'
   codigoHTML += '</form>'
   codigoHTML += '<div id="areaRecuperarSenha">'
@@ -31,28 +36,38 @@ function telaAutenticacao() {
 // funcao responsavel por gerar a tela de recuperacao de senha
 async function telaRecuperacaoSenha() {
   let codigoHTML = ''
-  const questao = await requisicaoGET(
-    `forgot?name=${document.getElementById('login').value}`,
-    null
-  )
+  try {
+    const questao = await requisicaoGET(
+      `forgot?name=${document.getElementById('login').value}`,
+      null
+    )
 
-  codigoHTML =
-    '<h3 class="text-center" style="margin-top:30px;">Recuperar conta</h3>'
-  codigoHTML += '<div class="text-center" style="margin-top:10px;">'
-  codigoHTML += '<div class="form-row col-4 rounded mx-auto d-block">'
-  codigoHTML += `<label for="pergunta">Responda a pergunta de segurança: ${questao.data.question}</label>`
-  codigoHTML +=
-    '<input id="pergunta" type="text" class="form-control mb-2 mousetrap" placeholder="Resposta">'
-  codigoHTML +=
-    '<input id="novaSenha" type="password" class="form-control mb-2 mousetrap" placeholder="Digite uma nova senha">'
-  codigoHTML +=
-    '<button onclick="recuperarSenha();" type="button" class="btn btn-primary border border-danger col-md-3">'
-  codigoHTML += '<span class="fas fa-key"></span> Recuperar'
-  codigoHTML += '</button>'
-  codigoHTML += '</div>'
-  codigoHTML += '</div>'
+    codigoHTML =
+      '<h3 class="text-center" style="margin-top:30px;">Recuperar conta</h3>'
+    codigoHTML += '<div class="text-center" style="margin-top:10px;">'
+    codigoHTML += '<div class="form-row col-4 rounded mx-auto d-block">'
+    codigoHTML += `<label for="pergunta">Responda a pergunta de segurança: ${questao.data.question}</label>`
+    codigoHTML +=
+      '<input id="pergunta" type="text" class="form-control mb-2 mousetrap" placeholder="Resposta">'
+    codigoHTML += '<div class="input-group mb-3">'
+    codigoHTML +=
+      '<input id="novaSenha" type="password" class="form-control mousetrap" placeholder="Digite uma nova senha" aria-describedby="recuperarsenhabutton">'
+    codigoHTML += '<div class="input-group-append">'
+    codigoHTML += '<button class="btn btn-outline-secondary btn-sm" type="button" id="recuperarsenhabutton" onmouseover="document.getElementById(\'novaSenha\').type=\'text\'" onmouseout="document.getElementById(\'novaSenha\').type=\'password\'"><span class="fas fa-eye"></span></button>'
+    codigoHTML += '</div>'
+    codigoHTML += '</div>'
+    codigoHTML +=
+      '<button onclick="if(validaDadosCampo([\'#pergunta\',\'#novaSenha\'])){confirmarAcao(\'Recuperar senha desta conta!\',\'recuperarSenha();\'); animacaoSlideUp([\'#areaRecuperarSenha\'])}else{mensagemDeErro(\'Preencha os campos resposta e nova senha!\'); mostrarCamposIncorreto([\'pergunta\',\'novaSenha\']);}" type="button" class="btn btn-success border border-dark col-md-4">'
+    codigoHTML += '<span class="fas fa-user-lock"></span> Recuperar'
+    codigoHTML += '</button>'
+    codigoHTML += '</div>'
+    codigoHTML += '</div>'
 
-  document.getElementById('areaRecuperarSenha').innerHTML = codigoHTML
+    document.getElementById('areaRecuperarSenha').innerHTML = codigoHTML
+    animacaoSlideDown(['#areaRecuperarSenha']);
+  } catch (error) {
+    mensagemDeErro('Usuário não existente!')
+  }
 }
 
 // funcao responsavel por recuperar a senha
@@ -62,7 +77,7 @@ async function recuperarSenha() {
       'forgot',
       JSON.parse(
         `{"name":"${document.getElementById('login').value}","response":"${
-          document.getElementById('pergunta').value
+        document.getElementById('pergunta').value
         }","password":"${document.getElementById('novaSenha').value}"}`
       ),
       null
@@ -88,51 +103,47 @@ async function efetuarLogin() {
   logout()
 
   setTimeout(async function () {
-    if (validaDadosCampo(['#login', '#senha'])) {
-      const json = await requisicaoPOST(
-        'sessions',
-        JSON.parse(
-          `{"name":"${document.getElementById('login').value}","password":"${
-            document.getElementById('senha').value
-          }"}`
-        ),
-        null
-      )
+    const json = await requisicaoPOST(
+      'sessions',
+      JSON.parse(
+        `{"name":"${document.getElementById('login').value}","password":"${
+        document.getElementById('senha').value
+        }"}`
+      ),
+      null
+    )
 
-      if (!json) {
-        mensagemDeErro('Login/senha incorretos ou usuario inexistente!')
-        telaAutenticacao()
-      } else if (json.data.user._id) {
-        if (json.data.user.admin) {
-          sessionStorage.setItem(
-            'login',
-            JSON.stringify({
-              _id: json.data.user._id.toString(),
-              nome: json.data.user.name.toString(),
-              tipo: 'Administrador',
-              token: json.data.token.toString(),
-              question: json.data.user.question.toString(),
-            })
-          )
-        } else {
-          sessionStorage.setItem(
-            'login',
-            JSON.stringify({
-              _id: json.data.user._id.toString(),
-              nome: json.data.user.name.toString(),
-              tipo: 'Comum',
-              token: json.data.token.toString(),
-              question: json.data.user.question.toString(),
-            })
-          )
-        }
-        mensagemDeAviso('Usuário autenticado!')
-        setTimeout(function () {
-          window.location.href = 'home.html'
-        }, 2000)
+    if (!json) {
+      mensagemDeErro('Login/senha incorretos ou usuario inexistente!')
+      telaAutenticacao()
+    } else if (json.data.user._id) {
+      if (json.data.user.admin) {
+        sessionStorage.setItem(
+          'login',
+          JSON.stringify({
+            _id: json.data.user._id.toString(),
+            nome: json.data.user.name.toString(),
+            tipo: 'Administrador',
+            token: json.data.token.toString(),
+            question: json.data.user.question.toString(),
+          })
+        )
+      } else {
+        sessionStorage.setItem(
+          'login',
+          JSON.stringify({
+            _id: json.data.user._id.toString(),
+            nome: json.data.user.name.toString(),
+            tipo: 'Comum',
+            token: json.data.token.toString(),
+            question: json.data.user.question.toString(),
+          })
+        )
       }
-    } else {
-      mensagemDeErro('Preencha todos os campos!')
+      mensagemDeAviso('Usuário autenticado!')
+      setTimeout(function () {
+        window.location.href = 'home.html'
+      }, 1000)
     }
   }, 1000)
 }

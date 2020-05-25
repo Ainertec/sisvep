@@ -23,7 +23,7 @@ function telaDadosEtiqueta() {
   codigoHTML += '</div>'
   codigoHTML += '<div class="form-row">'
   codigoHTML +=
-    "<button onclick=\"if(document.getElementById('codigo').value<=9999999 && document.getElementById('codigo').value>999999 && validaDadosCampo(['#quantidade']) && validaValoresCampo(['#quantidade'])){gerarEtiquetasCodigoDeBarras(document.getElementById('quantidade').value, document.getElementById('codigo').value)}else{mensagemDeErro('O código deve ter menos que 7 digitos, a quantidade deve válida!')}\" type=\"button\" class=\"btn btn-success\" style=\"margin: 5px;\"><span class=\"fas fa-file-pdf\"></span> Gerar</button>"
+    "<button onclick=\"if(document.getElementById('codigo').value<=9999999 && document.getElementById('codigo').value>999999 && validaDadosCampo(['#quantidade']) && validaValoresCampo(['#quantidade'])){gerarEtiquetasCodigoDeBarras(document.getElementById('quantidade').value, document.getElementById('codigo').value)}else{mensagemDeErro('O código deve ter menos que 7 digitos, a quantidade deve válida!'); mostrarCamposIncorreto(['quantidade','codigo'])}\" type=\"button\" class=\"btn btn-success\" style=\"margin: 5px;\"><span class=\"fas fa-file-pdf\"></span> Gerar</button>"
   codigoHTML += '</div>'
   codigoHTML += '</form>'
   codigoHTML += '</div>'
@@ -77,8 +77,7 @@ function telaReimpressaoDeComprovanteVenda() {
   const situacao = autenticacaoLogin()
 
   if (
-    JSON.parse(situacao).tipo == 'Administrador' ||
-    JSON.parse(situacao).tipo == 'Comum'
+    JSON.parse(situacao).tipo == 'Administrador'
   ) {
     let codigoHTML = ''
 
@@ -96,7 +95,7 @@ function telaReimpressaoDeComprovanteVenda() {
     codigoHTML += '</div>'
     codigoHTML += '<div class="form-row">'
     codigoHTML +=
-      '<button onclick="if(validaDadosCampo([\'#codigo\'])){gerarSegundaViaComprovante(document.getElementById(\'codigo\').value)}else{mensagemDeErro(\'Preencha o campo código!\')}" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-file-pdf"></span> Gerar</button>'
+      '<button onclick="if(validaDadosCampo([\'#codigo\'])){gerarSegundaViaComprovante(document.getElementById(\'codigo\').value)}else{mensagemDeErro(\'Preencha o campo código!\'); mostrarCamposIncorreto([\'codigo\'])}" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-file-pdf"></span> Gerar</button>'
     codigoHTML += '</div>'
     codigoHTML += '</form>'
     codigoHTML += '</div>'
@@ -249,8 +248,7 @@ async function telaImpressaoDetalheVenda() {
   const situacao = autenticacaoLogin()
 
   if (
-    JSON.parse(situacao).tipo == 'Administrador' ||
-    JSON.parse(situacao).tipo == 'Comum'
+    JSON.parse(situacao).tipo == 'Administrador'
   ) {
     let codigoHTML = '', json = await requisicaoGET('sales', {
       headers: { Authorization: `Bearer ${buscarSessionUser().token}` },

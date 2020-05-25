@@ -19,7 +19,7 @@ function telaDeConfiguracaoDispositivo() {
   codigoHTML += '</div>'
   codigoHTML += '<div class="modal-body">'
   codigoHTML +=
-    '<p>Faça a leitura do código QR abaixo com seu dispositivo celular para efetuar a configuração básica! Atenção é necessário acesso a internet para gerar o QRCode desta funcionalidade!</p>'
+    '<p>Faça a leitura do código QR abaixo com seu dispositivo celular para efetuar a configuração básica!</p>'
   codigoHTML +=
     '<div class="qrcode rounded mx-auto d-block" id="qr" style="margin-top: 30px;" align="middle"></div>'
   codigoHTML +=
@@ -32,6 +32,7 @@ function telaDeConfiguracaoDispositivo() {
   document.getElementById('modal').innerHTML = codigoHTML
 
   $('#modalConfigDispositivo').modal('show')
+  animacaoSlideUp(['#qr'])
 
   pegarIpLocal()
 }
@@ -43,7 +44,7 @@ function pegarIpLocal() {
     window.mozRTCPeerConnection ||
     window.webkitRTCPeerConnection // compatibility for Firefox and chrome
   const pc = new RTCPeerConnection({ iceServers: [] })
-  const noop = function () {}
+  const noop = function () { }
   pc.createDataChannel('') // create a bogus data channel
   pc.createOffer(pc.setLocalDescription.bind(pc), noop) // create offer and set local description
   pc.onicecandidate = function (ice) {
@@ -68,4 +69,6 @@ function gerarQRcodeDispositivo(ip) {
     colorLight: 'white',
     correctLevel: QRCode.CorrectLevel.H,
   })
+
+  animacaoSlideDown(['#qr'])
 }

@@ -34,9 +34,9 @@ function telaFornecedor() {
   codigoHTML +=
     '<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
   codigoHTML +=
-    '<button onclick="if(validaDadosCampo([\'#buscaFornecedor\'])){buscarFornecedor(\'nome\');}else{mensagemDeErro(\'Preencha o campo nome!\')}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
+    '<button onclick="if(validaDadosCampo([\'#buscaFornecedor\'])){buscarFornecedor(\'nome\'); animacaoSlideUp([\'#listaDeFornecedores\'])}else{mensagemDeErro(\'Preencha o campo nome!\'); mostrarCamposIncorreto([\'buscaFornecedor\'])}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
   codigoHTML +=
-    '<button onclick="buscarFornecedor(\'todos\');" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Exibir todos</button>'
+    '<button onclick="buscarFornecedor(\'todos\'); animacaoSlideUp([\'#listaDeFornecedores\'])" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Exibir todos</button>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
 
@@ -152,7 +152,7 @@ async function buscarFornecedor(tipo) {
   if (tipo == 'nome') {
     var json = await requisicaoGET(
       `providers_by_name?name=${
-        document.getElementById('buscaFornecedor').value
+      document.getElementById('buscaFornecedor').value
       }`,
       { headers: { Authorization: `Bearer ${buscarSessionUser().token}` } }
     )
@@ -169,6 +169,8 @@ async function buscarFornecedor(tipo) {
     )
     cont++
   }
+
+  animacaoSlideDown(['#listaDeFornecedores'])
 }
 
 // funcao responsavel por carregar na tela os dados de um fornecedor selecionado
@@ -190,6 +192,7 @@ function carregarDadosFornecedorSelecionado(posicao) {
       VETORFORNECEDORCLASSEFORNECEDOR[posicao].email
     document.getElementById('descricaoFornecedor').value =
       VETORFORNECEDORCLASSEFORNECEDOR[posicao].description
+    mensagemDeAviso('Pronto para atualizar ou excluir!')
   }, 300)
 }
 
@@ -237,6 +240,13 @@ async function atualizarFornecedor(posicao) {
     }
   } else {
     mensagemDeErro('Preencha todos os campos!')
+    mostrarCamposIncorreto([
+      'nomeFornecedor',
+      'cpfCnpjFornecedor',
+      'telefoneFornecedor',
+      'emailFornecedor',
+      'descricaoFornecedor',
+    ])
   }
 }
 
