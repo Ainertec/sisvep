@@ -152,7 +152,7 @@ const AppRoutes = () => (
     <Drawer.Screen name='Venda' component={TabVenda} />
     <Drawer.Screen name='Cadastrar ' component={TabCreateProduct} />
     <Drawer.Screen name='Buscar ' component={TabSearch} />
-    <Drawer.Screen name='Atulizar' component={TabUpdateStock} />
+    <Drawer.Screen name='Atualizar' component={TabUpdateStock} />
     <Drawer.Screen name='Configurações' component={TabConfiguracao} />
   </Drawer.Navigator>
 );

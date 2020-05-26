@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-import { Input, Label } from '../Form'
+import { Input, Label } from '../Form';
 
 const ProviderForm = () => {
   return (
@@ -9,13 +9,13 @@ const ProviderForm = () => {
       <Input
         name='name'
         iconName='group'
-        placeholder='Digite o Nome do produto'
+        placeholder='Digite o nome do fornecedor'
       />
       <Label>Descrição:</Label>
       <Input
         name='description'
         iconName='description'
-        placeholder='Digite a Descrição'
+        placeholder='Digite a descrição'
         multiline
         numberOfLines={3}
         editable
@@ -32,6 +32,9 @@ const ProviderForm = () => {
         name='email'
         iconName='email'
         placeholder='Digite o email'
+        keyboardType='email-address'
+        autoCapitalize='none'
+        autoCorrect={false}
       />
       <Label>CPF/CNPJ:</Label>
       <Input
@@ -40,7 +43,7 @@ const ProviderForm = () => {
         placeholder='Digite o CPF/CNPJ'
       />
     </>
-  )
-}
+  );
+};
 
-export default ProviderForm
+export default ProviderForm;

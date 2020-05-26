@@ -24,7 +24,7 @@ export const Subtitle = styled.Text`
 `;
 export const Header = styled.View`
   background: #e71d36;
-  height: 45%;
+  height: 40%;
   width: 100%;
   justify-content: center;
   align-items: center;
@@ -37,7 +37,7 @@ export const Content = styled.View`
 `;
 export const Footer = styled.TouchableOpacity`
   width: 100%;
-  height: 25%;
+  height: 30%;
   justify-content: center;
   align-items: center;
   border-top-color: #ccc;

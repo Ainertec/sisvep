@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { KeyboardAvoidingView, Alert } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
@@ -9,12 +9,15 @@ import sendError from '../../utils/sendError';
 import QrReader from '../../components/QrReader';
 import ActionButton from '../../components/ActionButton';
 import { Input, Label, Button } from '../../components/Form';
+import Alert from '../../components/Alert';
 
 import { Container, MainScroll, Title } from './styles';
 
 export default function SeachUpdate() {
   const [cameraSide, setCameraSide] = useState(true);
   const formRef = useRef(null);
+  const nullProdutRef = useRef(null);
+  const errorAlertRef = useRef(null);
   const navigation = useNavigation();
 
   async function handleSubmit(data, { reset }) {
@@ -35,15 +38,10 @@ export default function SeachUpdate() {
           params: data,
         })
         .catch((error) => {
-          if (!error.request.status)
-            Alert.alert(
-              'Ops...',
-              'Não existe produto com esse código de barras'
-            );
+          if (!error.request.status) errorAlertRef.current.open();
         });
       reset();
-      if (!response.data)
-        Alert.alert('Ops...', 'Não existe produto com esse código de barras');
+      if (!response.data) nullProdutRef.current.open();
       else navigation.navigate('Update', { product: response.data });
     } catch (err) {
       sendError(err, formRef);
@@ -78,6 +76,16 @@ export default function SeachUpdate() {
           </Form>
         </MainScroll>
       </KeyboardAvoidingView>
+      <Alert
+        ref={nullProdutRef}
+        title='Erro'
+        subtitle='Não existe produto com ese código de barra'
+      />
+      <Alert
+        ref={errorAlertRef}
+        title='Ops...'
+        subtitle='Não foi possivel se conectar'
+      />
       <ActionButton setCameraSide={setCameraSide} />
     </Container>
   );
