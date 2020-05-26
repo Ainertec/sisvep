@@ -38,11 +38,11 @@ function telaEstoque() {
   codigoHTML +=
     '<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
   codigoHTML +=
-    '<button onclick="if(validaDadosCampo([\'#buscaProduto\'])){buscarProdutoEstoque(\'nome\');}else{mensagemDeErro(\'Preencha o campo nome!\');}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
+    '<button onclick="if(validaDadosCampo([\'#buscaProduto\'])){buscarProdutoEstoque(\'nome\'); animacaoSlideUp([\'#tabelaDeProdutosEstoque\'])}else{mensagemDeErro(\'Preencha o campo nome!\'); mostrarCamposIncorreto([\'buscaProduto\'])}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
   codigoHTML +=
-    '<button onclick="if(validaDadosCampo([\'#buscaProdutoQuantidade\'])){buscarProdutoEstoque(\'quantidade\');}else{mensagemDeErro(\'Preencha o campo quantidade!\');}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Quantidade</button>'
+    '<button onclick="if(validaDadosCampo([\'#buscaProdutoQuantidade\'])){buscarProdutoEstoque(\'quantidade\'); animacaoSlideUp([\'#tabelaDeProdutosEstoque\'])}else{mensagemDeErro(\'Preencha o campo quantidade!\'); mostrarCamposIncorreto([\'buscaProdutoQuantidade\'])}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Quantidade</button>'
   codigoHTML +=
-    '<button onclick="buscarProdutoEstoque(\'todos\');" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Exibir todos</button>'
+    '<button onclick="buscarProdutoEstoque(\'todos\'); animacaoSlideUp([\'#tabelaDeProdutosEstoque\'])" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Exibir todos</button>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
 
@@ -161,6 +161,7 @@ async function buscarProdutoEstoque(tipo) {
     codigoHTML += '</tbody>'
     codigoHTML += '</table>'
     document.getElementById('tabelaDeProdutosEstoque').innerHTML = codigoHTML
+    animacaoSlideDown(['#tabelaDeProdutosEstoque'])
   }, 300)
 }
 
@@ -179,7 +180,7 @@ async function atualizarEstoqueDeProduto(id) {
       json += `"stock": ${
         VETORPRODUTOCLASSESTOQUE[id].stock +
         parseInt(document.getElementById(`quantidadeItem${id}`).value)
-      },`
+        },`
       json += `"validity": "${VETORPRODUTOCLASSESTOQUE[id].validity}"}`
 
       await requisicaoPUT(
@@ -196,5 +197,6 @@ async function atualizarEstoqueDeProduto(id) {
     }
   } else {
     mensagemDeErro('Quantidade para adicionar inválida!')
+    mostrarCamposIncorreto([`quantidadeItem${id}`])
   }
 }

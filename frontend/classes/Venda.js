@@ -29,12 +29,12 @@ function autenticacaoVendaFacede() {
 function telaVenda() {
   let codigoHTML = ''
 
-  codigoHTML += '<div class="card mb-10 border-danger" style="height:540px;">'
+  codigoHTML += '<div class="card mb-10 border-dark" style="height:540px;">'
   codigoHTML += '<div class="row no-gutters">'
   codigoHTML += '<div class="col-md-4">'
 
   codigoHTML +=
-    '<div class="card bg-success border-danger" style="margin:5px; color: #fff">'
+    '<div class="card bg-success border-dark" style="margin:5px; color: #fff">'
   codigoHTML += '<div class="card-header"><strong>Valor Total</strong></div>'
   codigoHTML += '<div class="card-body">'
   codigoHTML +=
@@ -42,7 +42,7 @@ function telaVenda() {
   codigoHTML += '</div>'
   codigoHTML += '</div>'
 
-  codigoHTML += '<div class="card border-danger" style="margin:5px;">'
+  codigoHTML += '<div class="card border-dark" style="margin:5px;">'
   codigoHTML += '<div class="card-body">'
   codigoHTML += '<div class="form-group row">'
   codigoHTML += '<label for="qtdItemDaVenda">Produto <strong>X</strong></label>'
@@ -56,7 +56,7 @@ function telaVenda() {
     '<input id="campocodigodeleteitemvenda" type="Number" class="form-control form-control-sm col-4 mousetrap" style="margin-left:10px" placeholder="Código" aria-describedby="buttonDeleteItemDaVenda">'
   codigoHTML += '<div class="input-group-append">'
   codigoHTML +=
-    '<button onclick="removerProdutoDaLista(document.getElementById(\'campocodigodeleteitemvenda\').value);" class="btn btn-danger btn-sm" type="button" id="buttonDeleteItemDaVenda"><span class="fas fa-times iconsTam"></span> Remover</button>'
+    '<button onclick="if(validaDadosCampo([\'#campocodigodeleteitemvenda\']) && validaValoresCampo([\'#campocodigodeleteitemvenda\'])){removerProdutoDaLista(document.getElementById(\'campocodigodeleteitemvenda\').value);}else{mensagemDeErro(\'Preencha o campo remover!\'); mostrarCamposIncorreto([\'campocodigodeleteitemvenda\'])}" class="btn btn-danger btn-sm" type="button" id="buttonDeleteItemDaVenda"><span class="fas fa-times iconsTam"></span> Remover</button>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
@@ -67,14 +67,14 @@ function telaVenda() {
     '<input id="campocodigoadicionaritemvenda" type="Number" class="form-control form-control-sm col-4 mousetrap" style="margin-left:10px" placeholder="Código" aria-describedby="buttonAdicionarItemDaVenda">'
   codigoHTML += '<div class="input-group-append">'
   codigoHTML +=
-    '<button onclick="buscarProdutoVenda(document.getElementById(\'campocodigoadicionaritemvenda\').value);" class="btn btn-primary btn-sm" type="button" id="buttonAdicionarItemDaVenda"><span class="fas fa-plus iconsTam"></span> Adicionar</button>'
+    '<button onclick="if(validaDadosCampo([\'#campocodigoadicionaritemvenda\']) && validaValoresCampo([\'#campocodigoadicionaritemvenda\'])){buscarProdutoVenda(document.getElementById(\'campocodigoadicionaritemvenda\').value);}else{mensagemDeErro(\'Preencha o campo adicionar!\'); mostrarCamposIncorreto([\'campocodigoadicionaritemvenda\'])}" class="btn btn-primary btn-sm" type="button" id="buttonAdicionarItemDaVenda"><span class="fas fa-plus iconsTam"></span> Adicionar</button>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
 
-  codigoHTML += '<div class="card border-danger" style="margin:5px;">'
+  codigoHTML += '<div class="card border-dark" style="margin:5px;">'
   codigoHTML += '<div class="card-header"><strong>Pagamento</strong></div>'
   codigoHTML += '<div class="card-body">'
   codigoHTML +=
@@ -250,7 +250,7 @@ function removerProdutoDaLista(codigoProduto) {
     ) {
       VETORCODIGOITENSVENDA.forEach(function (item, indice, array) {
         if (parseInt(codigoProduto) === parseInt(item.barcode)) {
-          VETORCODIGOITENSVENDA[indice].barcode = -1
+          VETORCODIGOITENSVENDA.splice(indice, 1)
         }
       })
       document.getElementById("tabelaCarregarItensParaVenda").removeChild(document.getElementById(`produto-${codigoProduto}`))
@@ -296,8 +296,13 @@ async function buscarProdutoVenda(codigo) {
       })
 
       if (json != null) {
-        carregarDadosItensVenda(json)
-        beepAlerta()
+        if (validaDadosCampo(['#qtdItemDaVenda']) && validaValoresCampo(['#qtdItemDaVenda'])) {
+          carregarDadosItensVenda(json)
+          beepAlerta()
+        } else {
+          mensagemDeErro('Adicione uma quantidade válida!')
+          mostrarCamposIncorreto(['qtdItemDaVenda'])
+        }
       } else {
         mensagemDeErro('Código de barras inválido!')
       }
@@ -513,7 +518,7 @@ function modalItemVendaPorLista() {
   codigoHTML +=
     '<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
   codigoHTML +=
-    '<button onclick="buscarItemVendaLista();" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
+    '<button onclick="if(validaDadosCampo([\'#buscaProduto\'])){buscarItemVendaLista(); animacaoSlideUp([\'#listaDeProdutos\'])}else{mensagemDeErro(\'Preencha o campo nome!\'); mostrarCamposIncorreto([\'buscaProduto\'])}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
   codigoHTML += '<div id="listaDeProdutos" class="list-group">'
@@ -532,32 +537,29 @@ function modalItemVendaPorLista() {
 async function buscarItemVendaLista() {
   let codigoHTML = ''
 
-  if (validaDadosCampo(['#buscaProduto'])) {
-    try {
-      const json = await requisicaoGET(
-        `products?name=${$('#buscaProduto').val()}`,
-        { headers: { Authorization: `Bearer ${buscarSessionUser().token}` } }
-      )
-      json.data.forEach(function (item) {
-        codigoHTML += `<a href="#" onclick="buscarProdutoVenda(${item.barcode}); setTimeout(function(){limparModal();}, 1000);" class="list-group-item list-group-item-action" data-dismiss="modal">`
-        codigoHTML += '<div class="d-flex w-100 justify-content-between">'
-        codigoHTML += `<h5 class="mb-1">Nome: ${corrigirTamanhoString(
-          36,
-          item.name
-        )}</h5>`
-        codigoHTML += `<small>Código de barras: ${item.barcode}</small>`
-        codigoHTML += '</div>'
-        codigoHTML += `<small>Descrição: ${corrigirTamanhoString(
-          50,
-          item.description
-        )}</small>`
-        codigoHTML += '</a>'
-      })
-      document.getElementById('listaDeProdutos').innerHTML = codigoHTML
-    } catch (error) {
-      mensagemDeErro(`Não foi possível fazer a busca! Erro: ${error}`)
-    }
-  } else {
-    mensagemDeErro('Preencha o campo nome!')
+  try {
+    const json = await requisicaoGET(
+      `products?name=${$('#buscaProduto').val()}`,
+      { headers: { Authorization: `Bearer ${buscarSessionUser().token}` } }
+    )
+    json.data.forEach(function (item) {
+      codigoHTML += `<a href="#" onclick="buscarProdutoVenda(${item.barcode}); setTimeout(function(){limparModal();}, 1000);" class="list-group-item list-group-item-action" data-dismiss="modal">`
+      codigoHTML += '<div class="d-flex w-100 justify-content-between">'
+      codigoHTML += `<h5 class="mb-1">Nome: ${corrigirTamanhoString(
+        36,
+        item.name
+      )}</h5>`
+      codigoHTML += `<small>Código de barras: ${item.barcode}</small>`
+      codigoHTML += '</div>'
+      codigoHTML += `<small>Descrição: ${corrigirTamanhoString(
+        50,
+        item.description
+      )}</small>`
+      codigoHTML += '</a>'
+    })
+    document.getElementById('listaDeProdutos').innerHTML = codigoHTML
+    animacaoSlideDown(['#listaDeProdutos'])
+  } catch (error) {
+    mensagemDeErro(`Não foi possível fazer a busca! Erro: ${error}`)
   }
 }

@@ -110,7 +110,7 @@ function telaProduto(tipo) {
       '<button onclick="confirmarAcao(\'Excluir dados produto permanentemente!\',\'excluirProduto();\')" type="button" class="btn btn-danger" style="margin: 5px;"><span class="fas fa-trash-alt"></span> Excluir</button>'
   } else if (tipo == 'Cadastrar') {
     codigoHTML +=
-      '<button onclick="document.getElementById(\'dadosDoFornecedor\').innerHTML = carregarTelaDadosFornecedor(\'Cadastrar\',null); " type="button" class="btn btn-warning" style="margin: 5px;"><span class="fas fa-people-carry"></span> Cadastrar Fornecedor</button>'
+      '<button onclick="document.getElementById(\'dadosDoFornecedor\').innerHTML = carregarTelaDadosFornecedor(\'Cadastrar\',null);" type="button" class="btn btn-warning" style="margin: 5px;"><span class="fas fa-people-carry"></span> Cadastrar Fornecedor</button>'
     codigoHTML +=
       '<button onclick="cadastrarProduto();" type="button" class="btn btn-primary" style="margin: 5px;"><span class="fas fa-save"></span> Salvar</button>'
   }
@@ -142,18 +142,18 @@ function telaBuscarProduto() {
   codigoHTML +=
     '<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
   codigoHTML +=
-    '<button onclick="if(validaDadosCampo([\'#buscaProduto\'])){buscarProduto(\'codigo\');}else{mensagemDeErro(\'Preencha o campo nome/código de barras!\');}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Código de barras</button>'
+    '<button onclick="if(validaDadosCampo([\'#buscaProduto\'])){buscarProduto(\'codigo\'); animacaoSlideUp([\'#listaDeProdutos\'])}else{mensagemDeErro(\'Preencha o campo nome/código de barras!\'); mostrarCamposIncorreto([\'buscaProduto\'])}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Código de barras</button>'
   codigoHTML +=
-    '<button onclick="if(validaDadosCampo([\'#buscaProduto\'])){buscarProduto(\'nome\');}else{mensagemDeErro(\'Preencha o campo nome/código de barras!\');}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
+    '<button onclick="if(validaDadosCampo([\'#buscaProduto\'])){buscarProduto(\'nome\'); animacaoSlideUp([\'#listaDeProdutos\'])}else{mensagemDeErro(\'Preencha o campo nome/código de barras!\'); mostrarCamposIncorreto([\'buscaProduto\'])}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
   codigoHTML +=
-    '<button onclick="buscarProduto(\'todos\');" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Exibir todos</button>'
+    '<button onclick="buscarProduto(\'todos\'); animacaoSlideUp([\'#listaDeProdutos\'])" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Exibir todos</button>'
   codigoHTML += '</div>'
   codigoHTML +=
     '<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
   codigoHTML +=
-    '<button onclick="if(validaDadosCampo([\'#buscaProdutoDate\'])){buscarProduto(\'dataValidade\');}else{mensagemDeErro(\'Preencha o campo data!\');}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Data de validade</button>'
+    '<button onclick="if(validaDadosCampo([\'#buscaProdutoDate\'])){buscarProduto(\'dataValidade\'); animacaoSlideUp([\'#listaDeProdutos\'])}else{mensagemDeErro(\'Preencha o campo data!\'); mostrarCamposIncorreto([\'buscaProdutoDate\'])}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Data de validade</button>'
   codigoHTML +=
-    '<button onclick="if(validaDadosCampo([\'#buscaProdutoDate\'])){buscarProduto(\'dataChegada\');}else{mensagemDeErro(\'Preencha o campo data!\');}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Data de inclusão</button>'
+    '<button onclick="if(validaDadosCampo([\'#buscaProdutoDate\'])){buscarProduto(\'dataChegada\'); animacaoSlideUp([\'#listaDeProdutos\'])}else{mensagemDeErro(\'Preencha o campo data!\'); mostrarCamposIncorreto([\'buscaProdutoDate\'])}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Data de inclusão</button>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
 
@@ -214,6 +214,7 @@ function carregarCamposComDadosProduto(posicao) {
       JSONPRODUTOCLASSEPRODUTO[posicao].provider._id
     document.getElementById('descricao').value =
       JSONPRODUTOCLASSEPRODUTO[posicao].description
+    mensagemDeAviso('Pronto para atualizar ou excluir!')
   }, 300)
 }
 
@@ -299,6 +300,18 @@ async function cadastrarProduto() {
       }
     } else {
       mensagemDeErro('Preencha todos os campos!')
+      mostrarCamposIncorreto([
+        'barcode',
+        'nome',
+        'valorUni',
+        'valorCus',
+        'dataValidade',
+        'qtdEstoque',
+        'nomeFornecedor',
+        'cpfCnpjFornecedor',
+        'telefoneFornecedor',
+        'emailFornecedor',
+      ])
     }
   } else if (
     validaDadosCampo([
@@ -336,11 +349,24 @@ async function cadastrarProduto() {
     }
   } else {
     mensagemDeErro('Preencha todos os campos!')
+    mostrarCamposIncorreto([
+      'barcode',
+      'nome',
+      'valorUni',
+      'valorCus',
+      'dataValidade',
+      'qtdEstoque',
+    ])
+    if (document.getElementById('nomeFornecedor') != null) {
+      mostrarCamposIncorreto([
+        'nomeFornecedor',
+        'cpfCnpjFornecedor',
+        'telefoneFornecedor',
+        'emailFornecedor',
+      ])
+    }
   }
 
-  setTimeout(function () {
-    autenticacaoProduto('Cadastrar')
-  }, 1000)
 }
 
 // funcao responsavel por buscar os produtos e enviar para a lista
@@ -421,6 +447,8 @@ async function buscarProduto(tipo) {
       cont++
     }
   }
+
+  animacaoSlideDown(['#listaDeProdutos'])
 }
 
 // funcao responsavel por atualizar produto
@@ -464,6 +492,14 @@ async function atualizarProduto() {
     }
   } else {
     mensagemDeErro('Preencha todos os campos!')
+    mostrarCamposIncorreto([
+      'barcode',
+      'nome',
+      'valorUni',
+      'valorCus',
+      'dataValidade',
+      'qtdEstoque',
+    ])
   }
 }
 
@@ -481,5 +517,6 @@ async function excluirProduto() {
     }
   } else {
     mensagemDeErro('Não é possivel, falta de ID!')
+    mostrarCamposIncorreto(['id'])
   }
 }

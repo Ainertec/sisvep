@@ -135,6 +135,13 @@ async function atualizarLoja() {
     }
   } else {
     mensagemDeErro('Preencha todos os dados!')
+    mostrarCamposIncorreto([
+      'nome',
+      'cpfCnpj',
+      'telefone',
+      'email',
+      'endereco',
+    ])
   }
 }
 
@@ -159,5 +166,6 @@ async function cadastrarLoja() {
     }
   } else {
     mensagemDeErro('Preencha todos os dados!')
+    mostrarCamposIncorreto(['nome', 'cpfCnpj', 'telefone', 'email', 'endereco'])
   }
 }

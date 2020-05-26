@@ -12,18 +12,18 @@ async function requisicaoGET(url, authorization) {
       } else {
         setTimeout(function () {
           mensagemDeErro(`Erro: ${response}`)
-        }, 7000)
+        }, 4000)
       }
     })
     .catch(function (error) {
       if (error.response) {
         setTimeout(function () {
           mensagemDeErro(`Erro: ${error.response.data.message}`)
-        }, 7000)
+        }, 4000)
       } else {
         setTimeout(function () {
           mensagemDeErro(`Erro: ${error}`)
-        }, 7000)
+        }, 4000)
       }
     })
 
@@ -38,18 +38,18 @@ async function requisicaoDELETE(url, json, authorization) {
       if (response.status != 200) {
         setTimeout(function () {
           mensagemDeErro(`Erro: ${response}`)
-        }, 7000)
+        }, 4000)
       }
     })
     .catch(function (error) {
       if (error.response) {
         setTimeout(function () {
           mensagemDeErro(`Erro: ${error.response.data.message}`)
-        }, 7000)
+        }, 4000)
       } else {
         setTimeout(function () {
           mensagemDeErro(`Erro: ${error}`)
-        }, 7000)
+        }, 4000)
       }
     })
 }
@@ -64,7 +64,7 @@ async function requisicaoPOST(url, json, authorization) {
       if (response.status != 200) {
         setTimeout(function () {
           mensagemDeErro(`Erro: ${response}`)
-        }, 7000)
+        }, 4000)
       } else {
         retorno = response
       }
@@ -73,11 +73,11 @@ async function requisicaoPOST(url, json, authorization) {
       if (error.response) {
         setTimeout(function () {
           mensagemDeErro(`Erro: ${error.response.data.message}`)
-        }, 7000)
+        }, 4000)
       } else {
         setTimeout(function () {
           mensagemDeErro(`Erro: ${error}`)
-        }, 7000)
+        }, 4000)
       }
     })
 
@@ -99,11 +99,11 @@ async function requisicaoPUT(url, json, authorization) {
       if (error.response) {
         setTimeout(function () {
           mensagemDeErro(`Erro: ${error.response.data.message}`)
-        }, 7000)
+        }, 4000)
       } else {
         setTimeout(function () {
           mensagemDeErro(`Erro: ${error}`)
-        }, 7000)
+        }, 4000)
       }
     })
 }
