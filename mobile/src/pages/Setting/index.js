@@ -1,8 +1,8 @@
-import React from 'react'
-import { useNavigation } from '@react-navigation/native'
-import { Icon } from 'react-native-elements'
+import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { Icon } from 'react-native-elements';
 
-import { useAuth } from '../../contexts/auth'
+import { useAuth } from '../../contexts/auth';
 
 import {
   Container,
@@ -12,40 +12,39 @@ import {
   SwitchView,
   SettingsView,
   UserName,
-} from './styles'
+} from './styles';
 
 export default function Setting() {
-  const { signOut, user } = useAuth()
-  const navigation = useNavigation()
+  const { signOut, user } = useAuth();
+  const navigation = useNavigation();
 
   return (
     <Container>
       <Scroll>
         <Content>
-          <Label>Configurações de ip</Label>
           <SettingsView>
             <Icon
               name='leak-add'
               color='darkred'
               size={35}
               onPress={() => {
-                navigation.navigate('IpSetting')
+                navigation.navigate('IpSetting');
               }}
             />
           </SettingsView>
+          <Label>Configurar ip</Label>
         </Content>
         <Content>
-          <Label>Tema</Label>
           <SettingsView>
             <SwitchView
               thumbColor='darkred'
               // onValueChange={toggleSwitch}
-              // value={isEnabled}
+              value
             />
           </SettingsView>
+          <Label>Trocar tema</Label>
         </Content>
         <Content>
-          <Label>Logout</Label>
           <SettingsView>
             <Icon
               name='exit-to-app'
@@ -53,10 +52,12 @@ export default function Setting() {
               size={35}
               onPress={() => signOut()}
             />
-            <UserName>{user.name}</UserName>
           </SettingsView>
+
+          <Label>Sair, logado com {user.name} </Label>
+          {/* <UserName>Usuário logado: {user.name}</UserName> */}
         </Content>
       </Scroll>
     </Container>
-  )
+  );
 }

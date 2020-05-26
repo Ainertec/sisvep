@@ -1,6 +1,6 @@
-import React from 'react'
-import { Icon } from 'react-native-elements'
-import { useRoute } from '@react-navigation/native'
+import React from 'react';
+import { Icon } from 'react-native-elements';
+import { useRoute } from '@react-navigation/native';
 
 import {
   Container,
@@ -9,11 +9,11 @@ import {
   FieldLabel,
   FieldTitle,
   FiledTextView,
-} from './styles'
+} from './styles';
 
 const Details = () => {
-  const route = useRoute()
-  const { product } = route.params
+  const route = useRoute();
+  const { product } = route.params;
 
   return (
     <Container>
@@ -76,7 +76,7 @@ const Details = () => {
         </DetailField>
       </Scroll>
     </Container>
-  )
-}
+  );
+};
 
-export default Details
+export default Details;
