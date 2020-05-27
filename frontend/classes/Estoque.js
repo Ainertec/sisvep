@@ -30,8 +30,6 @@ function telaEstoque() {
   codigoHTML += '<div class="input-group mb-3">'
   codigoHTML +=
     '<input id="buscaProduto" type="text" class="form-control mousetrap" placeholder="Nome">'
-  codigoHTML += '</div>'
-  codigoHTML += '<div class="input-group mb-3">'
   codigoHTML +=
     '<input id="buscaProdutoQuantidade" type="Number" class="form-control mousetrap" placeholder="Quantidade">'
   codigoHTML += '</div>'
@@ -56,11 +54,15 @@ function carregarProdutosEstoque(json, posicao) {
   let codigoHTML = ''
 
   codigoHTML += '<tr>'
-  codigoHTML += `<td>${json.barcode}</td>`
-  codigoHTML += `<td>${corrigirTamanhoString(36, json.name)}</td>`
-  codigoHTML += `<td>${json.stock}</td>`
+  codigoHTML += `<td><strong>${json.barcode}</strong></td>`
+  codigoHTML += `<td class="table-info"><strong>${corrigirTamanhoString(36, json.name)}</strong></td>`
+  if (json.stock < 200) {
+    codigoHTML += `<td class="table-danger"><strong>${json.stock}</strong></td>`
+  } else {
+    codigoHTML += `<td class="table-success"><strong>${json.stock}</strong></td>`
+  }
   codigoHTML += `<td><input id="quantidadeItem${posicao}" type="Number" class="form-control" placeholder="Adicionar quantidade"></td>`
-  codigoHTML += `<td><button onclick="confirmarAcao('Atualizar a quantidade deste produto em estoque!','atualizarEstoqueDeProduto(${posicao})')" type="button" class="btn btn-primary"><span class="fas fa-sync-alt"></span> Atualizar</button></td>`
+  codigoHTML += `<td><button onclick="confirmarAcao('Atualizar a quantidade deste produto em estoque!','atualizarEstoqueDeProduto(${posicao})')" type="button" class="btn btn-success"><span class="fas fa-sync-alt"></span> Atualizar</button></td>`
   codigoHTML += '</tr>'
 
   return codigoHTML
@@ -77,7 +79,7 @@ async function buscarProdutoEstoque(tipo) {
   codigoHTML +=
     '<h5 class="text-center" style="margin-top:30px;">Lista de Produtos</h5>'
   codigoHTML += '<table class="table table-bordered bg-light">'
-  codigoHTML += '<thead>'
+  codigoHTML += '<thead class="thead-dark">'
   codigoHTML += '<tr>'
   codigoHTML += '<th scope="col">Código</th>'
   codigoHTML += '<th scope="col">Nome</th>'

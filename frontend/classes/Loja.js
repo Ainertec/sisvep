@@ -69,7 +69,7 @@ function telaLoja(tipo) {
 
   if (tipo == 'Atualizar') {
     codigoHTML +=
-      '<button onclick="confirmarAcao(\'Atualizar dados loja!\',\'atualizarLoja();\')" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-edit"></span> Salvar</button>'
+      '<button onclick="confirmarAcao(\'Atualizar os dados da loja!\',\'atualizarLoja();\')" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-edit"></span> Salvar</button>'
   } else if (tipo == 'Cadastrar') {
     codigoHTML +=
       '<button onclick="cadastrarLoja();" type="button" class="btn btn-primary" style="margin: 5px;"><span class="fas fa-save"></span> Salvar</button>'

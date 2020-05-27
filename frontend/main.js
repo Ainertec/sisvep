@@ -5,14 +5,18 @@ let mainWindow
 function createWindow() {
   mainWindow = new BrowserWindow({
     icon: '../executaveis_modulos/icon.ico',
-    autoHideMenuBar: true,
-    title: 'Sisvep - sistema para gerenciamento de vendas',
-    minHeight: 840,
-    minWidth: 1300
+    frame: false,
+    transparent: true,
+    resizable: true,
+    alwaysOnTop: false,
+    backgroundColor: '#000',
+    width: 1280,
+    height: 720,
+    title: 'Sisvep',
+    autoHideMenuBar: true
   })
 
   mainWindow.loadFile('index.html')
-  mainWindow.maximize()
 
   mainWindow.on('closed', function () {
     mainWindow = null//,

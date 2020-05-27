@@ -35,7 +35,7 @@ function telaProduto(tipo) {
   }
 
   codigoHTML +=
-    '<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
+    '<div class="card-deck col-8 mx-auto d-block" style="margin-top:30px;">'
   codigoHTML += '<form>'
   codigoHTML += '<div class="form-row">'
 
@@ -105,12 +105,12 @@ function telaProduto(tipo) {
 
   if (tipo == 'Atualizar') {
     codigoHTML +=
-      '<button onclick="confirmarAcao(\'Atualizar dados produto!\',\'atualizarProduto();\')" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-edit"></span> Salvar</button>'
+      '<button onclick="confirmarAcao(\'Atualizar os dados do produto!\',\'atualizarProduto();\')" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-edit"></span> Salvar</button>'
     codigoHTML +=
-      '<button onclick="confirmarAcao(\'Excluir dados produto permanentemente!\',\'excluirProduto();\')" type="button" class="btn btn-danger" style="margin: 5px;"><span class="fas fa-trash-alt"></span> Excluir</button>'
+      '<button onclick="confirmarAcao(\'Excluir os dados do produto permanentemente!\',\'excluirProduto();\')" type="button" class="btn btn-outline-danger" style="margin: 5px;"><span class="fas fa-trash-alt"></span> Excluir</button>'
   } else if (tipo == 'Cadastrar') {
     codigoHTML +=
-      '<button onclick="document.getElementById(\'dadosDoFornecedor\').innerHTML = carregarTelaDadosFornecedor(\'Cadastrar\',null);" type="button" class="btn btn-warning" style="margin: 5px;"><span class="fas fa-people-carry"></span> Cadastrar Fornecedor</button>'
+      '<button onclick="document.getElementById(\'dadosDoFornecedor\').innerHTML = carregarTelaDadosFornecedor(\'Cadastrar\',null);" type="button" class="btn btn-outline-dark" style="margin: 5px;"><span class="fas fa-people-carry"></span> Cadastrar Fornecedor</button>'
     codigoHTML +=
       '<button onclick="cadastrarProduto();" type="button" class="btn btn-primary" style="margin: 5px;"><span class="fas fa-save"></span> Salvar</button>'
   }
@@ -134,8 +134,6 @@ function telaBuscarProduto() {
   codigoHTML += '<div class="input-group mb-3">'
   codigoHTML +=
     '<input id="buscaProduto" type="text" class="form-control mousetrap" placeholder="Nome ou código de barras">'
-  codigoHTML += '</div>'
-  codigoHTML += '<div class="input-group mb-3">'
   codigoHTML +=
     '<input id="buscaProdutoDate" type="month" class="form-control mousetrap">'
   codigoHTML += '</div>'
@@ -158,7 +156,7 @@ function telaBuscarProduto() {
   codigoHTML += '</div>'
 
   codigoHTML +=
-    '<div class="col-12 layer1" style="position: relative; height: 300px; z-index: 1; overflow: scroll; margin-top:20px;">'
+    '<div class="col-8 layer1 rounded mx-auto" style="position: relative; height: 300px; z-index: 1; overflow: scroll; margin-top:20px;">'
   codigoHTML += '<div id="listaDeProdutos" class="list-group">'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
@@ -174,10 +172,10 @@ function telaBuscarProduto() {
 function carregarListaProdutos(json, posicao) {
   let codigoHTML = ''
 
-  codigoHTML += `<a href="#" onclick="carregarCamposComDadosProduto(${posicao});" class="list-group-item list-group-item-action">`
+  codigoHTML += `<a href="#" onclick="carregarCamposComDadosProduto(${posicao});" class="list-group-item list-group-item-action list-group-item-dark">`
   codigoHTML += '<div class="d-flex w-100 justify-content-between">'
   codigoHTML += `<h5 class="mb-1">Nome: ${corrigirTamanhoString(
-    36,
+    28,
     json.name
   )}</h5>`
   codigoHTML += `<small>Código de barras: ${json.barcode}</small>`

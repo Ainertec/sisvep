@@ -45,7 +45,7 @@ function telaFuncionario() {
   codigoHTML += '</div>'
 
   codigoHTML +=
-    '<div id="localDaLista" hidden class="col-12 layer1" style="position: relative; height: 300px; z-index: 1; overflow: scroll; margin-top:20px;">'
+    '<div id="localDaLista" hidden class="col-8 rounded mx-auto layer1" style="position: relative; height: 300px; z-index: 1; overflow: scroll; margin-top:20px;">'
   codigoHTML += '<div id="listaFuncionarios">'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
@@ -62,7 +62,7 @@ function carregarTelaDadosFuncionario(tipo, tipo2) {
   codigoHTML += '<h5 class="text-center">Dados Funcionário</h5>'
 
   codigoHTML +=
-    '<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
+    '<div class="card-deck col-8 mx-auto d-block" style="margin-top:30px;">'
   codigoHTML += '<form>'
   codigoHTML += '<div class="form-row">'
   codigoHTML += '<div class="form-group col-md-6">'
@@ -122,10 +122,10 @@ function carregarTelaDadosFuncionario(tipo, tipo2) {
       '<button onclick="cadastrarFuncionario();" type="button" class="btn btn-primary" style="margin: 5px;"><span class="fas fa-save"></span> Cadastrar</button>'
   } else {
     codigoHTML +=
-      '<button onclick="confirmarAcao(\'Atualizar dados funcionário!\',\'atualizarFuncionario();\')" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-edit"></span> Atualizar</button>'
+      '<button onclick="confirmarAcao(\'Atualizar os dados do funcionário!\',\'atualizarFuncionario();\')" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-edit"></span> Atualizar</button>'
     if (tipo == 'Admin') {
       codigoHTML +=
-        '<button onclick="confirmarAcao(\'Excluir dados funcionário permanentemente!\',\'excluirFuncionario();\')" type="button" class="btn btn-danger" style="margin: 5px;"><span class="fas fa-trash-alt"></span> Excluir</button>'
+        '<button onclick="confirmarAcao(\'Excluir os dados do funcionário permanentemente!\',\'excluirFuncionario();\')" type="button" class="btn btn-outline-danger" style="margin: 5px;"><span class="fas fa-trash-alt"></span> Excluir</button>'
     }
   }
   codigoHTML += '</div>'
@@ -139,10 +139,10 @@ function carregarTelaDadosFuncionario(tipo, tipo2) {
 function carregarListaFuncionario(json, posicao) {
   let codigoHTML = ''
 
-  codigoHTML += `<a onclick="carregarDadosFuncionario(${posicao},'Administrador');" href="#" class="list-group-item list-group-item-action">`
+  codigoHTML += `<a onclick="carregarDadosFuncionario(${posicao},'Administrador');" href="#" class="list-group-item list-group-item-action list-group-item-dark">`
   codigoHTML += '<div class="d-flex w-100 justify-content-between">'
   codigoHTML += `<h5 class="mb-1">Nome: ${corrigirTamanhoString(
-    36,
+    28,
     json.name
   )}</h5>`
   if (json.admin) {
