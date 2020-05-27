@@ -106,8 +106,8 @@ function confirmarAcao(mensagem, funcao) {
   codigoHTML += '</div>'
   codigoHTML += '<div class="modal-footer">'
   codigoHTML +=
-    '<button onclick="document.getElementById(\'modal\').innerHTML=\'\';" type="button" class="btn btn-secondary" data-dismiss="modal"><span class="fas fa-times iconsTam"></span> Não</button>'
-  codigoHTML += `<button onclick="${funcao}; document.getElementById('modal').innerHTML='';" type="button" class="btn btn-primary" data-dismiss="modal"><span class="fas fa-check iconsTam"></span> Sim</button>`
+    '<button onclick="document.getElementById(\'modal\').innerHTML=\'\';" type="button" class="btn btn-outline-dark" data-dismiss="modal"><span class="fas fa-times iconsTam"></span> Não</button>'
+  codigoHTML += `<button onclick="${funcao}; document.getElementById('modal').innerHTML='';" type="button" class="btn btn-danger" data-dismiss="modal"><span class="fas fa-check iconsTam"></span> Sim</button>`
   codigoHTML += '</div>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
@@ -149,4 +149,26 @@ function animacaoSlideDown(idReferencia) {
   idReferencia.forEach(function (item) {
     $(item).slideDown(300)
   })
+}
+
+//funcao responsavel por manipular o tamanho da janela
+function janelaTamanho() {
+  if ((document.fullScreenElement && document.fullScreenElement !== null) ||
+    (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+    if (document.documentElement.requestFullScreen) {
+      document.documentElement.requestFullScreen();
+    } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen();
+    } else if (document.documentElement.webkitRequestFullScreen) {
+      document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+  } else {
+    if (document.cancelFullScreen) {
+      document.cancelFullScreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitCancelFullScreen) {
+      document.webkitCancelFullScreen();
+    }
+  }
 }

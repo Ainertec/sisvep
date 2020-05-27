@@ -143,7 +143,7 @@ function atalhosTeclaVenda() {
   Mousetrap.bind('a', function () {
     document.getElementById('campocodigoadicionaritemvenda').focus()
   })
-  Mousetrap.bind('b', function () {
+  Mousetrap.bind('b b', function () {
     liberarSubMenu()
   })
   Mousetrap.bind('l', function () {

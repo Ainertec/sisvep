@@ -19,18 +19,23 @@ function telaGeralRelatorio() {
   let codigoHTML = ''
 
   codigoHTML += '<h3 class="text-center">Relatórios</h3>'
-
   codigoHTML +=
     '<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
+  codigoHTML += '<div class="row">'
+  codigoHTML += '<div class="col">'
   codigoHTML += '<h5 class="text-center">Data inicial</h5>'
   codigoHTML += '<div class="input-group mb-3">'
   codigoHTML +=
     '<input id="dataInicio" type="date" class="form-control mousetrap" aria-label="Recipients username" aria-describedby="botaoBuscar">'
   codigoHTML += '</div>'
+  codigoHTML += '</div>'
+  codigoHTML += '<div class="col">'
   codigoHTML += '<h5 class="text-center">Data final</h5>'
   codigoHTML += '<div class="input-group mb-3">'
   codigoHTML +=
     '<input id="dataFim" type="date" class="form-control mousetrap" aria-label="Recipients username" aria-describedby="botaoBuscar">'
+  codigoHTML += '</div>'
+  codigoHTML += '</div>'
   codigoHTML += '</div>'
   codigoHTML +=
     '<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'

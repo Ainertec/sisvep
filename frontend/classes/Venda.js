@@ -18,7 +18,7 @@ function autenticacaoVendaFacede() {
     $('#submenu').slideUp(1000)
     setTimeout(function () {
       document.getElementById('mensagemSubMenu').innerHTML =
-        '<p>Para liberar o menu pressione a tecla "B" ou clique no botão abaixo!<br/>Pressione "L" para pesquisar produtos pelo nome.</p><button onclick="liberarSubMenu();" type="button" class="btn btn-light"><span class="fas fa-list-ul iconsTam"></span> Menu <span class="fas fa-caret-down iconsTam"></span></button>'
+        '<p>Para liberar o menu pressione duas vezes a tecla "B" ou clique no botão abaixo!<br/>Pressione "L" para pesquisar produtos pelo nome.</p><button onclick="liberarSubMenu();" type="button" class="btn btn-outline-dark"><span class="fas fa-list-ul iconsTam"></span> Menu <span class="fas fa-caret-down iconsTam"></span></button>'
     }, 1000)
   } else {
     mensagemDeErro('Usuário não autorizado!')
@@ -29,28 +29,28 @@ function autenticacaoVendaFacede() {
 function telaVenda() {
   let codigoHTML = ''
 
-  codigoHTML += '<div class="card mb-10 border-dark" style="height:540px;">'
+  codigoHTML += '<div class="card mb-10 border-dark" style="height:65vh;">'
   codigoHTML += '<div class="row no-gutters">'
   codigoHTML += '<div class="col-md-4">'
 
   codigoHTML +=
     '<div class="card bg-success border-dark" style="margin:5px; color: #fff">'
-  codigoHTML += '<div class="card-header"><strong>Valor Total</strong></div>'
-  codigoHTML += '<div class="card-body">'
+  codigoHTML += '<div class="card-header style="padding: 8px;""><strong>Valor Total</strong></div>'
+  codigoHTML += '<div class="card-body" style="padding: 10px;">'
   codigoHTML +=
     '<h2><strong>R$ <span id="exibirValorTotalAtualizado">0.00</span></strong></h2>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
 
   codigoHTML += '<div class="card border-dark" style="margin:5px;">'
-  codigoHTML += '<div class="card-body">'
-  codigoHTML += '<div class="form-group row">'
+  codigoHTML += '<div class="card-body" style="padding: 10px;">'
+  codigoHTML += '<div class="form-group row" style="margin: 15px">'
   codigoHTML += '<label for="qtdItemDaVenda">Produto <strong>X</strong></label>'
   codigoHTML +=
     '<input type="Number" class="form-control form-control-sm col-3 mousetrap" id="qtdItemDaVenda" style="margin-left:10px" value=1>'
   codigoHTML += '</div>'
-  codigoHTML += '<div class="form-group row">'
-  codigoHTML += '<div class="input-group mb-3">'
+  codigoHTML += '<div class="form-group row" style="margin-bottom: 0px; margin: 15px">'
+  codigoHTML += '<div class="input-group mb-3" style="margin-bottom: 0px;">'
   codigoHTML += '<label for="campocodigodeleteitemvenda">Produto</label>'
   codigoHTML +=
     '<input id="campocodigodeleteitemvenda" type="Number" class="form-control form-control-sm col-4 mousetrap" style="margin-left:10px" placeholder="Código" aria-describedby="buttonDeleteItemDaVenda">'
@@ -60,7 +60,7 @@ function telaVenda() {
   codigoHTML += '</div>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
-  codigoHTML += '<div class="form-group row">'
+  codigoHTML += '<div class="form-group row" style="margin-bottom: 0px;  margin: 15px">'
   codigoHTML += '<div class="input-group mb-3">'
   codigoHTML += '<label for="campocodigoadicionaritemvenda">Produto</label>'
   codigoHTML +=
@@ -75,14 +75,14 @@ function telaVenda() {
   codigoHTML += '</div>'
 
   codigoHTML += '<div class="card border-dark" style="margin:5px;">'
-  codigoHTML += '<div class="card-header"><strong>Pagamento</strong></div>'
-  codigoHTML += '<div class="card-body">'
+  codigoHTML += '<div class="card-header" style="padding:8px;"><strong>Pagamento</strong></div>'
+  codigoHTML += '<div class="card-body" style="padding: 10px;">'
   codigoHTML +=
     '<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
   codigoHTML +=
-    '<button onclick="if(parseFloat($(\'#exibirValorTotalAtualizado\').text())>0.00){modalPagamento(\'dinheiro\');}else{mensagemDeErro(\'Não é possível efetuar venda sem valor!\')}" type="button" class="btn btn-primary"><span class="fas fa-dollar-sign iconsTam"></span> Dinheiro</button>'
+    '<button onclick="if(parseFloat($(\'#exibirValorTotalAtualizado\').text())>0.00){modalPagamento(\'dinheiro\');}else{mensagemDeErro(\'Não é possível efetuar venda sem valor!\')}" type="button" class="btn btn-dark border border-light"><span class="fas fa-dollar-sign iconsTam"></span> <strong>Dinheiro</strong></button>'
   codigoHTML +=
-    '<button onclick="if(parseFloat($(\'#exibirValorTotalAtualizado\').text())>0.00){modalPagamento(\'cartao\');}else{mensagemDeErro(\'Não é possível efetuar venda sem valor!\')}" type="button" class="btn btn-info"><span class="fas fa-credit-card iconsTam"></span> Cartão</button>'
+    '<button onclick="if(parseFloat($(\'#exibirValorTotalAtualizado\').text())>0.00){modalPagamento(\'cartao\');}else{mensagemDeErro(\'Não é possível efetuar venda sem valor!\')}" type="button" class="btn btn-dark border border-light"><span class="fas fa-credit-card iconsTam"></span> <strong>Cartão</strong></button>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
@@ -92,7 +92,7 @@ function telaVenda() {
   codigoHTML += '<div class="card-body">'
 
   codigoHTML +=
-    '<div class="col-11 layer1" style="position: absolute; height: 500px; z-index: 1; overflow: scroll;">'
+    '<div class="col-12 layer1" style="position: relative; height: 61vh; z-index: 1; overflow: scroll;">'
   codigoHTML +=
     '<table class="table table-sm table-secondary" style="margin-top: 10px;">'
   codigoHTML += '<tbody id="tabelaCarregarItensParaVenda">'
@@ -146,12 +146,12 @@ function carregarDadosItensVenda(json) {
     codigoHTML += `<td id="nomeProduto${
       json.data.barcode
       }">${corrigirTamanhoString(36, json.data.name)}</td>`
-    codigoHTML += `<td id="valorProduto${json.data.barcode}">${(
+    codigoHTML += `<td class="text-danger"><strong id="valorProduto${json.data.barcode}">${(
       parseFloat(json.data.price) * parseInt($('#qtdItemDaVenda').val())
-    ).toFixed(2)}</td>`
-    codigoHTML += `<td id="quantidadeProduto${json.data.barcode}">${$(
+    ).toFixed(2)}</strong></td>`
+    codigoHTML += `<td class="text-primary"><strong id="quantidadeProduto${json.data.barcode}">${$(
       '#qtdItemDaVenda'
-    ).val()}</td>`
+    ).val()}</strong></td>`
     codigoHTML += '</tr>'
 
     $('#tabelaCarregarItensParaVenda').append(codigoHTML)
@@ -204,7 +204,7 @@ function modalPagamento(tipo) {
   codigoHTML += '</div>'
   codigoHTML += '<div class="modal-footer">'
   codigoHTML +=
-    '<button onclick="limparModal();" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>'
+    '<button onclick="limparModal();" type="button" class="btn btn-outline-dark" data-dismiss="modal">Cancelar</button>'
 
   if (tipo == 'dinheiro') {
     codigoHTML +=
@@ -479,9 +479,9 @@ function liberarSubMenu() {
   codigoHTML += '</div>'
   codigoHTML += '<div class="modal-footer">'
   codigoHTML +=
-    '<button type="button" class="btn btn-secondary" data-dismiss="modal"><span class="fas fa-times iconsTam"></span> Não</button>'
+    '<button type="button" class="btn btn-outline-dark" data-dismiss="modal"><span class="fas fa-times iconsTam"></span> Não</button>'
   codigoHTML +=
-    '<button onclick="$(\'#submenu\').slideDown(1000); document.getElementById(\'mensagemSubMenu\').innerHTML = \'\'; retirarPausaAtalho();" type="button" class="btn btn-primary" data-dismiss="modal"><span class="fas fa-check iconsTam"></span> Sim</button>'
+    '<button onclick="$(\'#submenu\').slideDown(1000); document.getElementById(\'mensagemSubMenu\').innerHTML = \'\'; retirarPausaAtalho();" type="button" class="btn btn-danger" data-dismiss="modal"><span class="fas fa-check iconsTam"></span> Sim</button>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
@@ -518,10 +518,10 @@ function modalItemVendaPorLista() {
   codigoHTML +=
     '<div class="btn-group btn-lg btn-block" role="group" aria-label="Basic example">'
   codigoHTML +=
-    '<button onclick="if(validaDadosCampo([\'#buscaProduto\'])){buscarItemVendaLista(); animacaoSlideUp([\'#listaDeProdutos\'])}else{mensagemDeErro(\'Preencha o campo nome!\'); mostrarCamposIncorreto([\'buscaProduto\'])}" type="button" class="btn btn-outline-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
+    '<button onclick="if(validaDadosCampo([\'#buscaProduto\'])){buscarItemVendaLista(); animacaoSlideUp([\'#listaDeProdutos\'])}else{mensagemDeErro(\'Preencha o campo nome!\'); mostrarCamposIncorreto([\'buscaProduto\'])}" type="button" class="btn btn-primary"><span class="fas fa-search"></span> Buscar por Nome</button>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
-  codigoHTML += '<div id="listaDeProdutos" class="list-group">'
+  codigoHTML += '<div id="listaDeProdutos" class="list-group col-10 rounded mx-auto" style="margin-top: 15px">'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
@@ -543,7 +543,7 @@ async function buscarItemVendaLista() {
       { headers: { Authorization: `Bearer ${buscarSessionUser().token}` } }
     )
     json.data.forEach(function (item) {
-      codigoHTML += `<a href="#" onclick="buscarProdutoVenda(${item.barcode}); setTimeout(function(){limparModal();}, 1000);" class="list-group-item list-group-item-action" data-dismiss="modal">`
+      codigoHTML += `<a href="#" onclick="buscarProdutoVenda(${item.barcode}); setTimeout(function(){limparModal();}, 1000);" class="list-group-item list-group-item-action list-group-item-dark" data-dismiss="modal">`
       codigoHTML += '<div class="d-flex w-100 justify-content-between">'
       codigoHTML += `<h5 class="mb-1">Nome: ${corrigirTamanhoString(
         36,
@@ -560,6 +560,6 @@ async function buscarItemVendaLista() {
     document.getElementById('listaDeProdutos').innerHTML = codigoHTML
     animacaoSlideDown(['#listaDeProdutos'])
   } catch (error) {
-    mensagemDeErro(`Não foi possível fazer a busca! Erro: ${error}`)
+    mensagemDeErro('Não foi possível fazer a busca!')
   }
 }

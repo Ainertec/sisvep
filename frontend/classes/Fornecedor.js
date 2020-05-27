@@ -41,13 +41,13 @@ function telaFornecedor() {
   codigoHTML += '</div>'
 
   codigoHTML +=
-    '<div class="col-12 layer1" style="position: relative; height: 300px; z-index: 1; overflow: scroll; margin-top:20px;">'
+    '<div class="col-8 layer1 rounded mx-auto" style="position: relative; height: 300px; z-index: 1; overflow: scroll; margin-top:20px;">'
   codigoHTML += '<div id="listaDeFornecedores" class="list-group">'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
 
   codigoHTML +=
-    '<div class="card-deck col-6 mx-auto d-block" style="margin-top:30px;">'
+    '<div class="card-deck col-8 mx-auto d-block" style="margin-top:30px;">'
   codigoHTML += '<form>'
   codigoHTML += '<div id="dadosDoFornecedor">'
   codigoHTML += '</div>'
@@ -61,10 +61,10 @@ function telaFornecedor() {
 function carregarListaFornecedor(json, posicao) {
   let codigoHTML = ''
 
-  codigoHTML += `<a onclick="carregarDadosFornecedorSelecionado(${posicao});" href="#" class="list-group-item list-group-item-action">`
+  codigoHTML += `<a onclick="carregarDadosFornecedorSelecionado(${posicao});" href="#" class="list-group-item list-group-item-action list-group-item-dark">`
   codigoHTML += '<div class="d-flex w-100 justify-content-between">'
   codigoHTML += `<h5 class="mb-1">Nome: ${corrigirTamanhoString(
-    36,
+    28,
     json.name
   )}</h5>`
   codigoHTML += `<small>CPF/CNPJ: ${json.identification}</small>`
@@ -133,9 +133,9 @@ function carregarTelaDadosFornecedor(tipo, posicao) {
 
   if (tipo == 'Atualizar') {
     codigoHTML += '<div class="form-row">'
-    codigoHTML += `<button onclick="confirmarAcao('Atualizar dados fornecedor!','atualizarFornecedor(${posicao});')" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-edit"></span> Salvar</button>`
+    codigoHTML += `<button onclick="confirmarAcao('Atualizar os dados do fornecedor!','atualizarFornecedor(${posicao});')" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-edit"></span> Salvar</button>`
     codigoHTML +=
-      '<button onclick="confirmarAcao(\'Excluir dados fornecedor permanentemente! Todos os produtos que pertencem ao fornecedor serão excluídos!\',\'excluirFornecedor();\')" type="button" class="btn btn-danger" style="margin: 5px;"><span class="fas fa-trash-alt"></span> Excluir</button>'
+      '<button onclick="confirmarAcao(\'Excluir os dados do fornecedor permanentemente! Todos os produtos que pertencem ao fornecedor serão excluídos!\',\'excluirFornecedor();\')" type="button" class="btn btn-outline-danger" style="margin: 5px;"><span class="fas fa-trash-alt"></span> Excluir</button>'
     codigoHTML += '</div>'
   }
 

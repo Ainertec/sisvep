@@ -1,98 +1,163 @@
 <!doctype html>
 <html lang="pt-br">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="fontawesome-free/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="./bootstrap/css/escopo-css-pagina.css">
-    <title>SISVEP</title>
-  </head>
 
-  <body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="fontawesome-free/css/all.css" rel="stylesheet">
+  <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="./bootstrap/css/escopo-css-pagina.css">
+  <title>SISVEP</title>
+</head>
 
-    <nav id="navbarTotal" class="navbar navCor">
-      <img src="./img/logo.png" class="navbar-brand" style="width: 100px;" alt="...">
-      <div id="mensagemDeErro" class="justify-content-center"></div>
-      <ul class="nav justify-content-end">    
-          <li class="nav-item" id="statusLogin"></li>
-      </ul>
-    </nav>
+<body>
 
-    <div id="modal"></div>
-    
-    <div id="janelaTotal" style="margin-left: 50px; margin-right: 50px;">
+  <nav id="navbarTotal" class="navbar navCor"
+    style="padding-top: 0px; padding-right: 2px; border-bottom-right-radius: 20px;">
+    <img src="./img/logo.png" class="navbar-brand" style="width: 100px;" alt="...">
+    <div id="mensagemDeErro" class="justify-content-center"></div>
+    <ul class="nav justify-content-end">
+      <li class="nav-item" id="statusLogin" style="margin-right: 15px;"></li>
+      <li class="nav-item">
+        <div class="btn-group" role="group" style="border-radius: 5px;">
+          <a class="btn btn-outline-light" onclick="janelaTamanho()" style="padding-top: 0px; padding-bottom: 0px;"
+            href="#"><span class="fas fa-expand-alt"></span></a>
+          <a class="btn btn-outline-danger"
+            style="padding-top: 0px; padding-bottom: 0px; padding-left: 20px; padding-right: 20px;"
+            href="javascript:window.close()"><span class="fas fa-times"></span></a>
+        </div>
+      </li>
+    </ul>
+  </nav>
 
-      <hr class="my-6 bg-dark">
-      
-      <div class="row">
-      
-        <section class="col-2 bg.bg-transparent" style="height: 630px;">
-            <h5 class="text-center" style="margin-top: 15px;">Menu</h5>
-            <div id="mensagemSubMenu"></div>
-            <ul id="submenu" class="list-group list-group-flush">
-                <a onclick="animacaoJanela2(); setTimeout(function(){autenticacaoVendaFacede();},100) " class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-shopping-cart iconsTam"></span> Venda</a>
-                <a onclick="animacaoJanela2(); setTimeout(function(){liberarMousetrap(); subMenuProduto();},100) " class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-box-open iconsTam"></span> Produto</a>
-                <a onclick="animacaoJanela2(); setTimeout(function(){autenticacaoFornecedorFacede();},100) " class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-people-carry iconsTam"></span> Fornecedor</a>
-                <a onclick="animacaoJanela2(); setTimeout(function(){autenticacaoFuncionarioFacede();},100) " class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-user-tie iconsTam"></span> Funcionário</a>
-                <a onclick="animacaoJanela2(); setTimeout(function(){autenticacaoEstoqueFacede();},100) " class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-boxes iconsTam"></span> Estoque</a>
-                <a onclick="animacaoJanela2(); setTimeout(function(){autenticacaoRelatorioFacede();},100) " class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-chart-line iconsTam"></span> Relatórios</a>
-                <a onclick="animacaoJanela2(); setTimeout(function(){liberarMousetrap(); subMenuImpressao();},100) " class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-print iconsTam"></span> Impressão</a>
-                <a onclick="telaDeConfiguracaoDispositivo();" class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-mobile-alt iconsTam"></span> Dispositivos</a>
-                <a onclick="animacaoJanela2(); setTimeout(function(){autenticacaoLoja();},100) " class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-store-alt iconsTam"></span> Loja</a>
-                <a onclick="animacaoJanela2(); setTimeout(function(){ajudaInformacoes();},100) " class="list-group-item list-group-item-action list-group-item-warning" href="#"><span class="fas fa-question-circle iconsTam"></span> Ajuda</a>
-            </ul>
-        </section>
-      
-        <main class="col-10">
-          <div class="col-12 layer1" style="position: absolute; height: 630px; z-index: 1; overflow: scroll;">
-            <div id="janela2" style="margin-top: 10px;">
-              <h1 style="border-radius: 15px;"><img src="./img/logo.png" class="rounded mx-auto d-block" style="width: 200px; margin-top:250px" alt="..."></h1>
-              <h3 class="text-center">Bem Vindo</h3>
+  <div id="modal"></div>
+
+  <div id="janelaTotal" class="container-fluid">
+
+    <hr class="my-6 bg-dark">
+
+    <div class="row">
+
+      <section class="col-2 bg.bg-transparent"
+        style="height: 79vh; border-top-right-radius: 10px; border-bottom-right-radius: 10px;">
+        <h5 class="text-center" style="margin-top: 15px;">Menu</h5>
+        <div id="mensagemSubMenu"></div>
+        <ul id="submenu" class="list-group list-group-flush">
+          <a onclick="animacaoJanela2(); setTimeout(function(){autenticacaoVendaFacede();},100) "
+            class="list-group-item list-group-item-action list-group-item-warning" href="#"
+            style="border-top-left-radius: 10px; border-bottom-right-radius: 10px;"><span
+              class="fas fa-shopping-cart iconsTam"></span> Venda</a>
+          <a onclick="animacaoJanela2(); setTimeout(function(){liberarMousetrap(); subMenuProduto();},100) "
+            class="list-group-item list-group-item-action list-group-item-warning" href="#"
+            style="border-top-left-radius: 10px; border-bottom-right-radius: 10px;"><span
+              class="fas fa-box-open iconsTam"></span> Produto</a>
+          <a onclick="animacaoJanela2(); setTimeout(function(){autenticacaoFornecedorFacede();},100) "
+            class="list-group-item list-group-item-action list-group-item-warning" href="#"
+            style="border-top-left-radius: 10px; border-bottom-right-radius: 10px;"><span
+              class="fas fa-people-carry iconsTam"></span> Fornecedor</a>
+          <a onclick="animacaoJanela2(); setTimeout(function(){autenticacaoFuncionarioFacede();},100) "
+            class="list-group-item list-group-item-action list-group-item-warning" href="#"
+            style="border-top-left-radius: 10px; border-bottom-right-radius: 10px;"><span
+              class="fas fa-user-tie iconsTam"></span> Funcionário</a>
+          <a onclick="animacaoJanela2(); setTimeout(function(){autenticacaoEstoqueFacede();},100) "
+            class="list-group-item list-group-item-action list-group-item-warning" href="#"
+            style="border-top-left-radius: 10px; border-bottom-right-radius: 10px;"><span
+              class="fas fa-boxes iconsTam"></span> Estoque</a>
+          <a onclick="animacaoJanela2(); setTimeout(function(){autenticacaoRelatorioFacede();},100) "
+            class="list-group-item list-group-item-action list-group-item-warning" href="#"
+            style="border-top-left-radius: 10px; border-bottom-right-radius: 10px;"><span
+              class="fas fa-chart-line iconsTam"></span> Relatórios</a>
+          <a onclick="animacaoJanela2(); setTimeout(function(){liberarMousetrap(); subMenuImpressao();},100) "
+            class="list-group-item list-group-item-action list-group-item-warning" href="#"
+            style="border-top-left-radius: 10px; border-bottom-right-radius: 10px;"><span
+              class="fas fa-print iconsTam"></span> Impressão</a>
+          <a onclick="telaDeConfiguracaoDispositivo();"
+            class="list-group-item list-group-item-action list-group-item-warning" href="#"
+            style="border-top-left-radius: 10px; border-bottom-right-radius: 10px;"><span
+              class="fas fa-mobile-alt iconsTam"></span> Dispositivos</a>
+          <a onclick="animacaoJanela2(); setTimeout(function(){autenticacaoLoja();},100) "
+            class="list-group-item list-group-item-action list-group-item-warning" href="#"
+            style="border-top-left-radius: 10px; border-bottom-right-radius: 10px;"><span
+              class="fas fa-store-alt iconsTam"></span> Loja</a>
+          <a onclick="animacaoJanela2(); setTimeout(function(){ajudaInformacoes();},100) "
+            class="list-group-item list-group-item-action list-group-item-warning" href="#"
+            style="border-top-left-radius: 10px; border-bottom-right-radius: 10px;"><span
+              class="fas fa-question-circle iconsTam"></span> Ajuda</a>
+        </ul>
+      </section>
+
+      <main class="col-10" style="border-top-left-radius: 10px; border-bottom-left-radius: 10px;">
+        <div class="col-12 layer1" style="position: relative; height: 79vh; z-index: 1; overflow: scroll;">
+          <div id="janela2" style="margin-top: 10px;">
+
+            <div class="row">
+              <div class="col">
+                <div
+                  style="background-color: #000; border-top-left-radius: 60px; border-bottom-right-radius: 60px; width: 380px;">
+                  <img src="./img/logo.png" class="rounded mx-auto d-block" style="width: 100px; margin-top: 35vh">
+                </div>
+              </div>
+              <div class="col">
+                <h3 class="text-center" style="margin-top: 35vh">Bem Vindo!</h3>
+              </div>
+              <div class="col">
+                <div
+                  style="background-color: #000; border-top-left-radius: 60px; border-bottom-right-radius: 60px; width: 380px;">
+                  <img src="./img/logo.png" class="rounded mx-auto d-block" style="width: 100px; margin-top: 35vh">
+                </div>
+              </div>
             </div>
+
           </div>
-        </main>
-      
-      </div>
-      
-
-      <hr class="my-6 bg-dark">
-
-      <footer style="margin-top: 10px;">
-        <a class="nav-link text-dark" href="serial/serial.html"><span class="fab fa-dev iconsTam rounded float-right"> Ainertec</span></a>
-      </footer>
+        </div>
+      </main>
 
     </div>
 
 
-    <script src="./axios/axios.js"></script>
-    <script src="./bootstrap/js/jquery.min.js"></script>
-    <script src="./bootstrap/js/popper.min.js" crossorigin="anonymous"></script>
-    <script src="./bootstrap/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script src="./bootstrap/js/JsBarcode.all.min.js"></script>
-    <script src="./bootstrap/js/qrcode.js"></script>
-    <script src="./bootstrap/js/highchartsgrafico.js"></script>
-    <script src="./bootstrap/js/mousetrap.min.js"></script>
-    <script src="./bootstrap/js/printThis.js"></script>
+    <hr class="my-6 bg-dark" style="margin-bottom: 5px;">
+
+    <footer>
+      <a class="nav-link text-dark rounded float-right" href="serial/serial.html" style="padding: 0px;"><span
+          class="fab fa-dev iconsTam">
+          Ainertec</span></a>
+    </footer>
+
+  </div>
 
 
-    <script src="./classes/Requisicao.js"></script>
-    <script src="./classes/Funcionalidade.js"></script>
-    <script src="./classes/Login.js"></script>
-    <script src="./classes/Venda.js"></script>
-    <script src="./classes/Loja.js"></script>
-    <script src="./classes/Fornecedor.js"></script>
-    <script src="./classes/Produto.js"></script>
-    <script src="./classes/Funcionario.js"></script>
-    <script src="./classes/Impressao.js"></script>
-    <script src="./classes/Estoque.js"></script>
-    <script src="./classes/Relatorio.js"></script>
-    <script src="./classes/SubMenu.js"></script>
-    <script src="./classes/Dispositivo.js"></script>
-    <script src="./classes/AtalhosTeclas.js"></script>
-    <script src="./classes/Ajuda.js"></script>
-    
-    
+  <script src="./axios/axios.js"></script>
+  <script src="./bootstrap/js/jquery.min.js"></script>
+  <script src="./bootstrap/js/popper.min.js" crossorigin="anonymous"></script>
+  <script src="./bootstrap/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+  <script src="./bootstrap/js/JsBarcode.all.min.js"></script>
+  <script src="./bootstrap/js/qrcode.js"></script>
+  <script src="./bootstrap/js/highchartsgrafico.js"></script>
+  <script src="./bootstrap/js/mousetrap.min.js"></script>
+  <script src="./bootstrap/js/printThis.js"></script>
 
-  </body>
+
+  <script src="./classes/Requisicao.js"></script>
+  <script src="./classes/Funcionalidade.js"></script>
+  <script src="./classes/Login.js"></script>
+  <script src="./classes/Venda.js"></script>
+  <script src="./classes/Loja.js"></script>
+  <script src="./classes/Fornecedor.js"></script>
+  <script src="./classes/Produto.js"></script>
+  <script src="./classes/Funcionario.js"></script>
+  <script src="./classes/Impressao.js"></script>
+  <script src="./classes/Estoque.js"></script>
+  <script src="./classes/Relatorio.js"></script>
+  <script src="./classes/SubMenu.js"></script>
+  <script src="./classes/Dispositivo.js"></script>
+  <script src="./classes/AtalhosTeclas.js"></script>
+  <script src="./classes/Ajuda.js"></script>
+
+
+
+</body>
+
 </html>
