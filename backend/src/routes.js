@@ -11,6 +11,7 @@ const UserController = require('./app/controllers/UserController');
 const SaleController = require('./app/controllers/SaleController');
 const ReportController = require('./app/controllers/ReportController');
 const ShopController = require('./app/controllers/ShopController');
+const SenderController = require('./app/controllers/SenderController');
 
 const authMiddleware = require('./app/middleware/auth');
 const authorizationMiddleware = require('./app/middleware/authorization');
@@ -359,5 +360,18 @@ routes.get('/report_products_amount_percent', ReportController.amountProductsPer
 routes.get('/report_providers_products', ReportController.providersProducts);
 
 routes.get('/report_sales_amount', ReportController.salesAmount);
+
+// app
+
+routes.post(
+  '/send_barcode',
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      destiny: Joi.custom(validObjectId, 'valid id'),
+      barcode: Joi.number().required(),
+    }),
+  }),
+  SenderController.store
+);
 
 module.exports = routes;
