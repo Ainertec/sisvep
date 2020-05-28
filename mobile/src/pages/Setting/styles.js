@@ -6,7 +6,7 @@ const { width } = Dimensions.get('window');
 
 export const Container = styled.View`
   flex: 1;
-  background: #222;
+  background: ${(props) => props.theme.colors.background};
   justify-content: center;
 `;
 export const Content = styled.View`
@@ -26,7 +26,7 @@ export const Scroll = styled.ScrollView`
   margin-top: ${height * 0.02}px;
 `;
 export const Label = styled.Text`
-  color: #fff;
+  color: ${(props) => props.theme.colors.text};
   font-size: 20px;
   padding-left: ${width * 0.025}px;
 `;

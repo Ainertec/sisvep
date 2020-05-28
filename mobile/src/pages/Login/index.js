@@ -13,7 +13,7 @@ import Alert from '../../components/Alert';
 import logo from '../../assets/logo.png';
 import { useAuth } from '../../contexts/auth';
 
-import { Container, Logo, Title } from './styles';
+import { Container, Logo, Title, Content } from './styles';
 
 const Login = () => {
   const formRef = useRef(null);
@@ -70,7 +70,10 @@ const Login = () => {
         behavior='position'
         enable
       >
-        <Logo source={logo} />
+        <Content>
+          <Logo source={logo} />
+        </Content>
+
         <Title>Faça login</Title>
         <Form ref={formRef} onSubmit={handleSubmit}>
           <Label>Nome:</Label>

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from 'react-native-elements';
+import { ThemeContext } from 'styled-components';
+import ToggleContext from '../../contexts/theme';
 
 import { useAuth } from '../../contexts/auth';
 
@@ -17,6 +19,8 @@ import {
 export default function Setting() {
   const { signOut, user } = useAuth();
   const navigation = useNavigation();
+  const { colors, title } = useContext(ThemeContext);
+  const { toggleTheme } = useContext(ToggleContext);
 
   return (
     <Container>
@@ -37,9 +41,11 @@ export default function Setting() {
         <Content>
           <SettingsView>
             <SwitchView
-              thumbColor='darkred'
-              // onValueChange={toggleSwitch}
-              value
+              onValueChange={toggleTheme}
+              thumbColor={colors.primary}
+              // trackColor={{ false: '#767577', true: '#81b0ff' }}
+              // thumbColor={isEnabled ? 'blue' : '#f4f3f4'}
+              value={title === 'dark'}
             />
           </SettingsView>
           <Label>Trocar tema</Label>
