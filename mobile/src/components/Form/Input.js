@@ -1,9 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
 import { useField } from '@unform/core';
+import { ThemeContext } from 'styled-components';
 import { Icon } from 'react-native-material-ui';
 import { TextInput } from './styles';
 
 const Input = ({ name, iconName, ...rest }) => {
+  const { colors } = useContext(ThemeContext);
   const inputRef = useRef(null);
   const { fieldName, defaultValue, registerField, error } = useField(name);
 
@@ -34,6 +36,10 @@ const Input = ({ name, iconName, ...rest }) => {
   }, [fieldName, registerField]);
   return (
     <TextInput
+      containerStyle={{
+        backgroundColor: colors.background,
+      }}
+      inputStyle={{ color: colors.text }}
       ref={inputRef}
       defaultValue={defaultValue}
       errorMessage={error}
@@ -46,7 +52,7 @@ const Input = ({ name, iconName, ...rest }) => {
         <Icon
           name={iconName}
           size={24}
-          color='#fff'
+          color={colors.primary}
           style={{ marginRight: 20 }}
         />
       }

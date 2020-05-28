@@ -8,20 +8,22 @@ const { height } = Dimensions.get('window');
 const { width } = Dimensions.get('window');
 
 export const Label = styled.Text`
-  color: #fff;
+  color: ${(props) => props.theme.colors.text};
   margin-top: ${height * 0.05}px;
 `;
 
 export const TextInput = styled(Input).attrs({
-  containerStyle: { backgroundColor: '#222' },
-  inputStyle: { color: '#fff' },
+  // containerStyle: {
+  //   backgroundColor: background,
+  // },
+  // inputStyle: { color: 'darkred' },
 })``;
 export const Touchable = styled.TouchableOpacity`
   margin-top: ${height * 0.01}px;
   width: 100%;
   height: ${height * 0.05}px;
   border-radius: 20px;
-  background: darkred;
+  background: ${(props) => props.theme.colors.primary};
   align-items: center;
   justify-content: center;
   margin-bottom: ${height * 0.024}px;

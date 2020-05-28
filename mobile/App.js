@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import React, { Text } from 'react';
 import { YellowBox } from 'react-native';
 import { ThemeProvider } from 'styled-components';
 import { NavigationContainer } from '@react-navigation/native';
@@ -18,11 +18,14 @@ YellowBox.ignoreWarnings([
   // 'Possible Unhandled Promise',
 ]);
 export default function App() {
-  const [theme, setTheme] = useState(dark);
+  const [theme, setTheme] = usePersistedState('theme', dark);
 
   const toggleTheme = () => {
     setTheme(theme.title === 'light' ? dark : light);
   };
+  if (theme === null) {
+    return <Text>Loadin....</Text>;
+  }
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>

@@ -4,7 +4,7 @@ export default {
     primary: 'darkorange',
     secundary: '#ddd',
 
-    background: '#fff',
+    background: '#ccc',
 
     text: '#000',
   },
