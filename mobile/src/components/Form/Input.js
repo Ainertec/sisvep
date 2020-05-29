@@ -36,10 +36,6 @@ const Input = ({ name, iconName, ...rest }) => {
   }, [fieldName, registerField]);
   return (
     <TextInput
-      containerStyle={{
-        backgroundColor: colors.background,
-      }}
-      inputStyle={{ color: colors.text }}
       ref={inputRef}
       defaultValue={defaultValue}
       errorMessage={error}
@@ -52,7 +48,7 @@ const Input = ({ name, iconName, ...rest }) => {
         <Icon
           name={iconName}
           size={24}
-          color={colors.primary}
+          color={colors.secundary}
           style={{ marginRight: 20 }}
         />
       }

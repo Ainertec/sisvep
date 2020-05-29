@@ -29,7 +29,7 @@ export default function Setting() {
           <SettingsView>
             <Icon
               name='leak-add'
-              color='darkred'
+              color={colors.primary}
               size={35}
               onPress={() => {
                 navigation.navigate('IpSetting');
@@ -48,13 +48,15 @@ export default function Setting() {
               value={title === 'dark'}
             />
           </SettingsView>
-          <Label>Trocar tema</Label>
+          <Label>
+            Trocar para tema {title === 'dark' ? 'claro' : 'escuro'}
+          </Label>
         </Content>
         <Content>
           <SettingsView>
             <Icon
               name='exit-to-app'
-              color='darkred'
+              color={colors.primary}
               size={35}
               onPress={() => signOut()}
             />

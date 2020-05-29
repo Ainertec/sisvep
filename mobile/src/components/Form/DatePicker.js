@@ -1,27 +1,28 @@
-import React, { useRef, useEffect, useState } from 'react'
-import { Platform } from 'react-native'
-import { useField } from '@unform/core'
-import formatISO from 'date-fns/formatISO'
-
-import { Icon } from 'react-native-material-ui'
-import { TextInput, DatePickerCustom } from './styles'
-import Button from './Button'
+import React, { useRef, useEffect, useState, useContext } from 'react';
+import { Platform } from 'react-native';
+import { useField } from '@unform/core';
+import formatISO from 'date-fns/formatISO';
+import { ThemeContext } from 'styled-components';
+import { Icon } from 'react-native-material-ui';
+import { TextInput, DatePickerCustom } from './styles';
+import Button from './Button';
 
 const DatePickerT = ({ name, ...rest }) => {
-  const { fieldName, defaultValue, registerField, error } = useField(name)
-  const inputRef = useRef(null)
-  const [date, setDate] = useState(new Date())
-  const [show, setShow] = useState(false)
+  const { colors } = useContext(ThemeContext);
+  const { fieldName, defaultValue, registerField, error } = useField(name);
+  const inputRef = useRef(null);
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
 
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date
-    setShow(Platform.OS === 'ios')
-    setDate(currentDate)
-  }
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+  };
 
   const showDatePicker = () => {
-    setShow(true)
-  }
+    setShow(true);
+  };
 
   useEffect(() => {
     if (error) {
@@ -30,33 +31,33 @@ const DatePickerT = ({ name, ...rest }) => {
     }
   }, [error]);
 
-
   useEffect(() => {
     registerField({
       name: fieldName,
       ref: inputRef.current,
       path: 'value',
       clearValue(ref) {
-        ref.value = ''
-        ref.clear()
+        ref.value = '';
+        ref.clear();
       },
       setValue(ref, value) {
-        ref.setNativeProps({ text: value })
-        inputRef.current.value = value
+        ref.setNativeProps({ text: value });
+        inputRef.current.value = value;
       },
       getValue(ref) {
-        return ref.value
+        return ref.value;
       },
-    })
-  }, [fieldName, registerField])
+    });
+  }, [fieldName, registerField]);
   useEffect(() => {
-    inputRef.current.value = formatISO(date)
-  }, [date])
+    inputRef.current.value = formatISO(date);
+  }, [date]);
 
   return (
     <>
       <TextInput
         ref={inputRef}
+        inputStyle={{ color: colors.text }}
         value={formatISO(date)}
         defaultValue={defaultValue}
         errorMessage={error}
@@ -65,7 +66,7 @@ const DatePickerT = ({ name, ...rest }) => {
           <Icon
             name='date-range'
             size={24}
-            color='#fff'
+            color={colors.secundary}
             style={{ marginRight: 20 }}
           />
         }
@@ -81,7 +82,7 @@ const DatePickerT = ({ name, ...rest }) => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
-export default DatePickerT
+export default DatePickerT;

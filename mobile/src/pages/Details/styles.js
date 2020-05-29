@@ -6,7 +6,7 @@ const { width } = Dimensions.get('window');
 
 export const Container = styled.View`
   flex: 1;
-  background: #222;
+  background: ${(props) => props.theme.colors.background};
 `;
 
 export const Scroll = styled.ScrollView`
@@ -16,7 +16,7 @@ export const Scroll = styled.ScrollView`
 `;
 export const DetailField = styled.View`
   border-bottom-width: 1px;
-  border-bottom-color: #fff;
+  border-bottom-color: ${(props) => props.theme.colors.secundary};
   border-radius: ${width * 0.01}px;
   margin: ${height * 0.015}px ${width * 0.01}px;
 `;
@@ -26,13 +26,13 @@ export const FiledTextView = styled.View`
   padding-left: 8px;
 `;
 export const FieldTitle = styled.Text`
-  color: #fff;
+  color: ${(props) => props.theme.colors.text};
   text-transform: capitalize;
   font-size: 18px;
   margin: 0 ${width * 0.013}px;
 `;
 export const FieldLabel = styled.Text`
-  color: #fff;
+  color: ${(props) => props.theme.colors.text};
   margin-bottom: ${height * 0.009}px;
   font-size: 15px;
 `;

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View } from 'react-native';
+import { ThemeContext } from 'styled-components';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -20,13 +21,14 @@ const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 const stackOptions = () => {
+  const { colors } = useContext(ThemeContext);
   const navigation = useNavigation();
   return {
     headerTitleAlign: 'center',
     headerTitle: 'Sisvep',
     headerTintColor: 'white',
     headerStyle: {
-      backgroundColor: '#222',
+      backgroundColor: colors.background,
       elevation: 10,
     },
     headerLeft: () => (
@@ -34,20 +36,14 @@ const stackOptions = () => {
         <Icon
           size={26}
           name='menu'
-          color='#fff'
+          color={colors.secundary}
           onPress={() => navigation.openDrawer()}
         />
       </View>
     ),
   };
 };
-function TabRest() {
-  return (
-    <Stack.Navigator screenOptions={stackOptions}>
-      <Stack.Screen name='Home' component={RestScren} />
-    </Stack.Navigator>
-  );
-}
+
 function TabVenda() {
   return (
     <Stack.Navigator screenOptions={stackOptions}>
@@ -56,6 +52,7 @@ function TabVenda() {
   );
 }
 function TabCreateProduct() {
+  const { colors } = useContext(ThemeContext);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -70,13 +67,14 @@ function TabCreateProduct() {
           headerTitleAlign: 'center',
           headerTitle: 'Cadastrar Fornecedor',
           headerTintColor: 'white',
-          headerStyle: { backgroundColor: '#222', elevation: 10 },
+          headerStyle: { backgroundColor: colors.background, elevation: 10 },
         }}
       />
     </Stack.Navigator>
   );
 }
 function TabSearch() {
+  const { colors } = useContext(ThemeContext);
   return (
     <Stack.Navigator>
       <Stack.Screen name='Busca' component={Search} options={stackOptions} />
@@ -87,13 +85,14 @@ function TabSearch() {
           headerTitleAlign: 'center',
           headerTitle: 'Detalhes',
           headerTintColor: 'white',
-          headerStyle: { backgroundColor: '#222', elevation: 10 },
+          headerStyle: { backgroundColor: colors.background, elevation: 10 },
         }}
       />
     </Stack.Navigator>
   );
 }
 function TabUpdateStock() {
+  const { colors } = useContext(ThemeContext);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -108,13 +107,14 @@ function TabUpdateStock() {
           headerTitleAlign: 'center',
           headerTitle: 'Atualizar Produto',
           headerTintColor: 'white',
-          headerStyle: { backgroundColor: '#222', elevation: 10 },
+          headerStyle: { backgroundColor: colors.background, elevation: 10 },
         }}
       />
     </Stack.Navigator>
   );
 }
 function TabConfiguracao() {
+  const { colors } = useContext(ThemeContext);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -129,32 +129,35 @@ function TabConfiguracao() {
           headerTitleAlign: 'center',
           headerTitle: 'Configurar Ip',
           headerTintColor: 'white',
-          headerStyle: { backgroundColor: '#222', elevation: 10 },
+          headerStyle: { backgroundColor: colors.background, elevation: 10 },
         }}
       />
     </Stack.Navigator>
   );
 }
-const AppRoutes = () => (
-  <Drawer.Navigator
-    initialRouteName='Home'
-    drawerType='back'
-    drawerStyle={{
-      backgroundColor: '#222',
-      width: 240,
-    }}
-    drawerContentOptions={{
-      activeTintColor: '#999',
-      labelStyle: { color: '#fff' },
-    }}
-  >
-    <Drawer.Screen name='Home' component={TabRest} />
-    <Drawer.Screen name='Venda' component={TabVenda} />
-    <Drawer.Screen name='Cadastrar ' component={TabCreateProduct} />
-    <Drawer.Screen name='Buscar ' component={TabSearch} />
-    <Drawer.Screen name='Atualizar' component={TabUpdateStock} />
-    <Drawer.Screen name='Configurações' component={TabConfiguracao} />
-  </Drawer.Navigator>
-);
+const AppRoutes = () => {
+  const { colors } = useContext(ThemeContext);
+  return (
+    <Drawer.Navigator
+      initialRouteName='Home'
+      drawerType='back'
+      drawerStyle={{
+        backgroundColor: colors.background,
+        width: 240,
+      }}
+      drawerContentOptions={{
+        activeTintColor: '#999',
+        labelStyle: { color: colors.text },
+      }}
+    >
+      {/* <Drawer.Screen name='Home' component={TabRest} /> */}
+      <Drawer.Screen name='Venda' component={TabVenda} />
+      <Drawer.Screen name='Cadastrar ' component={TabCreateProduct} />
+      <Drawer.Screen name='Buscar ' component={TabSearch} />
+      <Drawer.Screen name='Atualizar' component={TabUpdateStock} />
+      <Drawer.Screen name='Configurações' component={TabConfiguracao} />
+    </Drawer.Navigator>
+  );
+};
 
 export default AppRoutes;

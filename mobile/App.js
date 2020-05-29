@@ -23,9 +23,7 @@ export default function App() {
   const toggleTheme = () => {
     setTheme(theme.title === 'light' ? dark : light);
   };
-  if (theme === null) {
-    return <Text>Loadin....</Text>;
-  }
+
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>

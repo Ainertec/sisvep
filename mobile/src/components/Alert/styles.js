@@ -6,6 +6,7 @@ const { height } = Dimensions.get('window');
 
 export const ModalC = styled(Modal)`
   background: #fdfffc;
+  z-index: 1000;
   height: ${height * 0.19}px;
   width: 100%;
   justify-content: flex-start;

@@ -1,28 +1,38 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import { Animated, Dimensions } from 'react-native';
+import { ThemeContext } from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from 'react-native-elements';
 
 import api from '../../services/api';
 import { SearchBar } from '../../components/Form';
+import Alert from '../../components/Alert';
 
 import { Container, Item, List, FormContent, ListFooter } from './styles';
 
 const deviceHeight = Dimensions.get('window').height;
 
 export default function Search() {
+  const { colors } = useContext(ThemeContext);
   const formRef = useRef(null);
+  const errorAlertRef = useRef(null);
   const navigation = useNavigation();
   const [products, setProducts] = useState([]);
 
   async function handleSubmit(data) {
     if (data.name === '') setProducts([]);
     else {
-      const response = await api.get('products', {
-        params: data,
-      });
-      setProducts(response.data);
+      api
+        .get('products', {
+          params: data,
+        })
+        .then((response) => {
+          setProducts(response.data);
+        })
+        .catch((error) => {
+          errorAlertRef.current.open();
+        });
     }
   }
 
@@ -69,12 +79,19 @@ export default function Search() {
         renderItem={({ item }) => (
           <Item
             title={item.name}
-            leftIcon={<Icon name='shopping-cart' color='darkred' size={30} />}
+            leftIcon={
+              <Icon name='shopping-cart' color={colors.primary} size={30} />
+            }
             onPress={() => navigation.navigate('Details', { product: item })}
             chevron
             rightTitle={`R$ ${item.price}`}
           />
         )}
+      />
+      <Alert
+        ref={errorAlertRef}
+        title='Ops...'
+        subtitle='Não foi possivel se conectar'
       />
     </Container>
   );

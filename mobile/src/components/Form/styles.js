@@ -12,12 +12,12 @@ export const Label = styled.Text`
   margin-top: ${height * 0.05}px;
 `;
 
-export const TextInput = styled(Input).attrs({
-  // containerStyle: {
-  //   backgroundColor: background,
-  // },
-  // inputStyle: { color: 'darkred' },
-})``;
+export const TextInput = styled(Input).attrs((props) => ({
+  containerStyle: {
+    backgroundColor: props.theme.colors.background,
+  },
+  inputStyle: { color: props.theme.colors.text },
+}))``;
 export const Touchable = styled.TouchableOpacity`
   margin-top: ${height * 0.01}px;
   width: 100%;
@@ -29,16 +29,16 @@ export const Touchable = styled.TouchableOpacity`
   margin-bottom: ${height * 0.024}px;
 `;
 export const TouchableText = styled.Text`
-  color: #fff;
+  color: ${(props) => props.theme.colors.text};
   font-weight: bold;
 `;
 export const DatePickerCustom = styled(DateTimePicker)`
-  background: #222;
+  background: ${(props) => props.theme.colors.background};
   width: 100%;
 `;
 
 export const PickerView = styled.View`
-  background: #222;
+  background: ${(props) => props.theme.colors.background};
   border-bottom-width: 1px;
   border-bottom-color: rgba(250, 250, 250, 0.7);
   margin: 0 ${width * 0.02}px;
@@ -47,11 +47,11 @@ export const PickerView = styled.View`
   justify-content: space-between;
 `;
 export const Picker = styled.Picker`
-  color: #fff;
+  color: ${(props) => props.theme.colors.text};
   margin-left: ${width * 0.02}px;
 `;
 export const PickerTitle = styled.Text`
-  color: #fff;
+  color: ${(props) => props.theme.colors.text};
   font-size: 14px;
 `;
 export const Search = styled(Searchbar)`

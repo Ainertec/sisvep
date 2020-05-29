@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View } from 'react-native';
+import { ThemeContext } from 'styled-components';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -9,6 +10,7 @@ import IpSetting from '../pages/IpSetting';
 const AuthStack = createStackNavigator();
 
 const AuthRoutes = () => {
+  const { colors } = useContext(ThemeContext);
   return (
     <AuthStack.Navigator>
       <AuthStack.Screen
@@ -17,13 +19,13 @@ const AuthRoutes = () => {
         options={({ navigation }) => ({
           headerTitleAlign: 'center',
           headerTintColor: 'white',
-          headerStyle: { backgroundColor: '#222', elevation: 10 },
+          headerStyle: { backgroundColor: colors.background, elevation: 10 },
           headerRight: () => (
             <View style={{ paddingRight: 15 }}>
               <Icon
                 size={25}
                 name='cog'
-                color='#fff'
+                color={colors.secundary}
                 onPress={() => {
                   navigation.navigate('IpSetting');
                 }}
@@ -39,7 +41,7 @@ const AuthRoutes = () => {
           headerTitleAlign: 'center',
           headerTitle: 'Configurar Ip',
           headerTintColor: 'white',
-          headerStyle: { backgroundColor: '#222', elevation: 10 },
+          headerStyle: { backgroundColor: colors.background, elevation: 10 },
         }}
       />
     </AuthStack.Navigator>

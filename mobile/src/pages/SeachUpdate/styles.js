@@ -6,7 +6,7 @@ const { width } = Dimensions.get('window');
 
 export const Container = styled.View`
   flex: 1;
-  background: #222;
+  background: ${(props) => props.theme.colors.background};
 `;
 export const MainScroll = styled.ScrollView`
   flex: 1;

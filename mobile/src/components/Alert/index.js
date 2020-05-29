@@ -16,6 +16,7 @@ const Alert = React.forwardRef(
       ref={ref}
       position='top'
       entry='top'
+      coverScreen
       animationDuration={300}
       swipeToClose
       backButtonClose

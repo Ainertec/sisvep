@@ -1,7 +1,8 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Text, Dimensions, Switch, Animated, Easing } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { ThemeContext } from 'styled-components';
 
 import api from '../../services/api';
 import { useAuth } from '../../contexts/auth';
@@ -14,6 +15,7 @@ const QrReader = ({ cameraSide, formRef, sendBarcode, ...rest }) => {
   const [scanned, setScanned] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
   const { user } = useAuth();
+  const { colors } = useContext(ThemeContext);
 
   const AnimatableScanner = Animated.createAnimatedComponent(BarCodeScanner);
   const scannerHeigth = new Animated.Value(0);
@@ -71,8 +73,8 @@ const QrReader = ({ cameraSide, formRef, sendBarcode, ...rest }) => {
   return (
     <Container>
       <Switch
-        trackColor={{ false: '#767577', true: '#81b0ff' }}
-        thumbColor={isEnabled ? 'blue' : '#f4f3f4'}
+        trackColor={{ false: '#767577', true: colors.secundary }}
+        thumbColor={isEnabled ? colors.background : '#f4f3f4'}
         ios_backgroundColor='#3e3e3e'
         onValueChange={() => {
           showAnimation();
