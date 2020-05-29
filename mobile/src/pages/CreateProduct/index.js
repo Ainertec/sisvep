@@ -83,6 +83,7 @@ export default function CreateProduct() {
 
             <Button
               title='Cadastrar novo fornecedor'
+              outline
               onPress={() => handleCreateProvider()}
             />
 

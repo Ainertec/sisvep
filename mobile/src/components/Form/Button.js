@@ -1,13 +1,13 @@
-import React from 'react'
+import React from 'react';
 
-import { Touchable, TouchableText } from './styles'
+import { Touchable, TouchableText } from './styles';
 
-const Button = ({ title, ...rest }) => {
+const Button = ({ title, outline, ...rest }) => {
   return (
-    <Touchable {...rest}>
+    <Touchable outline={outline} {...rest}>
       <TouchableText>{title || 'Enviar'}</TouchableText>
     </Touchable>
-  )
-}
+  );
+};
 
-export default Button
+export default Button;

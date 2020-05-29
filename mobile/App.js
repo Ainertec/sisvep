@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { Text } from 'react';
+import React from 'react';
 import { YellowBox } from 'react-native';
 import { ThemeProvider } from 'styled-components';
 import { NavigationContainer } from '@react-navigation/native';

@@ -23,7 +23,13 @@ export const Touchable = styled.TouchableOpacity`
   width: 100%;
   height: ${height * 0.05}px;
   border-radius: 20px;
-  background: ${(props) => props.theme.colors.primary};
+  border-width: 1px;
+  border-width: ${(props) => (props.outline ? 1 : 0)}px;
+  border-color: ${(props) => props.theme.colors.primary};
+  background: ${(props) =>
+    !props.outline
+      ? props.theme.colors.primary
+      : props.theme.colors.background};
   align-items: center;
   justify-content: center;
   margin-bottom: ${height * 0.024}px;
