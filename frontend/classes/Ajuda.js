@@ -18,8 +18,8 @@ function ajudaInformacoes() {
   codigoHTML += '<p>========================</p>'
   codigoHTML += '<h2>Teclas de atalho venda</h2>'
   codigoHTML += '<p>------------------------</p>'
-  codigoHTML += '<p><strong>ctrl+del</strong> -> Remove o item.</p>'
-  codigoHTML += '<p><strong>ctrl+enter</strong> -> Adiciona o item.</p>'
+  codigoHTML += '<p><strong>2 x del</strong> -> Remove o item.</p>'
+  codigoHTML += '<p><strong>2 x enter</strong> -> Adiciona o item.</p>'
   codigoHTML +=
     '<p><strong>d+enter</strong> -> Seleciona o pagamento em dinheiro.</p>'
   codigoHTML +=
@@ -27,11 +27,11 @@ function ajudaInformacoes() {
   codigoHTML +=
     '<p><strong>q</strong> -> Seleciona o campo de quantidade do item aonde será adicionado a quantidade do item a ser vendido.</p>'
   codigoHTML +=
-    '<p><strong>e</strong> -> Seleciona o campo excluir item aonde será adicionado o código do produto a ser excluido.</p>'
+    '<p><strong>r</strong> -> Seleciona o campo excluir item aonde será adicionado o código do produto a ser excluido.</p>'
   codigoHTML +=
     '<p><strong>a</strong> -> Seleciona o campo adicionar item aonde será adicionado o código do produto a ser adicionado.</p>'
   codigoHTML +=
-    '<p><strong>b</strong> -> Libera o menu lateral (lembrando que se ativado durante a venda todos os dados da mesma serão perdidos!).</p>'
+    '<p><strong>2 x b</strong> -> Libera o menu lateral (lembrando que se ativado durante a venda todos os dados da mesma serão perdidos!).</p>'
   codigoHTML +=
     '<p><strong>l</strong> -> Abre a opção de selecionar o produto pelo nome na hora da venda.</p>'
   codigoHTML += '<p>========================</p>'

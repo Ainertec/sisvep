@@ -20,6 +20,7 @@ function autenticacaoVendaFacede() {
       document.getElementById('mensagemSubMenu').innerHTML =
         '<p>Para liberar o menu pressione duas vezes a tecla "B" ou clique no botão abaixo!<br/>Pressione "L" para pesquisar produtos pelo nome.</p><button onclick="liberarSubMenu();" type="button" class="btn btn-outline-dark"><span class="fas fa-list-ul iconsTam"></span> Menu <span class="fas fa-caret-down iconsTam"></span></button>'
     }, 1000)
+    socketCodigoBarrasRealTime();
   } else {
     mensagemDeErro('Usuário não autorizado!')
   }
@@ -330,27 +331,13 @@ function beepAlerta() {
 
 // funcao responsavel por receber o codigo de barras lido pelo celular em real time
 function socketCodigoBarrasRealTime() {
-  if ('WebSocket' in window) {
-    alert('WebSocket is supported by your Browser!')
-    const ws = new WebSocket('ws://localhost:9998/echo')
 
-    /* ws.onopen = function() {
-           ws.send("Message to send");
-           alert("Message is sent...");
-        }; */
+  const socket = io('http://localhost:3333', {
+    query: { userId: buscarSessionUser()._id },
+  });
 
-    ws.onmessage = function (evt) {
-      const received_msg = evt.data
-      buscarProdutoVenda(received_msg)
-      alert('Message is received...')
-    }
+  socket.on('barcode', (barcode) => { buscarProdutoVenda(barcode) });
 
-    ws.onclose = function () {
-      alert('Connection is closed...')
-    }
-  } else {
-    alert('WebSocket NOT supported by your Browser!')
-  }
 }
 
 // funcao responsavel por cadastrar a venda após concluida
@@ -418,16 +405,16 @@ async function modalImpressaoNota(json, valorPago) {
   codigoHTML += '</div>'
   codigoHTML += '<div id="infoDadosnota" class="modal-body">'
 
-  codigoHTML += '<p>========================</p>'
+  codigoHTML += '<p>====================================</p>'
   codigoHTML += `<p>${result.data.name}<br/>`
   codigoHTML += `CPF/CNPJ: ${result.data.identification}<br/>`
   codigoHTML += `Tel.: ${result.data.phone}<br/>`
   codigoHTML += `End.: ${result.data.address}</p>`
-  codigoHTML += '<p>========================<br/>'
+  codigoHTML += '<p>====================================<br/>'
   codigoHTML += 'CUPOM NÃO FISCAL<br/>'
-  codigoHTML += '========================</p>'
+  codigoHTML += '====================================</p>'
   codigoHTML += `<p>Data: ${json.data.sale.createdAt.split('.')[0]}</p>`
-  codigoHTML += '<p>----------------------------------------</p>'
+  codigoHTML += '<p>-----------------------------------------------------------</p>'
   codigoHTML += '<p>'
   json.data.sale.itens.forEach(function (item) {
     codigoHTML += `Produto: ${item.product.name} / quan.:${parseInt(
@@ -440,7 +427,7 @@ async function modalImpressaoNota(json, valorPago) {
     ).toFixed(2)}<br/>`
   })
   codigoHTML += '</p>'
-  codigoHTML += '<p>========================</p>'
+  codigoHTML += '<p>====================================</p>'
   codigoHTML += `<p>Valor total: R$${json.data.sale.total.toFixed(2)}<br/>`
   if (valorPago != null) {
     codigoHTML += `Valor pago: R$${valorPago.toFixed(2)}<br/>`
@@ -448,7 +435,7 @@ async function modalImpressaoNota(json, valorPago) {
     codigoHTML += `Valor pago: R$${json.data.sale.total.toFixed(2)}<br/>`
   }
   codigoHTML += `Forma de pagamento: ${json.data.sale.payment}</p>`
-  codigoHTML += '<p>========================</p>'
+  codigoHTML += '<p>====================================</p>'
   codigoHTML += `<p>ID venda: ${json.data.sale._id}</p>`
 
   codigoHTML += '</div>'
