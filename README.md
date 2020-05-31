@@ -12,11 +12,23 @@
   <a href="#memo-licença">Licença</a>
 </p>
 
+## Projeto
+<p>
+  anfjaskcbakd
+    ddadfafw
+    fasfsadfaw
+    dw
+    fwe
+    fweadfdff
+    as
+    
+</p>    
+
+
+
 ## Técnologias
-- Back end<br/>
-Node JS<br/>
-- Font end<br/>
-Electron<br/>
+-  [Node](https://nodejs.org/en/)
+-  [Electron](https://www.electronjs.org/)
 -  [Expo](https://expo.io/)
 -  [React-Native](https://facebook.github.io/react-native/)
 
