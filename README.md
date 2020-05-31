@@ -27,7 +27,7 @@
 -  [React-Native](https://facebook.github.io/react-native/)
 
 ## :information_source: Como Usar
-Para testar o projeto, você vai precisar do [Node.js v10.16][nodejs] ou maior,[Yarn v1.13][yarn]ou maior,[Expo sdk37 ][expo] + [Electron v9.0.0][electronjs]  instalados no seu computador. Na linha de comando:
+Para testar o projeto, você vai precisar do [Node.js v10.16][nodejs] ou maior, [Yarn v1.13][yarn] ou maior, [Expo sdk37 ][expo] , [Electron v9.0.0][electronjs] + [MongoDB v][mongodb]  instalados no seu computador. Na linha de comando:
 
 ```bash
 # Clone o repositório
