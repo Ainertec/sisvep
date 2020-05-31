@@ -27,7 +27,7 @@
 -  [React-Native](https://facebook.github.io/react-native/)
 
 ## :information_source: Como Usar
-Para testar o projeto, você vai precisar: [Git](https://git-scm.com), [Node.js v10.16][nodejs] ou maior, [Yarn v1.13][yarn] ou maior, [Expo sdk37 ][expo] , [Electron v9.0.0][electronjs] + [MongoDB v4.2][mongodb]  instalados no seu computador. Na linha de comando:
+Para testar o projeto, você vai precisar: [Git](https://git-scm.com), [Node.js v10.16][nodejs]  ou maior, [Yarn v1.13][yarn] ou maior, [Expo sdk37 ][expo] , [Electron v9.0.0][electronjs] + [MongoDB v4.2][mongodb]  instalados no seu computador. Na linha de comando:
 
 ```bash
 # Clone o repositório
@@ -59,7 +59,7 @@ $ yarn start
 ```
 
 ## :memo: Licença
-[LICENÇA](license.txt) 
+[LICENÇA](https://github.com/ainertec-developer/sisvep/master/license)
 
 ---
 Data de inicio do projeto 24-03-2020 como consta na busca da marca no INPI<br/>
