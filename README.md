@@ -69,7 +69,7 @@ $ yarn
 ```
 
 ## :memo: Licença
-[LICENÇA](https://github.com/ainertec-developer/sisvep/master/license.txt)
+[LICENÇA](https://github.com/ainertec-developer/sisvep/blob/master/license.txt)
 
 ---
 Data de inicio do projeto 24-03-2020 como consta na busca da marca no INPI<br/>
