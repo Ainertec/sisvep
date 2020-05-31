@@ -1,4 +1,4 @@
-<h1 align="center" style"background:#000">
+<h1 align="center" style"background-color:black">
     <img alt="sisvep" title="sisvep" src=".github/logo.png" width="200px" />
 </h1>
 
