@@ -30,7 +30,7 @@
 Para testar o projeto, você vai precisar do [Node.js v10.16][nodejs] ou maior,[Yarn v1.13][yarn]ou maior,[Expo sdk37 ][expo] + [Electron v9.0.0][electronjs]  instalados no seu computador. Na linha de comando:
 
 ```bash
-# Clone this repository
+# Clone o repositório
 $ git clone https://github.com/ainertec-developer/sisvep sisvep
 
 # Entre no repositório
