@@ -27,7 +27,7 @@
 -  [React-Native](https://facebook.github.io/react-native/)
 
 ## :information_source: Como Usar
-Para testar o projeto, você vai precisar: [Git](https://git-scm.com), [Node.js v10.16][nodejs]  ou maior, [Yarn v1.13][yarn] ou maior, [Expo sdk37 ][expo] , [Electron v9.0.0][electronjs] + [MongoDB v4.2][mongodb]  instalados no seu computador. Na linha de comando:
+Para testar o projeto, você vai precisar: [Git](https://git-scm.com), [Node.js v10.16](https://nodejs.org/en/) ou maior, [Yarn](https://yarnpkg.com/) ou [Npm](https://www.npmjs.com/), [Expo sdk37 ](https://expo.io/) , [Electron v9.0.0](https://www.electronjs.org/) + [MongoDB v4.2](https://docs.mongodb.com/manual/)  instalados no seu computador. Na linha de comando:
 
 ```bash
 # Clone o repositório
@@ -40,26 +40,36 @@ $ cd sisvep
 $ cd backend
 
 # Instale as dependências
-$ yarn install
+$ yarn 
+# ou
+$ npm i
 
-# Inicier o servidor mongo
+# Inicie o servidor mongo
 $ mongod
 
-# Inicier o backend
+# Inicie o backend
 $ yarn start
+# ou
+$ npm start
 
 # Entre no diretório mobile
 $ cd sisvep/mobile
 
-# Intale as dependências
-$ yarn install
+# Instale as dependências
+$ yarn 
 
 # Inicie o app
 $ yarn start
+
+# Vá para o diretório frontend
+$ cd sisvep/frontend
+
+# Instale as dependências
+$ yarn 
 ```
 
 ## :memo: Licença
-[LICENÇA](https://github.com/ainertec-developer/sisvep/master/license)
+[LICENÇA](https://github.com/ainertec-developer/sisvep/master/license.txt)
 
 ---
 Data de inicio do projeto 24-03-2020 como consta na busca da marca no INPI<br/>
