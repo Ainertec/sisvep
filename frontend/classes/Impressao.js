@@ -136,17 +136,17 @@ async function gerarSegundaViaComprovante(codigo) {
   codigoHTML += '</div>'
   codigoHTML += '<div id="infoDadosnota" class="modal-body">'
 
-  codigoHTML += '<p>========================</p>'
+  codigoHTML += '<p>====================================</p>'
   codigoHTML += '<p>2a VIA COMPROVANTE VENDA</p>'
   codigoHTML += `<p>${result.data.name}<br/>`
   codigoHTML += `CPF/CNPJ: ${result.data.identification}<br/>`
   codigoHTML += `Tel.: ${result.data.phone}<br/>`
   codigoHTML += `End.: ${result.data.address}</p>`
-  codigoHTML += '<p>========================<br/>'
+  codigoHTML += '<p>====================================<br/>'
   codigoHTML += 'CUPOM NÃO FISCAL<br/>'
-  codigoHTML += '========================</p>'
+  codigoHTML += '====================================</p>'
   codigoHTML += `<p>Data: ${json.data.createdAt.split('.')[0]}</p>`
-  codigoHTML += '<p>----------------------------------------</p>'
+  codigoHTML += '<p>-----------------------------------------------------------</p>'
   codigoHTML += '<p>'
   json.data.itens.forEach(function (item) {
     codigoHTML += `Produto: ${item.product.name} /quan.:${parseInt(
@@ -159,10 +159,10 @@ async function gerarSegundaViaComprovante(codigo) {
     ).toFixed(2)}<br/>`
   })
   codigoHTML += '</p>'
-  codigoHTML += '<p>========================</p>'
+  codigoHTML += '<p>====================================</p>'
   codigoHTML += `<p>Valor total: R$${json.data.total.toFixed(2)}<br/>`
   codigoHTML += `Forma de pagamento: ${json.data.payment}</p>`
-  codigoHTML += '<p>========================</p>'
+  codigoHTML += '<p>====================================</p>'
   codigoHTML += `<p>ID venda: ${json.data._id}</p>`
 
   codigoHTML += '</div>'
@@ -174,7 +174,6 @@ async function gerarSegundaViaComprovante(codigo) {
 
   $('#modalNota').modal('show')
 
-  imprimirImpressora('#infoDadosnota')
 }
 
 // funcao responsavel por gerar a tela de impressao de relatorio
@@ -305,10 +304,10 @@ async function gerarImpressaoDetalheVenda(codigo) {
   codigoHTML += '</div>'
   codigoHTML += '<div id="infoDetalhesVenda" class="modal-body">'
 
-  codigoHTML += '<p>========================</p>'
+  codigoHTML += '<p>====================================</p>'
   codigoHTML += '<p>TODOS OS DETALHES DA VENDA</p>'
   codigoHTML += `<p>Data: ${json.data.createdAt.split('.')[0]}</p>`
-  codigoHTML += '<p>----------------------------------------</p>'
+  codigoHTML += '<p>-----------------------------------------------------------</p>'
   codigoHTML += '<p>'
   json.data.itens.forEach(function (item) {
     codigoHTML += `Produto: ${item.product.name} /quantidade:${parseInt(
@@ -321,11 +320,11 @@ async function gerarImpressaoDetalheVenda(codigo) {
     ).toFixed(2)}<br/>`
   })
   codigoHTML += '</p>'
-  codigoHTML += '<p>========================</p>'
+  codigoHTML += '<p>====================================</p>'
   codigoHTML += `<p>Valor total: R$${json.data.total.toFixed(2)}<br/>`
   codigoHTML += `Responsavel: ${json.data.functionary.name}<br/>`
   codigoHTML += `Forma de pagamento: ${json.data.payment}</p>`
-  codigoHTML += '<p>========================</p>'
+  codigoHTML += '<p>====================================</p>'
   codigoHTML += `<p>ID venda: ${json.data._id}</p>`
 
   codigoHTML += '</div>'
