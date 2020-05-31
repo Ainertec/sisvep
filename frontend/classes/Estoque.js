@@ -56,7 +56,7 @@ function carregarProdutosEstoque(json, posicao) {
   codigoHTML += '<tr>'
   codigoHTML += `<td><strong>${json.barcode}</strong></td>`
   codigoHTML += `<td class="table-info"><strong>${corrigirTamanhoString(36, json.name)}</strong></td>`
-  if (json.stock < 200) {
+  if (json.stock < 10) {
     codigoHTML += `<td class="table-danger"><strong>${json.stock}</strong></td>`
   } else {
     codigoHTML += `<td class="table-success"><strong>${json.stock}</strong></td>`

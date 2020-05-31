@@ -119,7 +119,7 @@ function carregarTelaDadosFuncionario(tipo, tipo2) {
   codigoHTML += '<div class="form-row">'
   if (tipo2 == 'Cadastrar') {
     codigoHTML +=
-      '<button onclick="cadastrarFuncionario();" type="button" class="btn btn-primary" style="margin: 5px;"><span class="fas fa-save"></span> Cadastrar</button>'
+      '<button onclick="ativaDesativaBotao([\'botaocadastrarfuncionario\'],500); cadastrarFuncionario();" id="botaocadastrarfuncionario" type="button" class="btn btn-primary" style="margin: 5px;"><span class="fas fa-save"></span> Cadastrar</button>'
   } else {
     codigoHTML +=
       '<button onclick="confirmarAcao(\'Atualizar os dados do funcionário!\',\'atualizarFuncionario();\')" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-edit"></span> Atualizar</button>'

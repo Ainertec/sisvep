@@ -72,7 +72,7 @@ function telaLoja(tipo) {
       '<button onclick="confirmarAcao(\'Atualizar os dados da loja!\',\'atualizarLoja();\')" type="button" class="btn btn-success" style="margin: 5px;"><span class="fas fa-edit"></span> Salvar</button>'
   } else if (tipo == 'Cadastrar') {
     codigoHTML +=
-      '<button onclick="cadastrarLoja();" type="button" class="btn btn-primary" style="margin: 5px;"><span class="fas fa-save"></span> Salvar</button>'
+      '<button onclick="ativaDesativaBotao([\'botaocadastrarloja\'],200); cadastrarLoja();" id="botaocadastrarloja" type="button" class="btn btn-primary" style="margin: 5px;"><span class="fas fa-save"></span> Salvar</button>'
   }
   codigoHTML += '</div>'
   codigoHTML += '</form>'
@@ -161,6 +161,7 @@ async function cadastrarLoja() {
         headers: { Authorization: `Bearer ${buscarSessionUser().token}` },
       })
       mensagemDeAviso('Cadastrado com sucesso!')
+      autenticacaoLoja();
     } catch (error) {
       mensagemDeErro(`Não foi possível cadastrar! Erro: ${error}`)
     }

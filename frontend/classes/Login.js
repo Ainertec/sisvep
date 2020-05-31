@@ -18,7 +18,7 @@ function telaAutenticacao() {
   codigoHTML += '</div>'
   codigoHTML += '</div>'
   codigoHTML +=
-    '<button onclick="if(validaDadosCampo([\'#login\', \'#senha\'])){efetuarLogin();}else{mensagemDeErro(\'Preencha todos os campos!\'); mostrarCamposIncorreto([\'login\',\'senha\']);}" type="button" class="btn btn-primary border border-dark col-md-4">'
+    '<button onclick="if(validaDadosCampo([\'#login\', \'#senha\'])){ ativaDesativaBotao([\'botaoefetuarlogin\'],1000); efetuarLogin();}else{mensagemDeErro(\'Preencha todos os campos!\'); mostrarCamposIncorreto([\'login\',\'senha\']);}" id="botaoefetuarlogin" type="button" class="btn btn-primary border border-dark col-md-4">'
   codigoHTML += '<span class="fas fa-key"></span> Acessar'
   codigoHTML += '</button>'
   codigoHTML +=
