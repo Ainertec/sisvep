@@ -16,7 +16,7 @@
 
 
 <!-- ![](./github/create.gif) -->
-<p align="center">
+<p align="flex-start">
   <img alt="App Demo" src=".github/create.gif" width="300px">
   <img alt="App Demo" src=".github/login-light.jpg" width="300px">
   <img alt="App Demo" src=".github/search.gif" width="300px">
