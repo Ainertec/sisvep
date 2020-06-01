@@ -1,5 +1,5 @@
 <h1 align="center" >
-    <img alt="sisvep" title="sisvep" src=".github/icon.png" width="100px" />
+    <img alt="sisvep" title="sisvep" src=".github/icon.png" width="170px" />
 </h1>
 
 <h3 align="center">
