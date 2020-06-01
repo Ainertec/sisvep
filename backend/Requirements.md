@@ -66,3 +66,6 @@ O funcionário é formado pelo: ID, CPF ou CNPJ, nome, (relação de horas traba
 Para o funcionário é necessário: Crud sistema de busca por: id, todos, nome, código de acesso(senha), sistema de cadastrar horas trabalhadas.
 
 - OBS.: calcular as horas trabalhadas dentro de um período informado para um funcionário informado, somente funcionário administrador poderá criar funcionários administradores ou comuns.
+
+Data de inicio do projeto 24-03-2020 como consta na busca da marca no INPI<br/>
+Inicio do projeto em 04-04-2020<br/><br/>

@@ -13,14 +13,19 @@
   <a href="#memo-licença">Licença</a>
 </p>
 
-## Projeto
+
 
 <!-- ![](./github/create.gif) -->
 <p align="center">
   <img alt="App Demo" src=".github/create.gif" width="300px">
+  <img alt="App Demo" src=".github/login-light.jpg" width="300px">
   <img alt="App Demo" src=".github/search.gif" width="300px">
 </p>    
 
+## Projeto
+  O Sisvep é um software que visa facilitar o processo de venda em pequenas lojas, provendo funcionalidades para cadastro, busca, controle de estoque entre outras.
+  O sistema posibilita ler o código de barras de um produto pelo app mobile e em tempo real adicionar esse produto a uma venda no frontend, facilitando assim a realização de uma venda.
+  Com cada venda realizada são feitos relatórios com gráficos que possibilitam o usuário seber qual mês teve mais lucro, mais vendas, produtos mais vendidos, produtos que geram mais lucro entre outros.
 
 
 ## Tecnologias
@@ -75,9 +80,7 @@ $ yarn
 [LICENÇA](https://github.com/ainertec-developer/sisvep/blob/master/license.txt)
 
 ---
-Data de inicio do projeto 24-03-2020 como consta na busca da marca no INPI<br/>
-Inicio do projeto em 04-04-2020<br/><br/>
-
+Feito com :heart: por Ainertec
 Desenvolvedores:<br/>
 Aldair Klein<br/>
 Cleiton Baloneker<br/>
