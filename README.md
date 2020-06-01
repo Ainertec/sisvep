@@ -14,10 +14,10 @@
 </p>
 
 ## Projeto
-<!-- <p align="center">
+<p align="center">
   <img alt="App Demo" src=".github/create.gif">
   <img alt="App Demo" src=".github/search.gif">
-</p>     -->
+</p>    
 
 
 
