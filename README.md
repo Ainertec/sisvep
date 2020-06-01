@@ -77,7 +77,7 @@ $ yarn
 ```
 
 ## :memo: Licença
-[LICENÇA](https://github.com/ainertec-developer/sisvep/blob/master/license.txt)
+Para informações sobre [LICENÇA](https://github.com/ainertec-developer/sisvep/blob/master/license.txt)
 
 ---
 Feito com :heart: por Ainertec
