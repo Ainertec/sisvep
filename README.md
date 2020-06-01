@@ -14,10 +14,12 @@
 </p>
 
 ## Projeto
-<p align="center">
-  <img alt="App Demo" src=".github/create.gif">
-  <img alt="App Demo" src=".github/search.gif">
-</p>    
+
+![](./github/create.gif)
+<!-- <p align="center">
+  <img alt="App Demo" src=".github/create.gif" width="100px">
+  <img alt="App Demo" src=".github/search.gif" width="100px">
+</p>     -->
 
 
 
