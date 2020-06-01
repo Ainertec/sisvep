@@ -172,3 +172,13 @@ function janelaTamanho() {
     }
   }
 }
+
+//funco responsavel por controlar a ativacao e desativacao de botoes
+function ativaDesativaBotao(campo, tempo) {
+  campo.forEach(function (item) {
+    document.getElementById(item).disabled = true
+    setTimeout(function () {
+      document.getElementById(item).disabled = false
+    }, tempo)
+  });
+}

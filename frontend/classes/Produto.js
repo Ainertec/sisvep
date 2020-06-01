@@ -112,7 +112,7 @@ function telaProduto(tipo) {
     codigoHTML +=
       '<button onclick="document.getElementById(\'dadosDoFornecedor\').innerHTML = carregarTelaDadosFornecedor(\'Cadastrar\',null);" type="button" class="btn btn-outline-dark" style="margin: 5px;"><span class="fas fa-people-carry"></span> Cadastrar Fornecedor</button>'
     codigoHTML +=
-      '<button onclick="cadastrarProduto();" type="button" class="btn btn-primary" style="margin: 5px;"><span class="fas fa-save"></span> Salvar</button>'
+      '<button onclick="ativaDesativaBotao([\'botaocadastrarproduto\'],500); cadastrarProduto();" id="botaocadastrarproduto" type="button" class="btn btn-primary" style="margin: 5px;"><span class="fas fa-save"></span> Salvar</button>'
   }
 
   codigoHTML += '</div>'
