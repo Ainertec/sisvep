@@ -15,11 +15,11 @@
 
 ## Projeto
 
-![](./github/create.gif)
-<!-- <p align="center">
+<!-- ![](./github/create.gif) -->
+<p align="center">
   <img alt="App Demo" src=".github/create.gif" width="100px">
   <img alt="App Demo" src=".github/search.gif" width="100px">
-</p>     -->
+</p>    
 
 
 
