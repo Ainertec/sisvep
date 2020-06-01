@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Provider = require('../models/Provider');
+const Provider = require('../../models/Provider');
 
 const verifyProductsIds = (products) => {
   return products.every((product) => {

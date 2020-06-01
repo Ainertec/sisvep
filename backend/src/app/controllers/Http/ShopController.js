@@ -1,4 +1,4 @@
-const Shop = require('../models/Shop');
+const Shop = require('../../models/Shop');
 
 module.exports = {
   async index(req, res) {

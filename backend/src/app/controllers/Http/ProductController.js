@@ -2,8 +2,8 @@ const parseISO = require('date-fns/parseISO');
 const isValid = require('date-fns/isValid');
 const endOfMonth = require('date-fns/endOfMonth');
 const startOfMonth = require('date-fns/startOfMonth');
-const Product = require('../models/Product');
-const Provider = require('../models/Provider');
+const Product = require('../../models/Product');
+const Provider = require('../../models/Provider');
 
 const informationsProdutsProviders = () => {
   return {
@@ -44,7 +44,6 @@ module.exports = {
           phone: provider.phone,
           emial: provider.email,
         };
-
       }
     }
 

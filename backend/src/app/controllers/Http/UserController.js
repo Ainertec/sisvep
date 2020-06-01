@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-const User = require('../models/User');
-const { Questions } = require('../models/User');
+const User = require('../../models/User');
+const { Questions } = require('../../models/User');
 
 module.exports = {
   async getQuestion(req, res) {

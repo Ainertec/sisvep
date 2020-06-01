@@ -35,9 +35,6 @@ app.use((req, res, next) => {
 
   return next();
 });
-// Preciso enviar um barcode do aplicativo para o desktop
-// o app vai ler enviar o codigo para uma rota com o destinatario
-// a rota vai pagar o id do estinatario e mandar um emit para ele com codigo
 
 app.use(compression());
 app.use(express.json());

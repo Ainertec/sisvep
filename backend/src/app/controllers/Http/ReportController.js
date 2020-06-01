@@ -1,8 +1,8 @@
 const isBefore = require('date-fns/isBefore');
 const isValid = require('date-fns/isValid');
 const parseISO = require('date-fns/parseISO');
-const Provider = require('../models/Provider');
-const Sale = require('../models/Sale');
+const Provider = require('../../models/Provider');
+const Sale = require('../../models/Sale');
 
 module.exports = {
   async show(req, res) {

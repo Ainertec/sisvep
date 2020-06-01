@@ -2,16 +2,19 @@ const routes = require('express').Router();
 const mongoose = require('mongoose');
 
 const { celebrate, Joi, Segments } = require('celebrate');
+// htpp
+const ProductController = require('./app/controllers/Http/ProductController');
+const ProviderController = require('./app/controllers/Http/ProviderController');
+const SessionController = require('./app/controllers/Http/SessionController');
+const ForgotPasswordController = require('./app/controllers/Http/ForgotPasswordController');
+const UserController = require('./app/controllers/Http/UserController');
+const SaleController = require('./app/controllers/Http/SaleController');
+const ReportController = require('./app/controllers/Http/ReportController');
+const ShopController = require('./app/controllers/Http/ShopController');
+const SerialController = require('./app/controllers/Http/SerialController');
 
-const ProductController = require('./app/controllers/ProductController');
-const ProviderController = require('./app/controllers/ProviderController');
-const SessionController = require('./app/controllers/SessionController');
-const ForgotPasswordController = require('./app/controllers/ForgotPasswordController');
-const UserController = require('./app/controllers/UserController');
-const SaleController = require('./app/controllers/SaleController');
-const ReportController = require('./app/controllers/ReportController');
-const ShopController = require('./app/controllers/ShopController');
-const SenderController = require('./app/controllers/SenderController');
+// websocket
+const SenderController = require('./app/controllers/Websocket/SenderController');
 
 const authMiddleware = require('./app/middleware/auth');
 const authorizationMiddleware = require('./app/middleware/authorization');
@@ -23,6 +26,18 @@ const validObjectId = (value, helpers) => {
   }
   return value;
 };
+
+// disconect
+
+routes.post(
+  '/disconect',
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      password: Joi.string().required(),
+    }),
+  }),
+  SerialController.destroy
+);
 
 // session
 

@@ -1,5 +1,5 @@
 const sub = require('date-fns/sub');
-const Sale = require('../models/Sale');
+const Sale = require('../../models/Sale');
 
 module.exports = {
   async show(req, res) {
