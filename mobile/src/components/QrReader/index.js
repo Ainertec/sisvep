@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Text, Dimensions, Switch, Animated, Easing } from 'react-native';
@@ -22,11 +23,13 @@ const QrReader = ({ cameraSide, formRef, sendBarcode, ...rest }) => {
   const scannerHeigthRef = useRef(scannerHeigth);
 
   useEffect(() => {
+    let mounted = true;
     async function getPermission() {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
+      if (mounted) setHasPermission(status === 'granted');
     }
     getPermission();
+    return () => (mounted = false);
   }, []);
 
   const handleBarCodeScanned = async ({ data }) => {
@@ -43,12 +46,12 @@ const QrReader = ({ cameraSide, formRef, sendBarcode, ...rest }) => {
     setScanned(false);
   };
 
-  // if (hasPermission === null) {
-  //   return <Text>É necessaria a premição para acessar a câmera</Text>;
-  // }
-  if (hasPermission === false) {
-    return <Text>Não foi possivel acessar a câmera</Text>;
+  if (hasPermission === null) {
+    return <Text>É necessaria a premição para acessar a câmera</Text>;
   }
+  // if (hasPermission === false) {
+  //   return <Text>Não foi possivel acessar a câmera</Text>;
+  // }
 
   const showAnimation = async () => {
     if (!isEnabled) {

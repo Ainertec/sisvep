@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Icon } from 'react-native-elements';
 
-import RestScren from '../pages/RestScreen/index';
 import Sold from '../pages/Sold';
 import CreateProduct from '../pages/CreateProduct';
 import CreateProvider from '../pages/CreateProvider';
@@ -150,7 +149,6 @@ const AppRoutes = () => {
         labelStyle: { color: colors.text },
       }}
     >
-      {/* <Drawer.Screen name='Home' component={TabRest} /> */}
       <Drawer.Screen name='Venda' component={TabVenda} />
       <Drawer.Screen name='Cadastrar ' component={TabCreateProduct} />
       <Drawer.Screen name='Buscar ' component={TabSearch} />
