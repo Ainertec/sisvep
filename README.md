@@ -20,6 +20,8 @@
   <img alt="App Demo" src=".github/create.gif" width="300px">
   <!-- <img alt="App Demo" src=".github/login-light.jpg" width="300px"> -->
   <img alt="App Demo" src=".github/search.gif" width="300px">
+  <img alt="App Demo" src=".github/relatorio-desktop.gif" width="300px">
+  <img alt="App Demo" src=".github/venda-desktop.gif" width="300px">
 </p>    
 
 ## :dart: Projeto
