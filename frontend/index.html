@@ -47,7 +47,7 @@
       setTimeout(function () { window.location.href = "home.html"; }, 3000);
     } else {
       setTimeout(async function () {
-        await requisicaoGET("serial_false/?password=" + 52164521655455362, '');
+        await requisicaoPOST('disconect?password=' + '52164521655455362', JSON.parse('{"password":"52164521655455362"}'), null);
         window.location.href = "serial/serial.html";
       }, 3000);
     }
