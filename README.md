@@ -27,7 +27,7 @@
 ## :dart: Projeto
   O Sisvep é um software que visa facilitar o processo de venda em pequenas lojas, provendo funcionalidades para cadastro, busca, controle de estoque entre outras.
   O sistema posibilita ler o código de barras de um produto pelo app mobile e em tempo real adicionar esse produto a uma venda no app desktop, tornado o processo mais simples e escalavél.
-  Com cada venda realizada são feitos relatórios com gráficos que possibilitam o usuário seber qual mês teve mais lucro, mais vendas, produtos mais vendidos, produtos que geram mais lucro entre outros.
+  Com cada venda realizada são feitos relatórios com gráficos que possibilitam o usuário saber qual mês teve mais lucro, mais vendas, produtos mais vendidos, produtos que geram mais lucro entre outros.
 
 
 ## :mag: Tecnologias
