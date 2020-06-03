@@ -19,9 +19,9 @@
   <img alt="App Demo" src=".github/search.gif" width="300px">
 </p>    
 
-<p align="flex-start" flexDirection="row">
-  <img alt="App Demo" src=".github/relatorio-desktop.gif" width="50%">
-  <img alt="App Demo" src=".github/venda-desktop.gif" width="50%">
+<p align="flex-start" style="flex-direction:row">
+  <img alt="App Demo" src=".github/relatorio-desktop.gif" width="40%">
+  <img alt="App Demo" src=".github/venda-desktop.gif" width="40%">
 </p>  
 
 ## :dart: Projeto
