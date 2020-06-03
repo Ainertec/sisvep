@@ -20,8 +20,8 @@
 </p>    
 
 <p align="flex-start" style="flex-direction:row">
-  <img alt="App Demo" src=".github/relatorio-desktop.gif" width="49% height="300px">
-  <img alt="App Demo" src=".github/venda-desktop.gif" width="49%" height="300px">
+  <img alt="App Demo" src=".github/relatorio-desktop.gif" >
+  <img alt="App Demo" src=".github/venda-desktop.gif" >
 </p>  
 
 ## :dart: Projeto
