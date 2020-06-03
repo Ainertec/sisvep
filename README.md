@@ -17,11 +17,9 @@
 <p align="center">
   <img alt="App Demo" src=".github/create.gif" width="300px">
   <img alt="App Demo" src=".github/search.gif" width="300px">
-  <img alt="App Demo" src=".github/relatorio-desktop.gif" width="50%">
-  <img alt="App Demo" src=".github/venda-desktop.gif" width="50%">
 </p>    
 
-<p align="flex-start">
+<p align="flex-start" flexDirection="row">
   <img alt="App Demo" src=".github/relatorio-desktop.gif" width="50%">
   <img alt="App Demo" src=".github/venda-desktop.gif" width="50%">
 </p>  
