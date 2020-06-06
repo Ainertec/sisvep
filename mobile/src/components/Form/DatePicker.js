@@ -72,7 +72,7 @@ const DatePickerT = ({ name, ...rest }) => {
         }
         {...rest}
       />
-      <Button title='Selcionar validade' outline onPress={showDatePicker} />
+      <Button title='Selecionar validade' outline onPress={showDatePicker} />
       {show && (
         <DatePickerCustom
           value={date}
