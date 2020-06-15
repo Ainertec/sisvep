@@ -395,7 +395,7 @@ async function modalImpressaoNota(json, valorPago) {
   codigoHTML +=
     '<h5 class="modal-title" id="modalNotaImpressao">Nota Compra</h5>'
   codigoHTML +=
-    '<button onclick="imprimirImpressora(\'#infoDadosnota\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;">'
+    '<button onclick="imprimirImpressora(\'#infoDadosnota\');" type="button" class="btn btn-primary" style="margin-left:10px;">'
   codigoHTML += '<span class="fas fa-print iconsTam"></span> Imprimir'
   codigoHTML += '</button>'
   codigoHTML +=
