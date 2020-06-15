@@ -27,6 +27,20 @@ const validObjectId = (value, helpers) => {
   return value;
 };
 
+// routes.post(
+//   '/users/first',
+//   celebrate({
+//     [Segments.BODY]: Joi.object().keys({
+//       name: Joi.string().required(),
+//       password: Joi.string().required(),
+//       question: Joi.string().required(),
+//       response: Joi.string().required(),
+//       admin: Joi.boolean(),
+//     }),
+//   }),
+//   UserController.store
+// );
+
 // disconect
 
 routes.post(
