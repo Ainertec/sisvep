@@ -7,7 +7,6 @@ const connectionManager = require('../utils/connectionManager');
 
 const Sale = require('../../src/app/models/Sale');
 const app = require('../../src/app');
-// const User = require('../../src/app/models/User')
 
 describe('A print test', () => {
   beforeAll(() => {

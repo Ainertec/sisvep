@@ -73,7 +73,3 @@ module.exports = {
     return res.status(200).json('success');
   },
 };
-
-/*
-shell.openItem("C://gresppro-x64//executaveis_modulos//impressao.vbs")
-*/
