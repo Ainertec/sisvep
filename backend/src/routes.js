@@ -12,6 +12,7 @@ const SaleController = require('./app/controllers/Http/SaleController');
 const ReportController = require('./app/controllers/Http/ReportController');
 const ShopController = require('./app/controllers/Http/ShopController');
 const SerialController = require('./app/controllers/Http/SerialController');
+const PrinterController = require('./app/controllers/Http/PrinterController');
 
 // websocket
 const SenderController = require('./app/controllers/Websocket/SenderController');
@@ -26,20 +27,6 @@ const validObjectId = (value, helpers) => {
   }
   return value;
 };
-
-// routes.post(
-//   '/users/first',
-//   celebrate({
-//     [Segments.BODY]: Joi.object().keys({
-//       name: Joi.string().required(),
-//       password: Joi.string().required(),
-//       question: Joi.string().required(),
-//       response: Joi.string().required(),
-//       admin: Joi.boolean(),
-//     }),
-//   }),
-//   UserController.store
-// );
 
 // disconect
 
@@ -338,6 +325,10 @@ routes.post(
   }),
   SaleController.store
 );
+
+// printer
+
+routes.post('/recipes', PrinterController.store);
 
 // Only admin users
 

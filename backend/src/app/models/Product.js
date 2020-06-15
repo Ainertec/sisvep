@@ -37,18 +37,20 @@ const ProductSchema = new mongoose.Schema(
 );
 
 ProductSchema.post('findOneAndRemove', (document) => {
-  const productId = document._id;
-  Provider.find({ products: { $in: [productId] } }).then((providers) => {
-    Promise.all(
-      providers.map((provider) =>
-        Provider.findOneAndUpdate(
-          { _id: provider._id },
-          { $pull: { products: productId } },
-          { new: true }
+  if (document) {
+    const productId = document._id;
+    Provider.find({ products: { $in: [productId] } }).then((providers) => {
+      Promise.all(
+        providers.map((provider) =>
+          Provider.findOneAndUpdate(
+            { _id: provider._id },
+            { $pull: { products: productId } },
+            { new: true }
+          )
         )
-      )
-    );
-  });
+      );
+    });
+  }
 });
 
 module.exports = mongoose.model('Product', ProductSchema);
