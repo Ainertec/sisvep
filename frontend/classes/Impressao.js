@@ -44,7 +44,7 @@ function gerarEtiquetasCodigoDeBarras(quantidade, codigo) {
   codigoHTML +=
     '<h5 class="modal-title" id="modalBarcodeImpressao">Emissão Código de Barras</h5>'
   codigoHTML +=
-    '<button onclick="imprimirImpressora(\'#emissaoCodigoDeBarras\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;">'
+    '<button onclick="imprimirImpressora(\'#emissaoCodigoDeBarras\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;" data-dismiss="modal">'
   codigoHTML += '<span class="fas fa-print iconsTam"></span> Imprimir'
   codigoHTML += '</button>'
   codigoHTML +=
@@ -53,9 +53,9 @@ function gerarEtiquetasCodigoDeBarras(quantidade, codigo) {
   codigoHTML += '</button>'
   codigoHTML += '</div>'
   codigoHTML += '<div id="emissaoCodigoDeBarras" class="modal-body">'
-  for (var cont = 0; cont < quantidade; cont++) {
-    codigoHTML += `<svg id="barcode${cont}"></svg>`
-  }
+  codigoHTML += '<div id="grupoBarcode" class="row">'
+  codigoHTML += `<div class="qrcode col" style="margin-top:20px" id="barcode"></div>`
+  codigoHTML += '</div>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
   codigoHTML += '</div>'
@@ -64,12 +64,27 @@ function gerarEtiquetasCodigoDeBarras(quantidade, codigo) {
   document.getElementById('modal').innerHTML = codigoHTML
   $('#modalImpressaoBarcode').modal('show')
 
-  for (var cont = 0; cont < quantidade; cont++) {
-    JsBarcode(`#barcode${cont}`, codigo, {
-      format: 'ean8',
-      flat: false,
-    })
-  }
+  /*JsBarcode(`#barcode${cont}`, codigo, {
+    format: 'ean8',
+    flat: false,
+  })*/
+  new QRCode('barcode', {
+    text: codigo.toString(),
+    width: 128,
+    height: 128,
+    colorDark: 'black',
+    colorLight: 'white',
+    correctLevel: QRCode.CorrectLevel.H,
+  })
+
+  setTimeout(function () {
+    let codigoHTML2 = '';
+    for (var cont = 0; cont < quantidade; cont++) {
+      codigoHTML2 += `<div class="qrcode col" style="margin-top:20px">${document.getElementById('barcode').innerHTML}</div>`
+    }
+    document.getElementById('grupoBarcode').innerHTML = codigoHTML2;
+  }, 300)
+
 }
 
 // funcao reponsavel por gerar a tela de reimpressao de comprovante de venda
@@ -126,7 +141,7 @@ async function gerarSegundaViaComprovante(codigo) {
   codigoHTML +=
     '<h5 class="modal-title" id="modalNotaImpressao">Nota Compra 2a Via</h5>'
   codigoHTML +=
-    '<button onclick="imprimirImpressora(\'#infoDadosnota\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;">'
+    '<button onclick="imprimirImpressora(\'#infoDadosnota\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;" data-dismiss="modal">'
   codigoHTML += '<span class="fas fa-print iconsTam"></span> Imprimir'
   codigoHTML += '</button>'
   codigoHTML +=
@@ -192,7 +207,7 @@ function telaImpressaoRelatorio() {
     codigoHTML +=
       '<h5 class="modal-title" id="modalRelatorioImpressao">Impressão relatório</h5>'
     codigoHTML +=
-      '<button onclick="imprimirImpressora(\'#infoDadosRelatorio\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;">'
+      '<button onclick="imprimirImpressora(\'#infoDadosRelatorio\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;" data-dismiss="modal">'
     codigoHTML += '<span class="fas fa-print iconsTam"></span> Imprimir'
     codigoHTML += '</button>'
     codigoHTML +=
@@ -294,7 +309,7 @@ async function gerarImpressaoDetalheVenda(codigo) {
   codigoHTML +=
     '<h5 class="modal-title" id="modalVendaDetalhe">Detalhe venda</h5>'
   codigoHTML +=
-    '<button onclick="imprimirImpressora(\'#infoDetalhesVenda\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;">'
+    '<button onclick="imprimirImpressora(\'#infoDetalhesVenda\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;" data-dismiss="modal">'
   codigoHTML += '<span class="fas fa-print iconsTam"></span> Imprimir'
   codigoHTML += '</button>'
   codigoHTML +=
