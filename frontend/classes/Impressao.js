@@ -130,7 +130,7 @@ async function gerarSegundaViaComprovante(codigo) {
     headers: { Authorization: `Bearer ${buscarSessionUser().token}` },
   })
 
-  let codigoHTML = ''
+  let codigoHTML = '', json2 = JSON.parse(`{"id":"${codigo}", "details":false}`)
 
   codigoHTML +=
     '<div class="modal fade" id="modalNota" tabindex="-1" role="dialog" aria-labelledby="modalNotaImpressao" aria-hidden="true">'
@@ -141,7 +141,7 @@ async function gerarSegundaViaComprovante(codigo) {
   codigoHTML +=
     '<h5 class="modal-title" id="modalNotaImpressao">Nota Compra 2a Via</h5>'
   codigoHTML +=
-    '<button onclick="imprimirImpressora(\'#infoDadosnota\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;" data-dismiss="modal">'
+    '<button id="botaoReimprimir" setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;" data-dismiss="modal">'
   codigoHTML += '<span class="fas fa-print iconsTam"></span> Imprimir'
   codigoHTML += '</button>'
   codigoHTML +=
@@ -188,6 +188,10 @@ async function gerarSegundaViaComprovante(codigo) {
   document.getElementById('modal').innerHTML = codigoHTML
 
   $('#modalNota').modal('show')
+
+  $('#botaoReimprimir').click(async function () {
+    await requisicaoPOST('recipes', json2, { headers: { Authorization: `Bearer ${buscarSessionUser().token}` }, })
+  })
 
 }
 
@@ -298,7 +302,7 @@ async function gerarImpressaoDetalheVenda(codigo) {
     headers: { Authorization: `Bearer ${buscarSessionUser().token}` },
   })
 
-  let codigoHTML = ''
+  let codigoHTML = '', json2 = JSON.parse(`{"id":"${codigo}", "details":true}`)
 
   codigoHTML +=
     '<div class="modal fade" id="modalDetalheVenda" tabindex="-1" role="dialog" aria-labelledby="modalVendaDetalhe" aria-hidden="true">'
@@ -309,7 +313,7 @@ async function gerarImpressaoDetalheVenda(codigo) {
   codigoHTML +=
     '<h5 class="modal-title" id="modalVendaDetalhe">Detalhe venda</h5>'
   codigoHTML +=
-    '<button onclick="imprimirImpressora(\'#infoDetalhesVenda\'); setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;" data-dismiss="modal">'
+    '<button id="botaoReimprimir" setTimeout(function(){limparModal();}, 1000);" type="button" class="btn btn-primary" style="margin-left:10px;" data-dismiss="modal">'
   codigoHTML += '<span class="fas fa-print iconsTam"></span> Imprimir'
   codigoHTML += '</button>'
   codigoHTML +=
@@ -350,4 +354,8 @@ async function gerarImpressaoDetalheVenda(codigo) {
   document.getElementById('modal').innerHTML = codigoHTML
 
   $('#modalDetalheVenda').modal('show')
+
+  $('#botaoReimprimir').click(async function () {
+    await requisicaoPOST('recipes', json2, { headers: { Authorization: `Bearer ${buscarSessionUser().token}` }, })
+  })
 }

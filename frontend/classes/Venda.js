@@ -368,11 +368,7 @@ async function cadastrarVenda(formaPagamento) {
     headers: { Authorization: `Bearer ${buscarSessionUser().token}` },
   })
 
-  if (formaPagamento == 'Dinheiro') {
-    modalImpressaoNota(result, parseFloat($('#valorPago').val()))
-  } else {
-    modalImpressaoNota(result, null)
-  }
+  modalImpressaoNota(result)
 
   setTimeout(function () {
     autenticacaoVendaFacede()
@@ -380,11 +376,10 @@ async function cadastrarVenda(formaPagamento) {
 }
 
 // funcao responsavel por gerar o modal de impressao e enviar a nota para a impressao
-async function modalImpressaoNota(json, valorPago) {
-  let codigoHTML = ''
-  const result = await requisicaoGET('shops', {
-    headers: { Authorization: `Bearer ${buscarSessionUser().token}` },
-  })
+async function modalImpressaoNota(json) {
+  let codigoHTML = '', json2 = JSON.parse(`{"id":"${json.data.sale._id}", "details":false}`)
+
+  await requisicaoPOST('recipes', json2, { headers: { Authorization: `Bearer ${buscarSessionUser().token}` }, })
 
   codigoHTML +=
     '<div class="modal fade" id="modalNota" tabindex="-1" role="dialog" aria-labelledby="modalNotaImpressao" aria-hidden="true">'
@@ -395,7 +390,7 @@ async function modalImpressaoNota(json, valorPago) {
   codigoHTML +=
     '<h5 class="modal-title" id="modalNotaImpressao">Nota Compra</h5>'
   codigoHTML +=
-    '<button onclick="imprimirImpressora(\'#infoDadosnota\');" type="button" class="btn btn-primary" style="margin-left:10px;">'
+    '<button id="botaoReimprimir" type="button" class="btn btn-primary" style="margin-left:10px;">'
   codigoHTML += '<span class="fas fa-print iconsTam"></span> Imprimir'
   codigoHTML += '</button>'
   codigoHTML +=
@@ -403,40 +398,12 @@ async function modalImpressaoNota(json, valorPago) {
   codigoHTML += '<span aria-hidden="true">&times;</span>'
   codigoHTML += '</button>'
   codigoHTML += '</div>'
-  codigoHTML += '<div id="infoDadosnota" class="modal-body">'
+  codigoHTML += '<div class="modal-body">'
 
-  codigoHTML += '<p>====================================</p>'
-  codigoHTML += `<p>${result.data.name}<br/>`
-  codigoHTML += `CPF/CNPJ: ${result.data.identification}<br/>`
-  codigoHTML += `Tel.: ${result.data.phone}<br/>`
-  codigoHTML += `End.: ${result.data.address}</p>`
-  codigoHTML += '<p>====================================<br/>'
-  codigoHTML += 'CUPOM NÃO FISCAL<br/>'
-  codigoHTML += '====================================</p>'
-  codigoHTML += `<p>Data: ${json.data.sale.createdAt.split('.')[0]}</p>`
-  codigoHTML += '<p>-----------------------------------------------------------</p>'
-  codigoHTML += '<p>'
-  json.data.sale.itens.forEach(function (item) {
-    codigoHTML += `Produto: ${item.product.name} / quan.:${parseInt(
-      item.quantity
-    )}<br/>`
-    codigoHTML += `-Preço uni.: R$${parseFloat(item.product.price).toFixed(
-      2
-    )} preço tot.: R$${(
-      parseFloat(item.product.price) * parseInt(item.quantity)
-    ).toFixed(2)}<br/>`
-  })
-  codigoHTML += '</p>'
-  codigoHTML += '<p>====================================</p>'
-  codigoHTML += `<p>Valor total: R$${json.data.sale.total.toFixed(2)}<br/>`
-  if (valorPago != null) {
-    codigoHTML += `Valor pago: R$${valorPago.toFixed(2)}<br/>`
-  } else {
-    codigoHTML += `Valor pago: R$${json.data.sale.total.toFixed(2)}<br/>`
-  }
-  codigoHTML += `Forma de pagamento: ${json.data.sale.payment}</p>`
-  codigoHTML += '<p>====================================</p>'
   codigoHTML += `<p>ID venda: ${json.data.sale._id}</p>`
+  codigoHTML += `<p>Valor total: R$${json.data.sale.total.toFixed(2)}<br/>`
+  codigoHTML += `Forma de pagamento: ${json.data.sale.payment}</p>`
+  codigoHTML += '<p>Imprimindo ......</p>'
 
   codigoHTML += '</div>'
   codigoHTML += '</div>'
@@ -447,7 +414,10 @@ async function modalImpressaoNota(json, valorPago) {
 
   $('#modalNota').modal('show')
 
-  imprimirImpressora('#infoDadosnota')
+  $('#botaoReimprimir').click(async function () {
+    await requisicaoPOST('recipes', json2, { headers: { Authorization: `Bearer ${buscarSessionUser().token}` }, })
+  })
+
 }
 
 // funcao responsavel por liberar o menu lateral
