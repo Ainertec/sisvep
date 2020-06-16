@@ -1,6 +1,8 @@
 /* eslint-disable consistent-return */
 const path = require('path');
 const fs = require('fs');
+const { eoLocale } = require('date-fns/locale/eo');
+const { format } = require('date-fns');
 const { exec } = require('shelljs');
 const Sale = require('../../models/Sale');
 const Shop = require('../../models/Shop');
@@ -30,7 +32,10 @@ module.exports = {
     }
 
     const items = createRecipe(sale.itens);
-    const date = String(sale.createdAt).split('.')[0];
+
+    const date = format(sale.createdAt, "do 'de' MMMM yyyy", {
+      locale: eoLocale,
+    });
 
     let data = `====================================\n`;
     data += `COMPROVANTE DE VENDA\n\n`;

@@ -33,9 +33,9 @@ describe('A print test', () => {
       })
       .set('Authorization', `Bearer ${user.generateToken()}`);
 
-    setTimeout(async () => {
-      await fs.unlinkSync(path.resolve(__dirname, '..', 'recipes', `${sale._id}.rtf`));
-    }, 1000);
+    // setTimeout(async () => {
+    //   await fs.unlinkSync(path.resolve(__dirname, '..', 'recipes', `${sale._id}.rtf`));
+    // }, 1000);
 
     expect(response.status).toBe(200);
   });
@@ -53,9 +53,9 @@ describe('A print test', () => {
       })
       .set('Authorization', `Bearer ${user.generateToken()}`);
 
-    setTimeout(async () => {
-      await fs.unlinkSync(path.resolve(__dirname, '..', 'recipes', `${sale._id}.rtf`));
-    }, 1000);
+    // setTimeout(async () => {
+    //   await fs.unlinkSync(path.resolve(__dirname, '..', 'recipes', `${sale._id}.rtf`));
+    // }, 1000);
 
     expect(response.status).toBe(200);
   });
