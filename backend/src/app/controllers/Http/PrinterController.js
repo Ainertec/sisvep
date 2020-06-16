@@ -59,17 +59,23 @@ module.exports = {
     await fs.writeFile(`${dir}/${id}.rtf`, data, { encoding: 'utf-8', flag: 'w' }, (err) => {
       if (err) return res.status(400).json(`${err}`);
     });
-    const vbs = path.resolve(
-      __dirname,
-      '..',
-      '..',
-      '..',
-      '..',
-      '__tests__',
-      'recipes',
-      'impressao.vbs'
-    );
-    exec(vbs);
+    const vbs =
+      process.env.NODE_ENV === 'test'
+        ? path.resolve(
+          __dirname,
+          '..',
+          '..',
+          '..',
+          '..',
+          '__tests__',
+          'recipes',
+          'impressao.vbs'
+        )
+        : process.env.DIR_INITIALIZE_PRINT;
+
+    setTimeout(function () {
+      exec(vbs);
+    }, 1000)
     return res.status(200).json('success');
   },
 };
