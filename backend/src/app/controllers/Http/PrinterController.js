@@ -11,9 +11,9 @@ function createRecipe(itens) {
   const products = itens.map((item) => {
     return `
 Produto:${item.product.name} /quan.:${Number(item.quantity)}
--Valor uni.:R$${parseFloat(item.product.price).toFixed(2)} valor tot.:R$${(
-        parseFloat(item.product.price) * Number(item.quantity)
-      ).toFixed(2)}
+Valor uni.:R$${parseFloat(item.product.price).toFixed(2)} valor tot.:R$${(
+      parseFloat(item.product.price) * Number(item.quantity)
+    ).toFixed(2)}
     `;
   });
   return products;
@@ -66,21 +66,12 @@ module.exports = {
     });
     const vbs =
       process.env.NODE_ENV === 'test'
-        ? path.resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          '..',
-          '__tests__',
-          'recipes',
-          'impressao.vbs'
-        )
+        ? path.resolve(__dirname, '..', '..', '..', '..', '__tests__', 'recipes', 'impressao.vbs')
         : process.env.DIR_INITIALIZE_PRINT;
 
     setTimeout(function () {
       exec(vbs);
-    }, 1000)
+    }, 1000);
     return res.status(200).json('success');
   },
 };
