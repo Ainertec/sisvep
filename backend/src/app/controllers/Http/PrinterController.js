@@ -8,10 +8,10 @@ const Shop = require('../../models/Shop');
 function createRecipe(itens) {
   const products = itens.map((item) => {
     return `
-Produto: ${item.product.name} /quan.:${Number(item.quantity)}
--Preço uni.: R$${parseFloat(item.product.price).toFixed(2)} preço tot.: R$${(
-      parseFloat(item.product.price) * Number(item.quantity)
-    ).toFixed(2)}
+Produto:${item.product.name} /quan.:${Number(item.quantity)}
+-Valor uni.:R$${parseFloat(item.product.price).toFixed(2)} valor tot.:R$${(
+        parseFloat(item.product.price) * Number(item.quantity)
+      ).toFixed(2)}
     `;
   });
   return products;
@@ -32,24 +32,24 @@ module.exports = {
     const items = createRecipe(sale.itens);
     const date = String(sale.createdAt).split('.')[0];
 
-    let data = `====================================\n`;
-    data += `COMPROVANTE DE VENDA\n\n`;
-    data += `${shop.name}\n\n`;
-    data += `CPF/CNPJ: ${shop.identification}\n`;
-    data += `Tel.: ${shop.phone}\n`;
-    data += `End.: ${shop.address}\n\n`;
-    data += `====================================\n\n`;
-    data += `CUPOM NÃO FISCAL\n\n`;
-    data += `====================================\n\n`;
-    data += `Data: ${date}\n\n`;
-    data += `-----------------------------------------------------------\n\n`;
-    data += `${items}\n\n`;
-    data += `====================================\n\n`;
-    data += `Valor total: R$${sale.total.toFixed(2)}\n`;
-    data += details ? `Responsavel: ${sale.functionary.name}\n` : '\n';
-    data += `Forma de pagamento: ${sale.payment}\n\n`;
-    data += `====================================\n\n`;
-    data += `ID venda: ${sale._id}`;
+    let data = `====================\n`;
+    data += `COMPROVANTE DE VENDA\n`;
+    data += `${shop.name}\n`;
+    data += `CPF/CNPJ:${shop.identification}\n`;
+    data += `Tel.:${shop.phone}\n`;
+    data += `End.:${shop.address}\n`;
+    data += `====================\n`;
+    data += `CUPOM NAO FISCAL\n`;
+    data += `====================\n`;
+    data += `Data:${date}\n`;
+    data += `--------------------\n`;
+    data += `${items}\n`;
+    data += `====================\n`;
+    data += `Valor total:R$${sale.total.toFixed(2)}\n`;
+    data += details ? `Responsavel:${sale.functionary.name}\n` : '\n';
+    data += `Forma de pagamento:${sale.payment}\n`;
+    data += `====================\n`;
+    data += `ID venda:${sale._id}`;
 
     const dir =
       process.env.NODE_ENV === 'test'
