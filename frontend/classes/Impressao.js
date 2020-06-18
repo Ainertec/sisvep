@@ -23,17 +23,32 @@ function telaDadosEtiqueta() {
   codigoHTML += '</div>'
   codigoHTML += '<div class="form-row">'
   codigoHTML +=
-    "<button onclick=\"if(document.getElementById('codigo').value<=9999999 && document.getElementById('codigo').value>999999 && validaDadosCampo(['#quantidade']) && validaValoresCampo(['#quantidade'])){gerarEtiquetasCodigoDeBarras(document.getElementById('quantidade').value, document.getElementById('codigo').value)}else{mensagemDeErro('O código deve ter menos que 7 digitos, a quantidade deve válida!'); mostrarCamposIncorreto(['quantidade','codigo'])}\" type=\"button\" class=\"btn btn-success\" style=\"margin: 5px;\"><span class=\"fas fa-file-pdf\"></span> Gerar</button>"
+    "<button onclick=\"if(validaDadosCampo(['#quantidade','#codigo']) && validaValoresCampo(['#quantidade','#codigo'])){gerarEtiquetasCodigoDeBarras(document.getElementById('quantidade').value, document.getElementById('codigo').value)}else{mensagemDeErro('Informe um código e uma quantidade válida!'); mostrarCamposIncorreto(['quantidade','codigo'])}\" type=\"button\" class=\"btn btn-success\" style=\"margin: 5px;\"><span class=\"fas fa-file-pdf\"></span> Gerar</button>"
   codigoHTML += '</div>'
   codigoHTML += '</form>'
   codigoHTML += '</div>'
 
   document.getElementById('janela2').innerHTML = codigoHTML
+
 }
 
 // funcao para gerar etiquetas com código de barras
-function gerarEtiquetasCodigoDeBarras(quantidade, codigo) {
-  let codigoHTML = ''
+async function gerarEtiquetasCodigoDeBarras(quantidade, codigo) {
+  let codigoHTML = '',
+    CPFCNPJ = await requisicaoGET('shops', {
+      headers: { Authorization: `Bearer ${buscarSessionUser().token}` },
+    }),
+    validacao = await requisicaoGET(
+      `products_barcode?barcode=${codigo}`,
+      { headers: { Authorization: `Bearer ${buscarSessionUser().token}` } }
+    )
+
+  CPFCNPJ = (CPFCNPJ.data.identification).toString()
+  CPFCNPJ = CPFCNPJ.replace('.', '')
+  CPFCNPJ = CPFCNPJ.replace('.', '')
+  codigo = CPFCNPJ.substr(0, 6) + codigo
+
+  console.log(codigo)
 
   codigoHTML +=
     '<div class="modal fade" id="modalImpressaoBarcode" tabindex="-1" role="dialog" aria-labelledby="modalBarcodeImpressao" aria-hidden="true">'
@@ -52,6 +67,9 @@ function gerarEtiquetasCodigoDeBarras(quantidade, codigo) {
   codigoHTML += '<span aria-hidden="true">&times;</span>'
   codigoHTML += '</button>'
   codigoHTML += '</div>'
+  if (validacao.data) {
+    codigoHTML += '<span class="badge badge-warning h5">Atenção já existe produto cadastrado neste código!</span>'
+  }
   codigoHTML += '<div id="emissaoCodigoDeBarras" class="modal-body">'
   codigoHTML += '<div id="grupoBarcode" class="row">'
   codigoHTML += `<div class="qrcode col" style="margin-top:20px" id="barcode"></div>`
