@@ -73,7 +73,7 @@ module.exports = {
     myDoc.writeText(`CPF/CNPJ: ${shop.identification}`, contentStyle);
     myDoc.writeText(`Tel.: ${shop.phone}`, contentStyle);
     myDoc.writeText(`End.: ${shop.address}`, contentBorder);
-    myDoc.writeText('CUPOM NAO FISCAL', contentBorder);
+    myDoc.writeText('CUPOM NÃO FISCAL', contentBorder);
     myDoc.writeText(`Data: ${date}`, contentBorder);
     myDoc.writeText(`${items}`, contentBorder);
     myDoc.writeText(`Valor total: R$${sale.total.toFixed(2)}`, contentStyle);
