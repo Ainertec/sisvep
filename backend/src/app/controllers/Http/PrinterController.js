@@ -4,7 +4,6 @@
 const path = require('path');
 const fs = require('fs');
 const jsRTF = require('jsrtf');
-const { eoLocale } = require('date-fns/locale/eo');
 const { format } = require('date-fns');
 const { exec } = require('shelljs');
 const Sale = require('../../models/Sale');
@@ -36,70 +35,51 @@ module.exports = {
 
     const items = createRecipe(sale.itens);
 
-    const date = format(sale.createdAt, "do 'de' MMMM yyyy", {
-      locale: eoLocale,
-    });
+    const date = format(sale.createdAt, 'dd/MM/yyyy HH:mm:ss');
 
     const myDoc = new jsRTF({
-      // Language: Russian
       language: jsRTF.Language.BR,
-      // Set page size: A4 horizontal
       pageWidth: jsRTF.Utils.mm2twips(58),
-      // pageHeight : jsRTF.Utils.mm2twips(210),
-      // Landscape page format -- which effect it making?
       landscape: false,
       marginLeft: 5,
       marginRight: 2,
     });
 
-    const textFormat = new jsRTF.Format({
-      spaceBefore: 20,
-      spaceAfter: 20,
-      fontSize: 7,
-      bold: true,
-      paragraph: true,
-      align: 'center',
-    });
     const contentStyle = new jsRTF.Format({
       spaceBefore: 20,
       spaceAfter: 20,
       fontSize: 7,
       paragraph: true,
     });
-    const ContentBorder = new jsRTF.Format({
-      spaceBefore: 20,
-      spaceAfter: 20,
+    const contentBorder = new jsRTF.Format({
+      spaceBefore: 100,
+      spaceAfter: 100,
       fontSize: 7,
       paragraph: true,
       borderBottom: { type: 'single', width: 10 },
     });
-    const HeaderBorder = new jsRTF.Format({
+    const header = new jsRTF.Format({
       spaceBefore: 20,
-      spaceAfter: 20,
+      spaceAfter: 100,
       fontSize: 7,
       bold: true,
       paragraph: true,
       align: 'center',
-      borderTop: { width: 50, spacing: 100, color: jsRTF.Colors.GREEN },
+      borderTop: { size: 2, spacing: 100, color: jsRTF.Colors.GREEN },
     });
 
-    myDoc.writeText('COMPROVANTE DE VENDA', HeaderBorder);
+    myDoc.writeText('COMPROVANTE DE VENDA', header);
     myDoc.writeText(`${shop.name}`, contentStyle);
-    myDoc.writeText(`CPF/CNPJ:${shop.identification}`, contentStyle);
-    myDoc.writeText(`Tel.:${shop.phone}`, contentStyle);
-    myDoc.writeText(`End.:${shop.address}`, ContentBorder);
-    // myDoc.writeText('', border);
-    myDoc.writeText('CUPOM NAO FISCAL', ContentBorder);
-    // myDoc.writeText('', contentStyle);
-    myDoc.writeText(`Data:${date}`, ContentBorder);
-    // myDoc.writeText(``, border);
-    myDoc.writeText(`${items}`, ContentBorder);
-    // myDoc.writeText('', border);
-    myDoc.writeText(`Valor total:R$${sale.total.toFixed(2)}`, contentStyle);
-    details && myDoc.writeText(`Responsavel:${sale.functionary.name}`, contentStyle);
-    myDoc.writeText(`Forma de pagamento:${sale.payment}`, ContentBorder);
-    // myDoc.writeText('', border);
-    myDoc.writeText(`ID venda:${sale._id}`, contentStyle);
+    myDoc.writeText(`CPF/CNPJ: ${shop.identification}`, contentStyle);
+    myDoc.writeText(`Tel.: ${shop.phone}`, contentStyle);
+    myDoc.writeText(`End.: ${shop.address}`, contentBorder);
+    myDoc.writeText('CUPOM NAO FISCAL', contentBorder);
+    myDoc.writeText(`Data: ${date}`, contentBorder);
+    myDoc.writeText(`${items}`, contentBorder);
+    myDoc.writeText(`Valor total: R$${sale.total.toFixed(2)}`, contentStyle);
+    details && myDoc.writeText(`Responsavel: ${sale.functionary.name}`, contentStyle);
+    myDoc.writeText(`Forma de pagamento: ${sale.payment}`, contentBorder);
+    myDoc.writeText(`ID venda: ${sale._id}`, contentStyle);
 
     const content = myDoc.createDocument();
 
@@ -114,14 +94,14 @@ module.exports = {
       if (err) return res.status(400).json(`${err}`);
     });
 
-    // const vbs =
-    //   process.env.NODE_ENV === 'test'
-    //     ? path.resolve(__dirname, '..', '..', '..', '..', '__tests__', 'recipes', 'impressao.vbs')
-    //     : process.env.DIR_INITIALIZE_PRINT;
+    const vbs =
+      process.env.NODE_ENV === 'test'
+        ? path.resolve(__dirname, '..', '..', '..', '..', '__tests__', 'recipes', 'impressao.vbs')
+        : process.env.DIR_INITIALIZE_PRINT;
 
-    // setTimeout(function () {
-    //   exec(vbs);
-    // }, 1000);
+    setTimeout(() => {
+      exec(vbs);
+    }, 1000);
     return res.status(200).json('success');
   },
 };
