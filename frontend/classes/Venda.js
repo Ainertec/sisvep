@@ -299,34 +299,51 @@ async function buscarProdutoVenda(codigo) {
       if (json != null) {
         if (validaDadosCampo(['#qtdItemDaVenda']) && validaValoresCampo(['#qtdItemDaVenda'])) {
           carregarDadosItensVenda(json)
-          beepAlerta()
+          beepAlerta(true)
         } else {
+          beepAlerta(false)
           mensagemDeErro('Adicione uma quantidade válida!')
           mostrarCamposIncorreto(['qtdItemDaVenda'])
         }
       } else {
+        beepAlerta(false)
         mensagemDeErro('Código de barras inválido!')
       }
     } catch (error) {
+      beepAlerta(false)
       mensagemDeErro('Não foi possível encontrar o produto!')
     }
   } else {
+    beepAlerta(false)
     mensagemDeErro('Código de barras inválido!')
   }
 }
 
 // funcao responsavel por emitir um som no momento em que o código de barras chega
-function beepAlerta() {
-  const beep = new AudioContext()
-  const alerta = beep.createOscillator()
+function beepAlerta(tipo) {
+  if (tipo) {
+    const beep = new AudioContext()
+    const alerta = beep.createOscillator()
 
-  alerta.type = 'triangle'
-  alerta.connect(beep.destination)
-  alerta.start()
+    alerta.type = 'triangle'
+    alerta.connect(beep.destination)
+    alerta.start()
 
-  setTimeout(function () {
-    alerta.stop()
-  }, 100)
+    setTimeout(function () {
+      alerta.stop()
+    }, 100)
+  } else {
+    const beep = new AudioContext()
+    const alerta = beep.createOscillator()
+
+    alerta.frequency.value = 987.8;
+    alerta.connect(beep.destination)
+    alerta.start()
+
+    setTimeout(function () {
+      alerta.stop()
+    }, 300)
+  }
 }
 
 // funcao responsavel por receber o codigo de barras lido pelo celular em real time
