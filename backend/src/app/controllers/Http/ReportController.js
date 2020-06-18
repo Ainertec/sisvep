@@ -26,7 +26,14 @@ module.exports = {
       })
       .sort({ amount: -1 });
 
-    return res.json(sales);
+    const salesSerializad = sales.map((sale) => {
+      return {
+        ...sale,
+        amount: sale.amount.toFixed(2),
+      };
+    });
+
+    return res.json(salesSerializad);
   },
   async index(req, res) {
     const sales = await Sale.aggregate()
