@@ -10,7 +10,13 @@ const Questions = Object.freeze({
   quarta: 'Qual o nome da sua mãe?',
   quinta: 'Qual sua cor preferida?',
   getQuestions() {
-    const ques = [this.primeira, this.segunda, this.terceira, this.quarta, this.quinta];
+    const ques = [
+      this.primeira,
+      this.segunda,
+      this.terceira,
+      this.quarta,
+      this.quinta,
+    ];
     return ques;
   },
 });
