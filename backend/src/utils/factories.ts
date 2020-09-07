@@ -14,7 +14,7 @@ factory.define('User', User, {
 
 export async function getFactory<T>(
   name: string,
-  attrs?: factory.Definition<T>,
+  attrs?: factory.Definition<Partial<T>>,
 ) {
   const entity = await factory.build<T>(name, attrs);
 

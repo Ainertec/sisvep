@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-return-await */
 /* eslint-disable camelcase */
 import { Entity, Column, BeforeInsert, PrimaryGeneratedColumn } from 'typeorm';
 import { IsNotEmpty } from 'class-validator';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 export const Questions = Object.freeze({
   primeira: 'Qual o modelo do seu primeiro carro?',
@@ -71,7 +73,7 @@ export class User {
     return await bcrypt.compare(password, this.password_hash);
   }
 
-  // public generateToken() {
-  //   return jwt.sign({ id: this.id }, process.env.APP_SECRET);
-  // }
+  public generateToken() {
+    return jwt.sign({ id: this.id }, process.env.APP_SECRET);
+  }
 }
