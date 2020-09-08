@@ -4,6 +4,7 @@ import { UserRoutes } from './User.routes';
 import { SessionRoutes } from './Session.routes';
 import Authorization from '../middlewares/Authorization';
 import Authentication from '../middlewares/Authentication';
+import { ProductRoutes } from './Product.routes';
 
 const routes = Router();
 
@@ -14,6 +15,8 @@ routes.use(Authentication);
 
 const userRoutes = new UserRoutes(routes);
 userRoutes.getRoutes();
+const productRoutes = new ProductRoutes(routes);
+productRoutes.getRoutes();
 
 routes.use(Authorization);
 

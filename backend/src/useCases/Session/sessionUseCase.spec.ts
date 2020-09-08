@@ -80,38 +80,41 @@ describe('Session Tests', () => {
     expect(res.body).toHaveProperty('token');
   });
 
-  // it('should be able to acess private routes when authenticated', async () => {
-  //   const user = await factory.for(User).with({ password: '1234' }).create();
+  it('should not be able to login with wrong password', async () => {
+    const user = await getFactory<User>('User');
 
-  //   const response = await request(app).post('/sessions').send({
-  //     name: user.name,
-  //     password: '123456',
-  //   });
+    const response = await request(app).post('/sessions').send({
+      name: user.name,
+      password: '123456',
+    });
 
-  //   expect(response.status).toBe(401);
-  // });
+    expect(response.status).toBe(401);
+  });
 
-  // it('should be able access private routes', async () => {
-  //   const user = await factory.create('User', {
-  //     name: 'Cleiton',
-  //     password: '1234',
-  //   });
+  it('should be able access private routes', async () => {
+    const user = await getFactory<User>('User', {
+      name: 'Cleiton',
+      password: '1234',
+    });
 
-  //   const response = await request(app)
-  //     .get('/products')
-  //     .query({ name: 'Choc' })
-  //     .set('Authorization', `Bearer ${user.generateToken()}`);
+    const response = await request(app)
+      .get('/users')
+      .set('Authorization', `Bearer ${user.generateToken()}`);
 
-  //   expect(response.status).toBe(200);
-  // });
-  // it('should not be able to access private routes without jwt token', async () => {
-  //   const response = await request(app).get('/products');
+    expect(response.status).toBe(200);
+  });
 
-  //   expect(response.status).toBe(401);
-  // });
-  // it('should not be able to access private routes with invalid jwt token', async () => {
-  //   const response = await request(app).get('/products').set('Authorization', `Bearer 123123`);
+  it('should not be able to access private routes without jwt token', async () => {
+    const response = await request(app).get('/users');
 
-  //   expect(response.status).toBe(401);
-  // });
+    expect(response.status).toBe(401);
+  });
+
+  it('should not be able to access private routes with invalid jwt token', async () => {
+    const response = await request(app)
+      .get('/users')
+      .set('Authorization', `Bearer 123123`);
+
+    expect(response.status).toBe(401);
+  });
 });

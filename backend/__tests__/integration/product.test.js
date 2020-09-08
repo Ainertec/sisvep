@@ -131,6 +131,7 @@ describe('teste Product', () => {
 
     expect(response.status).toBe(400);
   });
+  // //////////////////////////////////////////////////////////////////
   it('shuld update a product', async () => {
     const product = await factory.create('Product');
     const provider = await factory.create('Provider', {
@@ -156,7 +157,9 @@ describe('teste Product', () => {
         id: String(product._id),
         providerId: String(provider2._id),
       });
-    const providerWithoutProduct = await Provider.findOne({ _id: provider._id });
+    const providerWithoutProduct = await Provider.findOne({
+      _id: provider._id,
+    });
     const providerProductsSize = providerWithoutProduct.products.length;
     expect(providerProductsSize).toBe(0);
     expect(response.status).toBe(200);
@@ -164,7 +167,7 @@ describe('teste Product', () => {
       expect.objectContaining({
         name: 'Tortugita',
         description: 'Chocolate com Morango',
-      })
+      }),
     );
   });
   it('shuld not update a product unixestent', async () => {
@@ -308,7 +311,7 @@ describe('teste Product', () => {
         expect.objectContaining({
           name: 'Chocolate',
         }),
-      ])
+      ]),
     );
   });
   it('shuld list products by validity ', async () => {
@@ -335,7 +338,7 @@ describe('teste Product', () => {
         expect.objectContaining({
           name: 'Agrião',
         }),
-      ])
+      ]),
     );
   });
   it('shuld not list products with month not existent ', async () => {
@@ -377,7 +380,7 @@ describe('teste Product', () => {
     expect(response.body).toEqual(
       expect.objectContaining({
         name: 'Pão',
-      })
+      }),
     );
   });
   it('shuld list products without provider by barcode ', async () => {
@@ -396,7 +399,7 @@ describe('teste Product', () => {
     expect(response.body).toEqual(
       expect.objectContaining({
         name: 'Pão',
-      })
+      }),
     );
   });
 
@@ -422,7 +425,7 @@ describe('teste Product', () => {
         expect.objectContaining({
           name: 'Tomate',
         }),
-      ])
+      ]),
     );
   });
   it('shuld not list products by created with month not existent ', async () => {
