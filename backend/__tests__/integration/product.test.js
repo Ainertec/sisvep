@@ -243,6 +243,7 @@ describe('teste Product', () => {
 
     expect(response.status).toBe(400);
   });
+  /// /////////////////////////////////////////////////
   it('shuld delete a product', async () => {
     const product = await factory.create('Product');
     await factory.create('Provider', {

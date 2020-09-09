@@ -8,3 +8,7 @@ export interface ICreateProductRequest {
   stock: number;
   validity: Date;
 }
+
+export interface IUpdateProductRequest extends ICreateProductRequest {
+  id: number;
+}

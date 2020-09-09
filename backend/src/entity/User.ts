@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-return-await */
 /* eslint-disable camelcase */
-import { Entity, Column, BeforeInsert, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  BeforeInsert,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { IsNotEmpty } from 'class-validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -49,7 +56,6 @@ export class User {
   @Column()
   password_hash: string;
 
-  // @Column({ select: false })
   password: string;
 
   @Column({ default: false })
@@ -61,6 +67,12 @@ export class User {
   @Column({ nullable: false })
   @IsNotEmpty()
   response: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @BeforeInsert()
   async encryptPassword() {

@@ -7,7 +7,7 @@ import { User } from '../../entity/User';
 import { Provider } from '../../entity/Provider';
 import { Product } from '../../entity/Product';
 
-describe('Create user Tests', () => {
+describe('Create product tests', () => {
   beforeAll(async () => {
     await connection.create();
   });
@@ -45,6 +45,7 @@ describe('Create user Tests', () => {
 
     expect(response.status).toBe(201);
   });
+
   it('should create a Product without providerId', async () => {
     const product = await getFactory<Product>('Product', {
       name: 'Chocolate',
@@ -67,7 +68,7 @@ describe('Create user Tests', () => {
     expect(response.status).toBe(201);
   });
 
-  it('shuld not create a Product with invalid provider id', async () => {
+  it('should not create a Product with invalid provider id', async () => {
     const product = await getFactory<Product>('Product', {
       name: 'Chocolate',
       description: 'Bão de mais',
@@ -89,6 +90,7 @@ describe('Create user Tests', () => {
 
     expect(response.status).toBe(400);
   });
+
   it('should not create a Product with invalid params', async () => {
     const product = await getFactory<Product>('Product', {
       name: 'Chocolate',

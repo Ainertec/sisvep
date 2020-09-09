@@ -23,8 +23,9 @@ export class SqliteRepository<T> implements IRepository<T> {
     return response;
   }
 
-  async update<T>(arg: T): Promise<void> {
-    await getRepository<T>(this.entity).save(arg);
+  async update<T>(arg: T): Promise<T> {
+    const updated = await getRepository<T>(this.entity).save(arg);
+    return updated;
   }
 
   async delete(id: number): Promise<void> {
