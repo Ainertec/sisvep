@@ -15,12 +15,10 @@ export class Provider {
     props: {
       name: string;
       description?: string;
-      price: number;
-      cost: number;
-      barcode: number;
-      validity: Date;
-      stock: number;
-      products: number[];
+      phone: string;
+      email: string;
+      identification: string;
+      products?: number[];
     },
     id?: string,
   ) {
