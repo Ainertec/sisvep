@@ -69,6 +69,6 @@
     "dev": "tsnd --transpile-only --respawn --ignore-watch node_modules src/server.ts",
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles ",
     "migrations:run": "ts-node ./node_modules/typeorm/cli.js migration:run",
-    "migrations:create": "ts-node ./node_modules/typeorm/cli.js migration:generate -n"
+    "migrations:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -n"
   }
 }
