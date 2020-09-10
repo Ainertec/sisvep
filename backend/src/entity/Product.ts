@@ -6,9 +6,12 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { IsNotEmpty } from 'class-validator';
 import { Provider } from './Provider';
+import { ItemsSale } from './ItemsSale';
 
 @Entity()
 export class Product {
@@ -62,7 +65,15 @@ export class Product {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
+  @JoinColumn({ name: 'provider_id' })
   provider: Provider;
+
+  @OneToMany(type => ItemsSale, itemsSale => itemsSale.product, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    cascade: ['insert'],
+  })
+  public itemsSale!: ItemsSale[];
 
   @CreateDateColumn()
   createdAt: Date;

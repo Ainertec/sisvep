@@ -6,6 +6,7 @@ import Authorization from '../middlewares/Authorization';
 import Authentication from '../middlewares/Authentication';
 import { ProductRoutes } from './Product.routes';
 import { ProviderRoutes } from './Provider.routes';
+import { SaleRoutes } from './Sale.routes';
 
 const routes = Router();
 
@@ -19,8 +20,11 @@ userRoutes.getRoutes();
 
 const productRoutes = new ProductRoutes(routes);
 productRoutes.getRoutes();
+
 const providerRoutes = new ProviderRoutes(routes);
 providerRoutes.getRoutes();
+const saleRoutes = new SaleRoutes(routes);
+saleRoutes.getRoutes();
 
 routes.use(Authorization);
 

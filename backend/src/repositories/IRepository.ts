@@ -1,4 +1,4 @@
-import { FindOneOptions } from 'typeorm';
+import { FindOneOptions, QueryRunner } from 'typeorm';
 
 export interface IRepository<T> {
   find<T>(query?: FindOneOptions<T>): Promise<T[]>;
@@ -6,4 +6,5 @@ export interface IRepository<T> {
   save<T>(arg: T): Promise<T>;
   update<T>(arg: T): Promise<T>;
   delete(id: number): Promise<void>;
+  queryRunner(): QueryRunner;
 }

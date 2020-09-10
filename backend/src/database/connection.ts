@@ -9,9 +9,9 @@ const connection = {
     await createConnection({
       type: 'sqlite',
       database: 'src/database/test.sqlite',
-      synchronize: false,
+      synchronize: true,
       logging: false,
-      migrationsRun: true,
+      migrationsRun: false,
       dropSchema: true,
       entities: ['src/entity/**/*.ts'],
       migrations: ['src/database/migration/**/*.ts'],

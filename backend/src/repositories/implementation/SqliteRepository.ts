@@ -1,4 +1,9 @@
-import { getRepository, FindOneOptions } from 'typeorm';
+import {
+  getRepository,
+  FindOneOptions,
+  getConnection,
+  QueryRunner,
+} from 'typeorm';
 import { IRepository } from '../IRepository';
 
 export class SqliteRepository<T> implements IRepository<T> {
@@ -30,5 +35,11 @@ export class SqliteRepository<T> implements IRepository<T> {
 
   async delete(id: number): Promise<void> {
     await getRepository<T>(this.entity).delete(id);
+  }
+
+  queryRunner(): QueryRunner {
+    const connection = getConnection();
+    const queryRunner = connection.createQueryRunner();
+    return queryRunner;
   }
 }

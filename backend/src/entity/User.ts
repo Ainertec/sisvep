@@ -8,10 +8,12 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { IsNotEmpty } from 'class-validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { Sale } from './Sale';
 
 export const Questions = Object.freeze({
   primeira: 'Qual o modelo do seu primeiro carro?',
@@ -73,6 +75,12 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(type => Sale, sale => sale.user, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  sales: Sale[];
 
   @BeforeInsert()
   async encryptPassword() {
