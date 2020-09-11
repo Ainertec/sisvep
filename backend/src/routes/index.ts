@@ -23,6 +23,7 @@ productRoutes.getRoutes();
 
 const providerRoutes = new ProviderRoutes(routes);
 providerRoutes.getRoutes();
+
 const saleRoutes = new SaleRoutes(routes);
 saleRoutes.getRoutes();
 

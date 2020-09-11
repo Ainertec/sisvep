@@ -5,6 +5,8 @@ import { getRepository } from 'typeorm';
 import { User } from '../entity/User';
 import { Product } from '../entity/Product';
 import { Provider } from '../entity/Provider';
+import { Sale } from '../entity/Sale';
+import { ItemsSale } from '../entity/ItemsSale';
 
 factory.define('User', User, {
   name: faker.name.findName(),
@@ -30,6 +32,16 @@ factory.define('Provider', Provider, {
   phone: faker.phone.phoneNumber(),
   email: faker.internet.email(),
   identification: faker.name.title(),
+});
+
+factory.define('Sale', Sale, {
+  total: faker.commerce.price(),
+  payment: 'dinheiro',
+});
+factory.define('ItemsSale', ItemsSale, {
+  product: 1,
+  sale: 1,
+  quantity: faker.random.number(10),
 });
 
 export async function getFactory<T>(

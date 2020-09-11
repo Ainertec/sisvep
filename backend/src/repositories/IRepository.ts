@@ -6,5 +6,6 @@ export interface IRepository<T> {
   save<T>(arg: T): Promise<T>;
   update<T>(arg: T): Promise<T>;
   delete(id: number): Promise<void>;
+  deleteByCreatedAt(date: string): Promise<void>;
   queryRunner(): QueryRunner;
 }

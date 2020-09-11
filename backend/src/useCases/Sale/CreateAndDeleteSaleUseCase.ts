@@ -2,12 +2,13 @@
 /* eslint-disable no-await-in-loop */
 
 import { validate } from 'class-validator';
+import { sub } from 'date-fns';
 import { IRepository } from '../../repositories/IRepository';
 import { Sale } from '../../entity/Sale';
 import { ICreateSaleRequest } from './sale.DTO';
 import { ItemsSale } from '../../entity/ItemsSale';
 
-export class CreateSaleUseCase {
+export class CreateDeleteSaleUseCase {
   constructor(private repository: IRepository<Sale>) {}
 
   async createSale(data: ICreateSaleRequest) {
@@ -66,5 +67,11 @@ export class CreateSaleUseCase {
       // you need to release query runner which is manually created:
       await queryRunner.release();
     }
+  }
+
+  async deleteSale() {
+    const dateISO = sub(new Date(), { years: 7 }).toISOString();
+    const date = dateISO.split('T')[0];
+    await this.repository.deleteByCreatedAt(date);
   }
 }

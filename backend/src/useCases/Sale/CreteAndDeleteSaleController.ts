@@ -1,8 +1,8 @@
 import { Response, Request } from 'express';
-import { CreateSaleUseCase } from './CreateSaleUseCase';
+import { CreateDeleteSaleUseCase } from './CreateAndDeleteSaleUseCase';
 
-export class SaleController {
-  constructor(private saleUseCase: CreateSaleUseCase) {}
+export class CreateDeleteSaleController {
+  constructor(private saleUseCase: CreateDeleteSaleUseCase) {}
 
   async store(request: Request, response: Response) {
     const { total, payment, items } = request.body;
@@ -16,6 +16,15 @@ export class SaleController {
       });
 
       return response.status(201).json(sale);
+    } catch (error) {
+      return response.status(400).json(error.message);
+    }
+  }
+
+  async remove(request: Request, response: Response) {
+    try {
+      await this.saleUseCase.deleteSale();
+      return response.status(200).send({});
     } catch (error) {
       return response.status(400).json(error.message);
     }

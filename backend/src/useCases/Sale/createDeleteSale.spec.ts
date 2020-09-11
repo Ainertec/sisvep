@@ -1,12 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import request from 'supertest';
+import { sub } from 'date-fns';
+import { getRepository } from 'typeorm';
 import connection from '../../database/connection';
 import { app } from '../../app';
 import { getFactory } from '../../utils/factories';
 import { User } from '../../entity/User';
 import { Product } from '../../entity/Product';
 
-describe('Create provider tests', () => {
+describe('Create sales tests', () => {
   beforeAll(async () => {
     await connection.create();
   });
@@ -132,5 +134,28 @@ describe('Create provider tests', () => {
       expect.arrayContaining(['ovomaltine', 'nescal']),
     );
     expect(response.status).toBe(201);
+  });
+
+  it('should delete all sales with more then 6 years old', async () => {
+    const user = await getFactory<User>('User');
+    await getFactory('Sale', {
+      createdAt: sub(new Date(2020, 8, 4), { years: 7 }),
+    });
+    await getFactory('Sale', {
+      createdAt: sub(new Date(2017, 8, 10), { years: 7 }),
+    });
+    await getFactory('Sale', {
+      createdAt: sub(new Date(2019, 2, 10), { years: 7 }),
+    });
+    await getFactory('Sale');
+
+    const response = await request(app)
+      .delete('/sales')
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    const sales = await getRepository('Sale').count();
+
+    expect(response.status).toBe(200);
+    expect(sales).toBe(1);
   });
 });

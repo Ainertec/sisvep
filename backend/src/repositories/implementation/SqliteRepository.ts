@@ -37,6 +37,15 @@ export class SqliteRepository<T> implements IRepository<T> {
     await getRepository<T>(this.entity).delete(id);
   }
 
+  async deleteByCreatedAt(date: string): Promise<void> {
+    await getRepository<T>(this.entity)
+      .createQueryBuilder()
+      .delete()
+      .from(this.entity)
+      .where('createdAt < :date', { date })
+      .execute();
+  }
+
   queryRunner(): QueryRunner {
     const connection = getConnection();
     const queryRunner = connection.createQueryRunner();

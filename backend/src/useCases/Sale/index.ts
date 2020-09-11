@@ -1,11 +1,23 @@
 import { SqliteRepository } from '../../repositories/implementation/SqliteRepository';
-import { SaleController } from './SaleController';
-import { CreateSaleUseCase } from './CreateSaleUseCase';
+import { CreateDeleteSaleController } from './CreteAndDeleteSaleController';
+import { CreateDeleteSaleUseCase } from './CreateAndDeleteSaleUseCase';
+import { ListSalesUseCase } from './ListSalesUseCase';
+import { ListSalesController } from './ListSalesController';
 
 const repository = new SqliteRepository('Sale');
 
-const saleUseCase = new CreateSaleUseCase(repository);
+const createDeleteSaleUseCase = new CreateDeleteSaleUseCase(repository);
 
-const saleController = new SaleController(saleUseCase);
+const createDeleteSaleController = new CreateDeleteSaleController(
+  createDeleteSaleUseCase,
+);
+// List Sales
+const listSalesUseCase = new ListSalesUseCase(repository);
+const listSalesController = new ListSalesController(listSalesUseCase);
 
-export { saleController, saleUseCase };
+export {
+  createDeleteSaleController,
+  createDeleteSaleUseCase,
+  listSalesUseCase,
+  listSalesController,
+};
