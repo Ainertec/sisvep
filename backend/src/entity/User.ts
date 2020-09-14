@@ -9,6 +9,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  BeforeUpdate,
 } from 'typeorm';
 import { IsNotEmpty } from 'class-validator';
 import bcrypt from 'bcryptjs';
@@ -83,14 +84,18 @@ export class User {
   sales: Sale[];
 
   @BeforeInsert()
+  @BeforeUpdate()
   async encryptPassword() {
-    const hash = await bcrypt.hash(this.password, 8);
-    this.password_hash = hash;
-    this.password = null;
+    if (this.password) {
+      const hash = await bcrypt.hash(this.password, 8);
+      console.log(this.password);
+      this.password_hash = hash;
+      this.password = null;
+    }
   }
 
   public async checkPassword(password: string) {
-    return await bcrypt.compare(password, this.password_hash);
+    return bcrypt.compare(password, this.password_hash);
   }
 
   public generateToken() {

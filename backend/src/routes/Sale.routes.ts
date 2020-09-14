@@ -13,7 +13,7 @@ export class SaleRoutes {
     this.routes.post('/sales', (request, response) => {
       return createDeleteSaleController.store(request, response);
     });
-    this.routes.delete('/sales', (request, response) => {
+    this.routes.delete('/sales', Authorization, (request, response) => {
       return createDeleteSaleController.remove(request, response);
     });
 
