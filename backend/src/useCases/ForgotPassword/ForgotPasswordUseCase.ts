@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import { User } from '../../entity/User';
 import { IRepository } from '../../repositories/IRepository';
 
@@ -25,9 +26,7 @@ export class ForgotPasswordUseCase {
       throw new Error('Incorrect response');
     }
 
-    user.password = newPassword;
-
-    const updatedUser = await this.repository.save<User>(user);
-    console.log(updatedUser);
+    user.password_hash = await bcrypt.hash(newPassword, 8);
+    await this.repository.save<User>(user);
   }
 }

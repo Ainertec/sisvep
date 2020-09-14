@@ -88,9 +88,9 @@ export class User {
   async encryptPassword() {
     if (this.password) {
       const hash = await bcrypt.hash(this.password, 8);
-      console.log(this.password);
+      // console.log(this.password);
       this.password_hash = hash;
-      this.password = null;
+      // this.password = null;
     }
   }
 

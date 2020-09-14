@@ -53,44 +53,43 @@ describe('Forgot password tests', () => {
       response: 'cledir',
       newPassword: '92865120',
     });
-    const userReseted = await getRepository(User).findOne({
+    const userReset = await getRepository(User).findOne({
       where: { name: user.name },
     });
-    console.log(userReseted);
-    const validPassword = await userReseted.checkPassword('92865120');
-    console.log(response.body);
+
+    const validPassword = await userReset.checkPassword('92865120');
 
     expect(response.status).toBe(200);
     expect(validPassword).toBe(true);
   });
 
-  // it('should not reset password with incorrect user name', async () => {
-  //   await getFactory<User>('User', {
-  //     name: 'cleiton',
-  //     question: 'Qual o modelo do seu primeiro carro?',
-  //     response: 'cledir',
-  //   });
-  //   const response = await request(app).post('/forgot').send({
-  //     name: 'Json',
-  //     response: 'Maria Clara',
-  //     password: '92865120',
-  //   });
+  it('should not reset password with incorrect user name', async () => {
+    await getFactory<User>('User', {
+      name: 'cleiton',
+      question: 'Qual o modelo do seu primeiro carro?',
+      response: 'cledir',
+    });
+    const response = await request(app).post('/forgot').send({
+      name: 'Json',
+      response: 'Maria Clara',
+      password: '92865120',
+    });
 
-  //   expect(response.status).toBe(401);
-  // });
+    expect(response.status).toBe(400);
+  });
 
-  // it('should not reset password with incorrect response for user question', async () => {
-  //   const user = await getFactory<User>('User', {
-  //     name: 'cleiton',
-  //     question: 'Qual o modelo do seu primeiro carro?',
-  //     response: 'cledir',
-  //   });
-  //   const response = await request(app).post('/forgot').send({
-  //     name: user.name,
-  //     response: 'Maria Clara',
-  //     password: '92865120',
-  //   });
+  it('should not reset password with incorrect response for user question', async () => {
+    const user = await getFactory<User>('User', {
+      name: 'cleiton',
+      question: 'Qual o modelo do seu primeiro carro?',
+      response: 'cledir',
+    });
+    const response = await request(app).post('/forgot').send({
+      name: user.name,
+      response: 'Maria Clara',
+      password: '92865120',
+    });
 
-  //   expect(response.status).toBe(401);
-  // });
+    expect(response.status).toBe(400);
+  });
 });

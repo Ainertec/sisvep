@@ -9,6 +9,7 @@ import { ProviderRoutes } from './Provider.routes';
 import { SaleRoutes } from './Sale.routes';
 import { ShopRoutes } from './Shop.routes';
 import { ForgotPasswordRoutes } from './ForgotPassword.routes';
+import { ReportRoutes } from './Reports.routes';
 
 const routes = Router();
 
@@ -35,5 +36,7 @@ const shopRoutes = new ShopRoutes(routes);
 shopRoutes.getRoutes();
 
 routes.use(Authorization);
+const reportRoutes = new ReportRoutes(routes);
+reportRoutes.getRoutes();
 
 export { routes };
