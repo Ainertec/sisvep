@@ -7,6 +7,7 @@ import { Product } from '../entity/Product';
 import { Provider } from '../entity/Provider';
 import { Sale } from '../entity/Sale';
 import { ItemsSale } from '../entity/ItemsSale';
+import { Shop } from '../entity/Shop';
 
 factory.define('User', User, {
   name: faker.name.findName(),
@@ -42,6 +43,14 @@ factory.define('ItemsSale', ItemsSale, {
   product: 1,
   sale: 1,
   quantity: faker.random.number(10),
+});
+
+factory.define('Shop', Shop, {
+  name: faker.name.findName(),
+  identification: faker.name.title(),
+  phone: faker.phone.phoneNumber(),
+  email: faker.internet.email(),
+  address: faker.address.streetName(),
 });
 
 export async function getFactory<T>(

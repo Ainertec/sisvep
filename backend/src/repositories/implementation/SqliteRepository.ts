@@ -51,4 +51,9 @@ export class SqliteRepository<T> implements IRepository<T> {
     const queryRunner = connection.createQueryRunner();
     return queryRunner;
   }
+
+  async count(): Promise<number> {
+    const count = await getRepository(this.entity).count();
+    return count;
+  }
 }

@@ -8,4 +8,5 @@ export interface IRepository<T> {
   delete(id: number): Promise<void>;
   deleteByCreatedAt(date: string): Promise<void>;
   queryRunner(): QueryRunner;
+  count(): Promise<number>;
 }
