@@ -48,41 +48,371 @@ describe('Create sales tests', () => {
     const sale3 = await getFactory<Sale>('Sale');
     const sale4 = await getFactory<Sale>('Sale');
 
-    await getFactory<ItemsSale>('ItemsSale', {
-      sale: sale1,
-      product: product1,
+    await getFactory('ItemsSale', {
+      sale: sale1.id,
+      product: product1.id,
       quantity: 7,
     });
-    await getFactory<ItemsSale>('ItemsSale', {
-      sale: sale1,
-      product: product3,
+    await getFactory('ItemsSale', {
+      sale: sale1.id,
+      product: product3.id,
       quantity: 5,
     });
-    await getFactory<ItemsSale>('ItemsSale', {
-      sale: sale2,
-      product: product2,
+    await getFactory('ItemsSale', {
+      sale: sale2.id,
+      product: product2.id,
       quantity: 2,
     });
-    await getFactory<ItemsSale>('ItemsSale', {
-      sale: sale3,
-      product: product3,
+    await getFactory('ItemsSale', {
+      sale: sale3.id,
+      product: product3.id,
       quantity: 4,
     });
 
     const response = await request(app)
       .get('/reports')
       .set('Authorization', `Bearer ${user.generateToken()}`);
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          products_name: 'Tomate',
+          soldout: 9,
+        }),
+      ]),
+    );
+  });
+
+  it('should list lucre by informed date', async () => {
+    const user = await getFactory<User>('User', {
+      admin: true,
+    });
+
+    const product = await getFactory<Product>('Product', {
+      name: 'Chocolate',
+      stock: 20,
+    });
+    const product1 = await getFactory<Product>('Product', {
+      name: 'Pão',
+      stock: 20,
+    });
+    const product2 = await getFactory<Product>('Product', {
+      name: 'biscoito',
+      stock: 20,
+    });
+    const product3 = await getFactory<Product>('Product', {
+      name: 'Tomate',
+      stock: 20,
+    });
+    const sale1 = await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 0, 1),
+      total: 50,
+    });
+    await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 0, 1),
+      total: 50,
+    });
+    const sale2 = await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 1, 18),
+      total: 30,
+    });
+    await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 1, 20),
+      total: 10,
+    });
+    await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 1, 10),
+      total: 10,
+    });
+    const sale3 = await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 2, 18),
+    });
+
+    await getFactory('ItemsSale', {
+      sale: sale1.id,
+      product: product1.id,
+      quantity: 7,
+    });
+    await getFactory('ItemsSale', {
+      sale: sale1.id,
+      product: product3.id,
+      quantity: 5,
+    });
+    await getFactory('ItemsSale', {
+      sale: sale2.id,
+      product: product2.id,
+      quantity: 2,
+    });
+    await getFactory('ItemsSale', {
+      sale: sale3.id,
+      product: product3.id,
+      quantity: 4,
+    });
+
+    const response = await request(app)
+      .get('/reports/lucre/total')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        initialDate: '2020-01-01',
+        finalDate: '2020-02-28',
+      });
+
+    expect(response.status).toBe(200);
+  });
+
+  it('should not list lucre with invalid dates', async () => {
+    const user = await getFactory<User>('User', {
+      admin: true,
+    });
+
+    const response = await request(app)
+      .get('/reports/lucre/total')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        initialDate: '2020-1-12',
+        finalDate: '2020-13',
+      });
+    expect(response.status).toBe(400);
+  });
+
+  it('should not list lucre with invalid dates interval', async () => {
+    const user = await getFactory<User>('User', {
+      admin: true,
+    });
+
+    const response = await request(app)
+      .get('/reports/lucre/total')
+      .set('Authorization', `Bearer ${user.generateToken()}`)
+      .query({
+        initialDate: '2020-03-12',
+        finalDate: '2020-01-24',
+      });
+    expect(response.status).toBe(400);
+  });
+
+  it('should list products percent about sold products total', async () => {
+    const user = await getFactory<User>('User', {
+      admin: true,
+    });
+    const product = await getFactory<Product>('Product', {
+      name: 'Chocolate',
+      stock: 20,
+    });
+    const product1 = await getFactory<Product>('Product', {
+      name: 'Pão',
+      stock: 20,
+    });
+    const product2 = await getFactory<Product>('Product', {
+      name: 'biscoito',
+      stock: 20,
+    });
+    const product3 = await getFactory<Product>('Product', {
+      name: 'Tomate',
+      stock: 20,
+    });
+    const sale1 = await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 0, 1),
+      total: 50,
+    });
+    await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 0, 1),
+      total: 50,
+    });
+    const sale2 = await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 1, 18),
+      total: 30,
+    });
+    await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 1, 20),
+      total: 10,
+    });
+    await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 1, 10),
+      total: 10,
+    });
+    const sale3 = await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 2, 18),
+    });
+
+    await getFactory('ItemsSale', {
+      sale: sale1.id,
+      product: product1.id,
+      quantity: 7,
+    });
+    await getFactory('ItemsSale', {
+      sale: sale2.id,
+      product: product.id,
+      quantity: 7,
+    });
+    await getFactory('ItemsSale', {
+      sale: sale2.id,
+      product: product1.id,
+      quantity: 7,
+    });
+    await getFactory('ItemsSale', {
+      sale: sale1.id,
+      product: product.id,
+      quantity: 5,
+    });
+    await getFactory('ItemsSale', {
+      sale: sale1.id,
+      product: product3.id,
+      quantity: 5,
+    });
+    await getFactory('ItemsSale', {
+      sale: sale2.id,
+      product: product2.id,
+      quantity: 2,
+    });
+    await getFactory('ItemsSale', {
+      sale: sale3.id,
+      product: product3.id,
+      quantity: 4,
+    });
+
+    const response = await request(app)
+      .get('/report/products/total/percent')
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          products_name: 'Chocolate',
+        }),
+      ]),
+    );
+  });
+
+  it('should list products percent about sold products amount', async () => {
+    const user = await getFactory<User>('User', {
+      admin: true,
+    });
+    const product = await getFactory<Product>('Product', {
+      name: 'Chocolate',
+      stock: 20,
+    });
+    const product1 = await getFactory<Product>('Product', {
+      name: 'Pão',
+      stock: 20,
+      price: 5,
+    });
+    const product2 = await getFactory<Product>('Product', {
+      name: 'biscoito',
+      stock: 20,
+    });
+    const product3 = await getFactory<Product>('Product', {
+      name: 'Tomate',
+      stock: 20,
+    });
+    const sale1 = await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 0, 1),
+      total: 50,
+    });
+    await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 0, 1),
+      total: 50,
+    });
+    const sale2 = await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 1, 18),
+      total: 30,
+    });
+    await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 1, 20),
+      total: 10,
+    });
+    await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 1, 10),
+      total: 10,
+    });
+    const sale3 = await getFactory<Sale>('Sale', {
+      createdAt: new Date(2020, 2, 18),
+    });
+
+    await getFactory('ItemsSale', {
+      sale: sale1.id,
+      product: product1.id,
+      quantity: 7,
+    });
+    await getFactory('ItemsSale', {
+      sale: sale2.id,
+      product: product.id,
+      quantity: 7,
+    });
+    await getFactory('ItemsSale', {
+      sale: sale2.id,
+      product: product1.id,
+      quantity: 7,
+    });
+    await getFactory('ItemsSale', {
+      sale: sale1.id,
+      product: product.id,
+      quantity: 5,
+    });
+    await getFactory('ItemsSale', {
+      sale: sale1.id,
+      product: product3.id,
+      quantity: 5,
+    });
+    await getFactory('ItemsSale', {
+      sale: sale2.id,
+      product: product2.id,
+      quantity: 2,
+    });
+    await getFactory('ItemsSale', {
+      sale: sale3.id,
+      product: product3.id,
+      quantity: 4,
+    });
+
+    const response = await request(app)
+      .get('/report/products/amount/percent')
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          products_name: 'Pão',
+          // soldout: '2.04',
+        }),
+      ]),
+    );
+  });
+
+  it('should list all providers products', async () => {
+    const user = await getFactory<User>('User', {
+      admin: true,
+    });
+    const product = await getFactory('Product', {
+      name: 'Chocolate',
+    });
+    const product1 = await getFactory('Product', {
+      name: 'Pão',
+    });
+    const product2 = await getFactory('Product', {
+      name: 'Presunto',
+    });
+
+    await getFactory('Provider');
+    await getFactory('Provider', {
+      products: [product, product1],
+    });
+    await getFactory('Provider', {
+      products: [product2],
+    });
+
+    const response = await request(app)
+      .get('/report/providers/products')
+      .set('Authorization', `Bearer ${user.generateToken()}`);
     console.log(response.body);
     expect(response.status).toBe(200);
-    // expect(response.body).toEqual(
-    //   expect.arrayContaining([
-    //     expect.objectContaining({
-    //       _id: expect.objectContaining({
-    //         name: 'Pão',
-    //       }),
-    //       soldout: 8,
-    //     }),
-    //   ]),
-    // );
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          totalProducts: 2,
+        }),
+      ]),
+    );
   });
 });

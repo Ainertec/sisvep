@@ -1,14 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import request from 'supertest';
-import { sub } from 'date-fns';
-import { getRepository } from 'typeorm';
+
 import connection from '../../database/connection';
 import { app } from '../../app';
 import { getFactory } from '../../utils/factories';
 import { User } from '../../entity/User';
 import { Product } from '../../entity/Product';
 import { Sale } from '../../entity/Sale';
-import { ItemsSale } from '../../entity/ItemsSale';
 
 describe('List sales tests', () => {
   beforeAll(async () => {
