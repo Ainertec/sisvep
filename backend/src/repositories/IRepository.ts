@@ -9,4 +9,9 @@ export interface IRepository<T> {
   deleteByCreatedAt(date: string): Promise<void>;
   queryRunner(): QueryRunner;
   count(): Promise<number>;
+  getAllProductsSold();
+  getProductsLucreAndTotalByMonth(initial: Date, final: Date);
+  getProductsTotalPercent();
+  getProductsAmountPercent();
+  getProvidersProductsCount();
 }

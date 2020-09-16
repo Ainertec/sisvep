@@ -52,4 +52,13 @@ export class ReportController {
       return response.status(400).json(error.message);
     }
   }
+
+  async salesTotal(request: Request, response: Response) {
+    try {
+      const total = await this.reportUseCase.salesTotal();
+      return response.json(total);
+    } catch (error) {
+      return response.status(400).json(error.message);
+    }
+  }
 }

@@ -10,7 +10,7 @@ const Sale = require('../../models/Sale');
 const Shop = require('../../models/Shop');
 
 function createRecipe(itens) {
-  const products = itens.map((item) => {
+  const products = itens.map(item => {
     return `
 Produto:${item.product.name} /quan.:${Number(item.quantity)}
 Valor uni.:R$${parseFloat(item.product.price).toFixed(2)} valor tot.:R$${(
@@ -25,7 +25,9 @@ module.exports = {
   async store(req, res) {
     const { id, details } = req.body;
 
-    const sale = await Sale.findOne({ _id: id }).populate('itens.product').populate('functionary');
+    const sale = await Sale.findOne({ _id: id })
+      .populate('itens.product')
+      .populate('functionary');
 
     const shop = await Shop.findOne();
 
@@ -77,7 +79,8 @@ module.exports = {
     myDoc.writeText(`Data: ${date}`, contentBorder);
     myDoc.writeText(`${items}`, contentBorder);
     myDoc.writeText(`Valor total: R$${sale.total.toFixed(2)}`, contentStyle);
-    details && myDoc.writeText(`Responsavel: ${sale.functionary.name}`, contentStyle);
+    details &&
+      myDoc.writeText(`Responsavel: ${sale.functionary.name}`, contentStyle);
     myDoc.writeText(`Forma de pagamento: ${sale.payment}`, contentBorder);
     myDoc.writeText(`ID venda: ${sale._id}`, contentStyle);
 
@@ -87,16 +90,38 @@ module.exports = {
 
     const dir =
       process.env.NODE_ENV === 'test'
-        ? path.resolve(__dirname, '..', '..', '..', '..', '__tests__', 'recipes')
+        ? path.resolve(
+            __dirname,
+            '..',
+            '..',
+            '..',
+            '..',
+            '__tests__',
+            'recipes',
+          )
         : process.env.DIR_PRODUCTION;
 
-    await fs.writeFile(`${dir}/${id}.rtf`, buffer, { encoding: 'utf-8', flag: 'w' }, (err) => {
-      if (err) return res.status(400).json(`${err}`);
-    });
+    await fs.writeFile(
+      `${dir}/${id}.rtf`,
+      buffer,
+      { encoding: 'utf-8', flag: 'w' },
+      err => {
+        if (err) return res.status(400).json(`${err}`);
+      },
+    );
 
     const vbs =
       process.env.NODE_ENV === 'test'
-        ? path.resolve(__dirname, '..', '..', '..', '..', '__tests__', 'recipes', 'impressao.vbs')
+        ? path.resolve(
+            __dirname,
+            '..',
+            '..',
+            '..',
+            '..',
+            '__tests__',
+            'recipes',
+            'impressao.vbs',
+          )
         : process.env.DIR_INITIALIZE_PRINT;
 
     setTimeout(() => {

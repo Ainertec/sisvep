@@ -1,13 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import request from 'supertest';
-import { sub } from 'date-fns';
-import { getRepository } from 'typeorm';
+
 import connection from '../../database/connection';
 import { app } from '../../app';
 import { getFactory } from '../../utils/factories';
 import { User } from '../../entity/User';
 import { Product } from '../../entity/Product';
-import { ItemsSale } from '../../entity/ItemsSale';
 import { Sale } from '../../entity/Sale';
 
 describe('Create sales tests', () => {
@@ -25,7 +23,7 @@ describe('Create sales tests', () => {
     const user = await getFactory<User>('User', {
       admin: true,
     });
-    const product = await getFactory<Product>('Product', {
+    await getFactory<Product>('Product', {
       name: 'Chocolate',
       stock: 20,
     });
@@ -42,11 +40,11 @@ describe('Create sales tests', () => {
       stock: 20,
     });
 
-    const sale = await getFactory<Sale>('Sale');
+    await getFactory<Sale>('Sale');
     const sale1 = await getFactory<Sale>('Sale');
     const sale2 = await getFactory<Sale>('Sale');
     const sale3 = await getFactory<Sale>('Sale');
-    const sale4 = await getFactory<Sale>('Sale');
+    await getFactory<Sale>('Sale');
 
     await getFactory('ItemsSale', {
       sale: sale1.id,
@@ -88,7 +86,7 @@ describe('Create sales tests', () => {
       admin: true,
     });
 
-    const product = await getFactory<Product>('Product', {
+    await getFactory<Product>('Product', {
       name: 'Chocolate',
       stock: 20,
     });
@@ -271,7 +269,7 @@ describe('Create sales tests', () => {
     });
 
     const response = await request(app)
-      .get('/report/products/total/percent')
+      .get('/reports/products/total/percent')
       .set('Authorization', `Bearer ${user.generateToken()}`);
 
     expect(response.status).toBe(200);
@@ -366,7 +364,7 @@ describe('Create sales tests', () => {
     });
 
     const response = await request(app)
-      .get('/report/products/amount/percent')
+      .get('/reports/products/amount/percent')
       .set('Authorization', `Bearer ${user.generateToken()}`);
 
     expect(response.status).toBe(200);
@@ -393,26 +391,59 @@ describe('Create sales tests', () => {
     const product2 = await getFactory('Product', {
       name: 'Presunto',
     });
+    const product3 = await getFactory('Product', {
+      name: 'Presunto',
+    });
+    const product4 = await getFactory('Product', {
+      name: 'Presunto',
+    });
+    const product5 = await getFactory('Product', {
+      name: 'Presunto',
+    });
 
-    await getFactory('Provider');
     await getFactory('Provider', {
-      products: [product, product1],
+      products: [product4],
+      name: 'Josival',
     });
     await getFactory('Provider', {
-      products: [product2],
+      products: [product, product1, product3],
+      name: 'Jão',
+    });
+    await getFactory('Provider', {
+      products: [product2, product5],
+      name: 'Jovitral',
     });
 
     const response = await request(app)
-      .get('/report/providers/products')
+      .get('/reports/providers/products')
       .set('Authorization', `Bearer ${user.generateToken()}`);
-    console.log(response.body);
+
     expect(response.status).toBe(200);
     expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          totalProducts: 2,
+          total_products: 2,
         }),
       ]),
     );
+  });
+
+  it('should return the sales amount', async () => {
+    const user = await getFactory<User>('User', {
+      admin: true,
+    });
+    await getFactory('Sale');
+    await getFactory('Sale');
+    await getFactory('Sale');
+    await getFactory('Sale');
+    await getFactory('Sale');
+    await getFactory('Sale');
+
+    const response = await request(app)
+      .get('/reports/sales/total')
+      .set('Authorization', `Bearer ${user.generateToken()}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('total');
   });
 });

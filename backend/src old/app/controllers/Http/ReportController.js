@@ -14,7 +14,8 @@ module.exports = {
     if (!isValid(initial) || !isValid(final))
       return res.status(400).json({ message: 'invalid date' });
 
-    if (!isBefore(initial, final)) return res.status(400).json({ message: 'Invalid interval' });
+    if (!isBefore(initial, final))
+      return res.status(400).json({ message: 'Invalid interval' });
 
     const sales = await Sale.aggregate()
       .match({
@@ -26,7 +27,7 @@ module.exports = {
       })
       .sort({ amount: -1 });
 
-    const salesSerializad = sales.map((sale) => {
+    const salesSerializad = sales.map(sale => {
       return {
         ...sale,
         amount: sale.amount.toFixed(2),
@@ -69,7 +70,8 @@ module.exports = {
     if (!isValid(initial) || !isValid(final))
       return res.status(400).json({ message: 'invalid date' });
 
-    if (!isBefore(initial, final)) return res.status(400).json({ message: 'Invalid interval' });
+    if (!isBefore(initial, final))
+      return res.status(400).json({ message: 'Invalid interval' });
 
     const sales = await Sale.aggregate()
       .match({
@@ -110,7 +112,7 @@ module.exports = {
       return sum + product.soldout;
     }, 0);
 
-    const productsPecent = products.map((product) => {
+    const productsPecent = products.map(product => {
       const newProduct = product;
       newProduct.soldout = ((product.soldout / totalProducts) * 100).toFixed(2);
       return newProduct;
@@ -137,7 +139,9 @@ module.exports = {
           stock: '$products.stock',
           validity: '$products.validity',
         },
-        soldout: { $sum: { $multiply: ['$itens.quantity', '$products.price'] } },
+        soldout: {
+          $sum: { $multiply: ['$itens.quantity', '$products.price'] },
+        },
       })
       .sort({ soldout: -1 });
 
@@ -145,7 +149,7 @@ module.exports = {
       return sum + product.soldout;
     }, 0);
 
-    const productsPercent = products.map((product) => {
+    const productsPercent = products.map(product => {
       const newProduct = product;
       newProduct.soldout = ((product.soldout / totalProducts) * 100).toFixed(2);
       return newProduct;

@@ -11,14 +11,17 @@ export class ReportRoutes {
     this.routes.get('/reports/lucre/total', (request, response) => {
       return reportController.show(request, response);
     });
-    this.routes.get('/report/products/total/percent', (request, response) => {
+    this.routes.get('/reports/products/total/percent', (request, response) => {
       return reportController.totalPercent(request, response);
     });
-    this.routes.get('/report/products/amount/percent', (request, response) => {
+    this.routes.get('/reports/products/amount/percent', (request, response) => {
       return reportController.amountPercent(request, response);
     });
-    this.routes.get('/report/providers/products', (request, response) => {
-      return reportController.amountPercent(request, response);
+    this.routes.get('/reports/providers/products', (request, response) => {
+      return reportController.providersProducts(request, response);
+    });
+    this.routes.get('/reports/sales/total', (request, response) => {
+      return reportController.salesTotal(request, response);
     });
   }
 }

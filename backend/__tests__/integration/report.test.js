@@ -44,6 +44,7 @@ describe('Report', () => {
       });
     expect(response.status).toBe(200);
   });
+
   it('should not list lucre with invalid dates', async () => {
     const user = await factory.create('User', {
       admin: true,
@@ -58,6 +59,7 @@ describe('Report', () => {
       });
     expect(response.status).toBe(400);
   });
+
   it('should not list lucre with invalid dates interval', async () => {
     const user = await factory.create('User', {
       admin: true,
@@ -72,6 +74,7 @@ describe('Report', () => {
       });
     expect(response.status).toBe(400);
   });
+
   it('should list all the solds products', async () => {
     const user = await factory.create('User', {
       admin: true,
@@ -147,9 +150,11 @@ describe('Report', () => {
           }),
           soldout: 8,
         }),
-      ])
+      ]),
     );
   });
+  /// ///////////////////////////////////////////////////////////////////////
+
   it('should list solds total by month ', async () => {
     const user = await factory.create('User', {
       admin: true,
@@ -181,10 +186,11 @@ describe('Report', () => {
             month: 1,
           }),
         }),
-      ])
+      ]),
     );
     expect(response.status).toBe(200);
   });
+
   it('should not list solds total with invalid dates', async () => {
     const user = await factory.create('User', {
       admin: true,
@@ -199,6 +205,7 @@ describe('Report', () => {
       });
     expect(response.status).toBe(400);
   });
+
   it('should list solds total with invalid dates interval', async () => {
     const user = await factory.create('User', {
       admin: true,
@@ -214,6 +221,7 @@ describe('Report', () => {
 
     expect(response.status).toBe(400);
   });
+  // /////////////////////////////
   it('should list products percent about solds products total', async () => {
     const user = await factory.create('User', {
       admin: true,
@@ -265,9 +273,10 @@ describe('Report', () => {
             name: 'Chocolate',
           }),
         }),
-      ])
+      ]),
     );
   });
+  // ///////
   it('should list products percent about solds products amount', async () => {
     const user = await factory.create('User', {
       admin: true,
@@ -319,10 +328,11 @@ describe('Report', () => {
             name: 'Chocolate',
           }),
         }),
-      ])
+      ]),
     );
   });
-  it('shoul list all providers products', async () => {
+  // ////
+  it('should list all providers products', async () => {
     const user = await factory.create('User', {
       admin: true,
     });
@@ -354,9 +364,10 @@ describe('Report', () => {
         expect.objectContaining({
           totalProducts: 2,
         }),
-      ])
+      ]),
     );
   });
+
   it('should return the sales amount', async () => {
     const user = await factory.create('User', {
       admin: true,

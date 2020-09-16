@@ -43,7 +43,6 @@ describe('Create sales tests', () => {
         payment: 'Dinheiro',
         total: 200,
       });
-
     expect(response.body.sale).toEqual(
       expect.objectContaining({
         payment: 'Dinheiro',

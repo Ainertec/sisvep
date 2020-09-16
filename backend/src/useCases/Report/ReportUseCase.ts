@@ -2,7 +2,6 @@ import { isBefore, isValid, parseISO } from 'date-fns';
 import { getRepository } from 'typeorm';
 import { ItemsSale } from '../../entity/ItemsSale';
 import { Product } from '../../entity/Product';
-import { Provider } from '../../entity/Provider';
 import { Sale } from '../../entity/Sale';
 import { IRepository } from '../../repositories/IRepository';
 
@@ -10,13 +9,7 @@ export class ReportUseCase {
   constructor(private repository: IRepository<Sale>) {}
 
   async allProductsSold() {
-    const sales = await getRepository(ItemsSale)
-      .createQueryBuilder('items_sale')
-      .select('SUM(items_sale.quantity)', 'soldout')
-      .leftJoinAndSelect('items_sale.product', 'products')
-      .groupBy('products.id')
-      .orderBy('soldout', 'DESC')
-      .getRawMany();
+    const sales = await this.repository.getAllProductsSold();
     return sales;
   }
 
@@ -28,30 +21,15 @@ export class ReportUseCase {
 
     if (!isBefore(initial, final)) throw new Error('Invalid interval');
 
-    const sales = getRepository(Sale)
-      .createQueryBuilder('sale')
-      .select('SUM(sale.total)', 'amount')
-      .addSelect('strftime("%m-%Y", sale.createdAt)', 'month_and_year')
-      .addSelect('SUM(1)', 'total_sales')
-      .where('sale.createdAt BETWEEN :initial and :final', {
-        initial: initial.toISOString().split('T')[0],
-        final: final.toISOString().split('T')[0],
-      })
-      .groupBy('strftime("%m-%Y", sale.createdAt)')
-      .orderBy('amount', 'DESC')
-      .getRawMany();
-
+    const sales = await this.repository.getProductsLucreAndTotalByMonth(
+      initial,
+      final,
+    );
     return sales;
   }
 
   async productsTotalPercent() {
-    const sales = await getRepository(ItemsSale)
-      .createQueryBuilder('items_sale')
-      .select('SUM(items_sale.quantity)', 'soldout')
-      .leftJoinAndSelect('items_sale.product', 'products')
-      .groupBy('products.id')
-      .orderBy('soldout', 'DESC')
-      .getRawMany();
+    const sales = await this.repository.getProductsTotalPercent();
 
     const totalProducts = sales.reduce((sum, product) => {
       return sum + product.soldout;
@@ -66,13 +44,7 @@ export class ReportUseCase {
   }
 
   async productsAmountPercent() {
-    const sales = await getRepository(ItemsSale)
-      .createQueryBuilder('items_sale')
-      .select('SUM(items_sale.quantity*products.price)', 'soldout')
-      .leftJoinAndSelect('items_sale.product', 'products')
-      .groupBy('products.id')
-      .orderBy('soldout', 'DESC')
-      .getRawMany();
+    const sales = await this.repository.getProductsTotalPercent();
 
     const totalProducts = sales.reduce((sum, product) => {
       return sum + product.soldout;
@@ -87,13 +59,17 @@ export class ReportUseCase {
   }
 
   async providersProducts() {
-    const productsProviders = getRepository(Product)
-      .createQueryBuilder('product')
-      .select('Sum(provider.id)', 'total')
-      .leftJoinAndSelect('product.provider_id', 'provider')
-      .groupBy('provider.id')
-      .orderBy('total', 'DESC')
-      .getRawMany();
+    const productsProviders = await this.repository.getProvidersProductsCount();
     return productsProviders;
+  }
+
+  async salesTotal() {
+    const sales = await this.repository.find<Sale>({});
+
+    const total = sales.reduce((sum, sale) => {
+      return sum + sale.total;
+    }, 0);
+
+    return { total: total.toFixed(2) };
   }
 }
