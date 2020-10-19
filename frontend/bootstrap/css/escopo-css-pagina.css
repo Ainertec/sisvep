@@ -1,0 +1,39 @@
+body{
+  background-color: #FFFDD0;
+}
+section{
+  background-color: #ECD690;
+}
+main{
+  background-color: #FDFBBD;
+}
+.iconsTam{
+  font-size: 11px;
+}
+.layer1::-webkit-scrollbar-thumb{
+  background-color:#DDDAA0;
+  border-radius: 30px;
+}
+.layer1::-webkit-scrollbar{
+  background-color: #FDFBBD;
+  height: 7px;
+}
+.layer1::-webkit-scrollbar-corner{
+  background-color: #FDFBBD;
+}
+.navCor{
+  background-color: #000000;
+}
+
+@media print {
+  *{
+    -webkit-print-color-adjust: exact;
+    background-color: #ffffff;
+    text-shadow:none;
+    filter:none;
+    -ms-filter:none;
+  }
+  a{ 
+    display:none; 
+  }
+}
